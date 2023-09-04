@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server-Sent Events Example</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-right">
+    <a href="/data.html">Ver todos los dato MySQL Ricardo</a> 
+  </div>
+
+  <h1>Mensaje en tiempo real:</h1>
+  <div id="remitente"></div>
+  <div id="mensaje"></div>
+  <div id="latitud"></div>
+  <div id="longitud"></div>
+  <div id="altitud"></div>
+  <div id="fechaHora"></div>
+
+  <h2>Datos almacenados en la base de datos de Ricardo:</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Remitente</th>
+        <th>Mensaje</th>
+        <th>Fecha y Hora</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>Altitud</th>
+      </tr>
+    </thead>
+    <tbody id="tablaDatos">
+    </tbody>
+  </table>
+  
+  <script>
+    const remitenteElement = document.getElementById('remitente');
+    const mensajeElement = document.getElementById('mensaje');
+    const latitudElement = document.getElementById('latitud');
+    const longitudElement = document.getElementById('longitud');
+    const altitudElement = document.getElementById('altitud');
+    const fechaHoraElement = document.getElementById('fechaHora');
+    const tablaDatosElement = document.getElementById('tablaDatos');
+
+    const eventSource = new EventSource('/events');
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const remitente = data.remitente;
+      const mensaje = data.mensaje;
+      const latitud = mensaje.match(/Lat: ([^ ]+)/)[1];
+      const longitud = mensaje.match(/Lon: ([^ ]+)/)[1];
+      const altitud = mensaje.match(/Alt: ([^ ]+)/)[1];
+      const fechaHora = mensaje.match(/FH: (\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/)[1];
+
+      remitenteElement.textContent = `Remitente: ${remitente}`;
+      mensajeElement.textContent = `Mensaje: ${mensaje}`;
+      latitudElement.textContent = `Latitud: ${latitud}`;
+      longitudElement.textContent = `Longitud: ${longitud}`;
+      altitudElement.textContent = `Altitud: ${altitud}`;
+      fechaHoraElement.textContent = `Fecha y Hora: ${fechaHora}`;
+
+      // Agregar fila a la tabla de datos
+      const newRow = tablaDatosElement.insertRow(0);
+      const cellRemitente = newRow.insertCell(0);
+      const cellMensaje = newRow.insertCell(1);
+      const cellFechaHora = newRow.insertCell(2);
+      const cellLatitud = newRow.insertCell(3);
+      const cellLongitud = newRow.insertCell(4);
+      const cellAltitud = newRow.insertCell(5);
+      
+      cellRemitente.textContent = remitente;
+      cellMensaje.textContent = mensaje;
+      cellFechaHora.textContent = fechaHora;
+      cellLatitud.textContent = latitud;
+      cellLongitud.textContent = longitud;
+      cellAltitud.textContent = altitud;
+    };
+  </script>
+</body>
+</html>
