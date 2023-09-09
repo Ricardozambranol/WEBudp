@@ -17,29 +17,12 @@ const conexionDB = mysql.createConnection({
   database: 'disenobd',
 });
 
-// Conexión a la base de datos
 conexionDB.connect((error) => {
   if (error) {
     console.error('Error al conectar a la base de datos:', error);
     return;
   }
   console.log('Conexión a la base de datos exitosa.');
-
-  const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS mensajes (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      remitente VARCHAR(255),
-      mensaje TEXT
-    )
-  `;
-
-  conexionDB.query(createTableQuery, (error) => {
-    if (error) {
-      console.error('Error al crear la tabla:', error);
-      return;
-    }
-    console.log('Tabla creada o ya existente.');
-  });
 });
 
 let lastSentMessage = null;
@@ -79,16 +62,10 @@ app.get('/events', (req, res) => {
         if (data !== lastSentMessage) {
           res.write(`data: ${data}\n\n`);
           lastSentMessage = data;
-
-          // Agrega un mensaje de confirmación
-          console.log('Mensaje recibido y guardado en la base de datos:', data);
-
-          // Envía una respuesta al cliente para confirmar que el mensaje se ha guardado
-          res.write(`data: Mensaje guardado en la base de datos: ${data}\n\n`);
         }
       }
     });
-  }, 1000);
+  }, 1);
 
   req.on('close', () => {
     clearInterval(interval);
@@ -99,7 +76,6 @@ const puerto = 80;
 server.listen(puerto, () => {
   console.log(`Servidor web en ejecución en http://localhost:${puerto}`);
 });
-
 // Inicia el servidor UDP como un proceso secundario
 const udpServerProcess = spawn('node', ['udp-listener.js'], { stdio: 'inherit' });
 
