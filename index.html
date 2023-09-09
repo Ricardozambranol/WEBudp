@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Server-Sent Events Example</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     table {
       width: 100%;
@@ -83,13 +84,13 @@
       }
     }
 
-    const mensajeUDPElement = document.getElementById('mensajeUDP');
-    const latitudElement = document.getElementById('latitud');
-    const longitudElement = document.getElementById('longitud');
-    const altitudElement = document.getElementById('altitud');
-    const fechaHoraElement = document.getElementById('fechaHora');
+    const mensajeUDPElement = $('#mensajeUDP');
+    const latitudElement = $('#latitud');
+    const longitudElement = $('#longitud');
+    const altitudElement = $('#altitud');
+    const fechaHoraElement = $('#fechaHora');
 
-    const socket = new WebSocket('ws://localhost:3000'); // Reemplaza localhost con la dirección de tu servidor
+    const socket = new WebSocket('ws://localhost:80'); // Reemplaza localhost con la dirección de tu servidor
 
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
@@ -99,11 +100,11 @@
       const altitud = parseFloat(mensaje.match(/Alt: ([^ ]+)/)[1]);
       const fechaHora = mensaje.match(/FH: (\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/)[1];
 
-      mensajeUDPElement.textContent = `Mensaje UDP: ${mensaje}`;
-      latitudElement.textContent = `Latitud: ${latitud}`;
-      longitudElement.textContent = `Longitud: ${longitud}`;
-      altitudElement.textContent = `Altitud: ${altitud}`;
-      fechaHoraElement.textContent = `Fecha y Hora: ${fechaHora}`;
+      mensajeUDPElement.text(`Mensaje UDP: ${mensaje}`);
+      latitudElement.text(`Latitud: ${latitud}`);
+      longitudElement.text(`Longitud: ${longitud}`);
+      altitudElement.text(`Altitud: ${altitud}`);
+      fechaHoraElement.text(`Fecha y Hora: ${fechaHora}`);
 
       // Llamar a la función para actualizar la posición del marcador
       actualizarPosicion(latitud, longitud);
