@@ -23,7 +23,8 @@ function crearTabla() {
       fecha DATE,
       hora TIME,
       latitud DECIMAL(12, 10),
-      longitud DECIMAL(12, 10)
+      longitud DECIMAL(12, 10),
+      altitud DECIMAL(12, 2)  -- Añadir la columna para la altitud
     )
   `, (error) => {
     if (error) {
@@ -34,9 +35,9 @@ function crearTabla() {
   });
 }
 
-// Función para extraer datos del mensaje
-function extraerDatos(mensaje) {
-  // El mensaje tiene el formato: "FH: 09/09/2023 00:01:28 Lat: 10.98585827410513 Lon: -74.79651654821026"
+// Función para extraer datos del mensaje y formatearlos
+function formatearMensaje(mensaje) {
+  // El mensaje tiene el formato: "FH: 09/09/2023 00:01:28 Lat: 10.98585827410513 Lon: -74.79651654821026 Alt: 48.0"
   const partes = mensaje.split(' ');
 
   const fechaHoraParte = partes[1].split(' ');
@@ -45,22 +46,32 @@ function extraerDatos(mensaje) {
 
   const latitudParte = partes[3];
   const longitudParte = partes[5];
+  const altitudParte = partes[7]; // Agregar la parte de altitud
 
   return {
     fecha,
     hora,
     latitud: parseFloat(latitudParte),
     longitud: parseFloat(longitudParte),
+    altitud: parseFloat(altitudParte),
   };
 }
 
 // Insertar un mensaje en la base de datos
 function insertarMensaje(remitente, mensaje) {
-  const datos = extraerDatos(mensaje);
+  const datosFormateados = formatearMensaje(mensaje);
   
   conexionDB.query(
-    'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?)',
-    [remitente, mensaje, datos.fecha, datos.hora, datos.latitud, datos.longitud],
+    'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud, altitud) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [
+      remitente,
+      mensaje,
+      datosFormateados.fecha,
+      datosFormateados.hora,
+      datosFormateados.latitud,
+      datosFormateados.longitud,
+      datosFormateados.altitud,
+    ],
     (error) => {
       if (error) {
         console.error('Error al insertar el mensaje en la base de datos:', error);
