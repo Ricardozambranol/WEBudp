@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server-Sent Events Example - Datos Almacenados</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Datos almacenados en la base de datos:</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Remitente</th>
+        <th>Mensaje</th>
+        <th>Fecha y Hora</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+        <th>Altitud</th>
+      </tr>
+    </thead>
+    <tbody id="tablaDatos">
+    </tbody>
+  </table>
+
+  <script>
+    const tablaDatosElement = document.getElementById('tablaDatos');
+
+    fetch('/alldata')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(item => {
+          const mensajeParts = item.mensaje.split(' ');
+          const fechaHora = mensajeParts[1] + ' ' + mensajeParts[2];
+          const latitud = mensajeParts[4];
+          const longitud = mensajeParts[6];
+          const altitud = mensajeParts[8];
+
+          const newRow = tablaDatosElement.insertRow();
+          const cellRemitente = newRow.insertCell(0);
+          const cellMensaje = newRow.insertCell(1);
+          const cellFechaHora = newRow.insertCell(2);
+          const cellLatitud = newRow.insertCell(3);
+          const cellLongitud = newRow.insertCell(4);
+          const cellAltitud = newRow.insertCell(5);
+
+          cellRemitente.textContent = item.remitente;
+          cellMensaje.textContent = item.mensaje;
+          cellFechaHora.textContent = fechaHora;
+          cellLatitud.textContent = latitud;
+          cellLongitud.textContent = longitud;
+          cellAltitud.textContent = altitud;
+        });
+      })
+      .catch(error => console.error('Error al obtener los datos:', error));
+  </script>
+</body>
+</html>
