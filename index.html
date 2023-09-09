@@ -90,7 +90,7 @@
     const altitudElement = $('#altitud');
     const fechaHoraElement = $('#fechaHora');
 
-    const socket = new WebSocket('ws://localhost:80'); // Reemplaza localhost con la dirección de tu servidor
+    const socket = new WebSocket('ws://ec2-18-190-54-34.us-east-2.compute.amazonaws.com'); // Reemplaza con la dirección de tu servidor EC2
 
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
