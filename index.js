@@ -17,7 +17,7 @@ udpServer.on('error', (err) => {
 
 udpServer.on('message', (message, remote) => {
   const data = message.toString('utf8');
-  // Transmitir los datos UDP a todos los clientes WebSocket conectados
+  console.log(`Mensaje UDP recibido: ${data} from ${remote.address}:${remote.port}`);
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);

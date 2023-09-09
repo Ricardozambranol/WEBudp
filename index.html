@@ -38,6 +38,10 @@
   </style>
 </head>
 <body>
+  <div class="top-right">
+    <a href="/data.html">Ver todos los datos MySQL Ricardo</a> 
+  </div>
+
   <h1>Mensaje en tiempo real:</h1>
   <div id="mensajeUDP"></div>
   <div id="latitud"></div>
@@ -85,7 +89,7 @@
     const altitudElement = document.getElementById('altitud');
     const fechaHoraElement = document.getElementById('fechaHora');
 
-    const socket = new WebSocket('ws://localhost:80');
+    const socket = new WebSocket('ws://localhost:3000'); // Reemplaza localhost con la dirección de tu servidor
 
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
