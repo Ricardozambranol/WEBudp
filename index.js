@@ -3,6 +3,7 @@ const http = require('http');
 const mysql = require('mysql2');
 const path = require('path');
 const WebSocket = require('ws');
+const { spawn } = require('child_process'); // Importa el módulo child_process
 
 const app = express();
 const server = http.createServer(app);
@@ -10,7 +11,7 @@ const wss = new WebSocket.Server({ server });
 
 // Configuración de la conexión a la base de datos RDS MySQL
 const conexionDB = mysql.createConnection({
-  host: 'disenobd.ceknllvmq2wx.us-east-2.rds.amazonaws.com', // Reemplaza con la dirección de tu RDS
+  host: 'disenobd.ceknllvmq2wx.us-east-2.rds.amazonaws.com',
   user: 'admin',
   password: '12345678',
   database: 'disenobd',
@@ -24,7 +25,6 @@ conexionDB.connect((error) => {
   }
   console.log('Conexión a la base de datos exitosa.');
 
-  // Verificar si la tabla existe, y si no, crearla
   const createTableQuery = `
     CREATE TABLE IF NOT EXISTS mensajes (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -79,11 +79,11 @@ app.get('/events', (req, res) => {
         if (data !== lastSentMessage) {
           res.write(`data: ${data}\n\n`);
           lastSentMessage = data;
-          console.log('Mensaje recibido:', data); // Muestra el mensaje en la consola
+          console.log('Mensaje recibido:', data);
         }
       }
     });
-  }, 1000); // Intervalo de consulta de 1 segundo
+  }, 1000);
 
   req.on('close', () => {
     clearInterval(interval);
@@ -93,4 +93,11 @@ app.get('/events', (req, res) => {
 const puerto = 80;
 server.listen(puerto, () => {
   console.log(`Servidor web en ejecución en http://localhost:${puerto}`);
+});
+
+// Inicia el servidor UDP como un proceso secundario
+const udpServerProcess = spawn('node', ['udp-listener.js'], { stdio: 'inherit' });
+
+udpServerProcess.on('exit', (code, signal) => {
+  console.log(`Proceso del servidor UDP finalizado con código: ${code} y señal: ${signal}`);
 });
