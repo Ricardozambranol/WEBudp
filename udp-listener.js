@@ -37,7 +37,7 @@ function crearTabla() {
 
 // Función para extraer datos del mensaje y formatearlos
 function formatearMensaje(mensaje) {
-  // El mensaje tiene el formato: "FH: 09/09/2023 18:51:03 Lat: 10.983294678547477 Lon: -74.78767871418991 Alt: 29.0"
+  // El mensaje tiene el formato: "FH: 09/09/2023 18:52:47 Lat: 10.99324412168979 Lon: -74.80991462849036 Alt: 79.0"
   const partes = mensaje.split(' ');
 
   const fechaParte = partes[1];
@@ -46,15 +46,19 @@ function formatearMensaje(mensaje) {
   const longitudParte = partes[6];
   const altitudParte = partes[8];
 
+  // Extraer la fecha y la hora de las partes correspondientes
+  const fechaHora = fechaParte.split(':')[1] + ' ' + horaParte.split(':')[0];
+  const fecha = fechaHora.split(' ')[0];
+  const hora = fechaHora.split(' ')[1];
+
   return {
-    fecha: fechaParte.split(':')[1],
-    hora: horaParte.split(':')[1],
+    fecha,
+    hora,
     latitud: parseFloat(latitudParte),
     longitud: parseFloat(longitudParte),
     altitud: parseFloat(altitudParte),
   };
 }
-
 
 // Insertar un mensaje en la base de datos
 function insertarMensaje(remitente, mensaje) {
