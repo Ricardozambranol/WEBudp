@@ -60,26 +60,37 @@ function formatearMensaje(mensaje) {
 // Insertar un mensaje en la base de datos
 function insertarMensaje(remitente, mensaje) {
   const datosFormateados = formatearMensaje(mensaje);
-  
-  conexionDB.query(
-    'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud, altitud) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [
-      remitente,
-      mensaje,
-      datosFormateados.fecha,
-      datosFormateados.hora,
-      datosFormateados.latitud,
-      datosFormateados.longitud,
-      datosFormateados.altitud,
-    ],
-    (error) => {
-      if (error) {
-        console.error('Error al insertar el mensaje en la base de datos:', error);
-      } else {
-        console.log('Mensaje almacenado en la base de datos:', mensaje);
+
+  if (datosFormateados) { // Verificar que los datos sean válidos
+    console.log('Valores a insertar en la tabla:');
+    console.log('Remitente:', remitente);
+    console.log('Mensaje:', mensaje);
+    console.log('Fecha:', datosFormateados.fecha);
+    console.log('Hora:', datosFormateados.hora);
+    console.log('Latitud:', datosFormateados.latitud);
+    console.log('Longitud:', datosFormateados.longitud);
+    console.log('Altitud:', datosFormateados.altitud);
+
+    conexionDB.query(
+      'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud, altitud) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [
+        remitente,
+        mensaje,
+        datosFormateados.fecha,
+        datosFormateados.hora,
+        datosFormateados.latitud,
+        datosFormateados.longitud,
+        datosFormateados.altitud,
+      ],
+      (error) => {
+        if (error) {
+          console.error('Error al insertar el mensaje en la base de datos:', error);
+        } else {
+          console.log('Mensaje almacenado en la base de datos:', mensaje);
+        }
       }
-    }
-  );
+    );
+  }
 }
 
 // Crear el servidor UDP
