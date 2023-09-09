@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const puerto = 3000;
+const puerto = 80;
 server.listen(puerto, () => {
   console.log(`Servidor web en ejecución en http://localhost:${puerto}`);
 });
