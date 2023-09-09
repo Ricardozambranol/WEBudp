@@ -85,7 +85,7 @@
     const altitudElement = document.getElementById('altitud');
     const fechaHoraElement = document.getElementById('fechaHora');
 
-    const socket = new WebSocket('ws://localhost:3000'); // Reemplaza localhost con la dirección de tu servidor
+    const socket = new WebSocket('ws://localhost:80');
 
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
