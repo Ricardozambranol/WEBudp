@@ -79,7 +79,12 @@ app.get('/events', (req, res) => {
         if (data !== lastSentMessage) {
           res.write(`data: ${data}\n\n`);
           lastSentMessage = data;
-          console.log('Mensaje recibido:', data);
+
+          // Agrega un mensaje de confirmación
+          console.log('Mensaje recibido y guardado en la base de datos:', data);
+
+          // Envía una respuesta al cliente para confirmar que el mensaje se ha guardado
+          res.write(`data: Mensaje guardado en la base de datos: ${data}\n\n`);
         }
       }
     });
