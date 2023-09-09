@@ -19,7 +19,11 @@ function crearTabla() {
     CREATE TABLE IF NOT EXISTS mensajes (
       id INT AUTO_INCREMENT PRIMARY KEY,
       remitente VARCHAR(255),
-      mensaje TEXT
+      mensaje TEXT,
+      fecha DATE,
+      hora TIME,
+      latitud DECIMAL(12, 10),
+      longitud DECIMAL(12, 10)
     )
   `, (error) => {
     if (error) {
@@ -30,15 +34,41 @@ function crearTabla() {
   });
 }
 
+// Función para extraer datos del mensaje
+function extraerDatos(mensaje) {
+  // El mensaje tiene el formato: "FH: 09/09/2023 00:01:28 Lat: 10.98585827410513 Lon: -74.79651654821026"
+  const partes = mensaje.split(' ');
+
+  const fechaHoraParte = partes[1].split(' ');
+  const fecha = fechaHoraParte[0];
+  const hora = fechaHoraParte[1];
+
+  const latitudParte = partes[3];
+  const longitudParte = partes[5];
+
+  return {
+    fecha,
+    hora,
+    latitud: parseFloat(latitudParte),
+    longitud: parseFloat(longitudParte),
+  };
+}
+
 // Insertar un mensaje en la base de datos
 function insertarMensaje(remitente, mensaje) {
-  conexionDB.query('INSERT INTO mensajes (remitente, mensaje) VALUES (?, ?)', [remitente, mensaje], (error) => {
-    if (error) {
-      console.error('Error al insertar el mensaje en la base de datos:', error);
-    } else {
-      console.log('Mensaje almacenado en la base de datos:', mensaje);
+  const datos = extraerDatos(mensaje);
+  
+  conexionDB.query(
+    'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?)',
+    [remitente, mensaje, datos.fecha, datos.hora, datos.latitud, datos.longitud],
+    (error) => {
+      if (error) {
+        console.error('Error al insertar el mensaje en la base de datos:', error);
+      } else {
+        console.log('Mensaje almacenado en la base de datos:', mensaje);
+      }
     }
-  });
+  );
 }
 
 // Crear el servidor UDP
