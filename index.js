@@ -90,7 +90,7 @@ app.get('/events', (req, res) => {
   });
 });
 
-const puerto = 3000;
+const puerto = 80;
 server.listen(puerto, () => {
   console.log(`Servidor web en ejecución en http://localhost:${puerto}`);
 });
