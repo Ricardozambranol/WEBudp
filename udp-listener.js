@@ -75,12 +75,15 @@ function insertarMensaje(remitente, mensaje) {
     console.log('Longitud:', datosFormateados.longitud);
     console.log('Altitud:', datosFormateados.altitud);
 
+    // Formatear la fecha antes de insertarla en la base de datos
+    const fechaFormateada = datosFormateados.fecha.split('/').reverse().join('-');
+
     conexionDB.query(
       'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud, altitud) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [
         remitente,
         mensaje,
-        datosFormateados.fecha,
+        fechaFormateada, // Utilizar la fecha formateada
         datosFormateados.hora,
         datosFormateados.latitud,
         datosFormateados.longitud,
@@ -96,6 +99,7 @@ function insertarMensaje(remitente, mensaje) {
     );
   }
 }
+
 
 // Crear el servidor UDP
 const udpServer = dgram.createSocket('udp4');
