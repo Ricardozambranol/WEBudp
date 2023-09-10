@@ -76,20 +76,25 @@ app.get('/events', (req, res) => {
 });
 
 // Agrega esta ruta para manejar la solicitud de filtrado
+// Agrega esta ruta para manejar la solicitud de filtrado por rango de fechas y horas
 app.get('/filterData', (req, res) => {
   const fechaInicio = req.query.fechaInicio;
+  const horaInicio = req.query.horaInicio;
   const fechaFin = req.query.fechaFin;
+  const horaFin = req.query.horaFin;
 
   console.log('Fecha de Inicio:', fechaInicio);
+  console.log('Hora de Inicio:', horaInicio);
   console.log('Fecha de Fin:', fechaFin);
+  console.log('Hora de Fin:', horaFin);
 
   const query = `
     SELECT fecha, hora, latitud, longitud
     FROM mensajes
-    WHERE fecha >= ? AND fecha <= ?
+    WHERE CONCAT(fecha, ' ', hora) >= ? AND CONCAT(fecha, ' ', hora) <= ?
   `;
 
-  conexionDB.query(query, [fechaInicio, fechaFin], (error, resultados) => {
+  conexionDB.query(query, [`${fechaInicio} ${horaInicio}`, `${fechaFin} ${horaFin}`], (error, resultados) => {
     if (error) {
       console.error('Error al obtener datos filtrados:', error);
       res.status(500).send('Error al obtener datos filtrados');
@@ -99,6 +104,7 @@ app.get('/filterData', (req, res) => {
     res.json(resultados);
   });
 });
+
 
 const puerto = 80;
 server.listen(puerto, () => {

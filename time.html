@@ -117,10 +117,15 @@
   <div>
     <label for="fechaInicio">Fecha de Inicio:</label>
     <input type="date" id="fechaInicio">
+    <label for="horaInicio">Hora de Inicio:</label>
+    <input type="time" id="horaInicio">
+  </div>
+  <div>
     <label for="fechaFin">Fecha de Fin:</label>
     <input type="date" id="fechaFin">
+    <label for="horaFin">Hora de Fin:</label>
+    <input type="time" id="horaFin">
   </div>
-  
   <button id="buscarDatos">Buscar Datos</button>
   
   <!-- Tabla para mostrar los resultados -->
@@ -140,53 +145,56 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const buscarDatosBtn = document.getElementById('buscarDatos');
-      const tablaResultados = document.getElementById('tablaResultados');
+  const buscarDatosBtn = document.getElementById('buscarDatos');
+  const tablaResultados = document.getElementById('tablaResultados');
 
-      buscarDatosBtn.addEventListener('click', () => {
-        // Obtener los valores de fecha de inicio y fecha de fin
-        const fechaInicio = document.getElementById('fechaInicio').value;
-        const fechaFin = document.getElementById('fechaFin').value;
+  buscarDatosBtn.addEventListener('click', () => {
+    // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
+    const fechaInicio = document.getElementById('fechaInicio').value;
+    const horaInicio = document.getElementById('horaInicio').value;
+    const fechaFin = document.getElementById('fechaFin').value;
+    const horaFin = document.getElementById('horaFin').value;
 
-        // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas
-        fetch(`/filterData?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('La solicitud no fue exitosa');
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
-            // Limpiar la tabla de resultados
-            tablaResultados.innerHTML = '';
+    // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
+    fetch(`/filterData?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('La solicitud no fue exitosa');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
+        // Limpiar la tabla de resultados
+        tablaResultados.innerHTML = '';
 
-            // Recorrer los resultados y agregarlos a la tabla
-            data.forEach((registro) => {
-              const fila = document.createElement('tr');
-              const fecha = document.createElement('td');
-              const hora = document.createElement('td');
-              const latitud = document.createElement('td');
-              const longitud = document.createElement('td');
+        // Recorrer los resultados y agregarlos a la tabla
+        data.forEach((registro) => {
+          const fila = document.createElement('tr');
+          const fecha = document.createElement('td');
+          const hora = document.createElement('td');
+          const latitud = document.createElement('td');
+          const longitud = document.createElement('td');
 
-              fecha.textContent = registro.fecha;
-              hora.textContent = registro.hora;
-              latitud.textContent = registro.latitud;
-              longitud.textContent = registro.longitud;
+          fecha.textContent = registro.fecha;
+          hora.textContent = registro.hora;
+          latitud.textContent = registro.latitud;
+          longitud.textContent = registro.longitud;
 
-              fila.appendChild(fecha);
-              fila.appendChild(hora);
-              fila.appendChild(latitud);
-              fila.appendChild(longitud);
+          fila.appendChild(fecha);
+          fila.appendChild(hora);
+          fila.appendChild(latitud);
+          fila.appendChild(longitud);
 
-              tablaResultados.appendChild(fila);
-            });
-          })
-          .catch((error) => {
-            console.error('Error al buscar datos:', error);
-          });
+          tablaResultados.appendChild(fila);
+        });
+      })
+      .catch((error) => {
+        console.error('Error al buscar datos:', error);
       });
-    });
+  });
+});
+
   </script>
 </body>
 </html>
