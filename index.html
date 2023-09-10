@@ -6,6 +6,10 @@
   <title>ON MY WAY</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
 
   <style>
     /* Estilo para el cuerpo del documento */
@@ -128,15 +132,7 @@
 
     th {
       background-color: #d3d3d3;
-    }
-    .start-marker {
-      background-color: rosybrown;
-      border: 2px solid rgb(51, 136, 255);
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-    }
-    
+    }  
     /* Estilo para el contenedor del contenido que quieres mover */
     #info-container {
       display: flex;
@@ -200,8 +196,14 @@
 
     var marker = L.marker([0, 0]).addTo(map); // Crear un marcador inicialmente en posición (0, 0)
     var polyline = L.polyline([]).addTo(map); // Crear una línea de ruta vacía
-    var startMarker = L.marker([0, 0], { icon: L.divIcon({ className: 'start-marker' }) }).addTo(map); // Crear un marcador de inicio (rojo)
-
+    var startMarker = L.marker([0, 0], {
+        icon: L.divIcon({
+            className: 'custom-icon', // Clase personalizada para el marcador
+            iconSize: [30, 30], // Ancho y altura personalizados
+            iconAnchor: [15, 30], // Alineación del icono en la parte inferior
+            html: '<div style="text-align: center;"><b><strong>INICIO</strong></b></div><i class="fas fa-map-marker-alt" style="color: red;"></i>', // Texto "INICIO" en negritas y el ícono rojo de Font Awesome
+        }),
+    }).addTo(map);
     function actualizarPosicion(latitud, longitud) {
       // Crear un nuevo objeto LatLng con las coordenadas actualizadas
       var nuevaPosicion = L.latLng(latitud, longitud);
