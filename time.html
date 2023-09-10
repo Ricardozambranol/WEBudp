@@ -133,20 +133,6 @@
     th {
       background-color: #d3d3d3;
     }
-    .start-marker {
-      background-color: orangered;
-      border: 2px solid rgb(51, 136, 255);
-      border-radius: 20%;
-      width: 30px;
-      height: 15px;
-    }
-    .end-marker {
-      background-color: greenyellow;
-      border: 2px solid rgb(51, 136, 255);
-      border-radius: 20%;
-      width: 30px;
-      height: 15px;
-    }
     
     /* Estilo para el contenedor del contenido que quieres mover */
     #info-container {
@@ -228,16 +214,16 @@
         var startMarker = L.marker([0, 0], {
         icon: L.divIcon({
             className: 'custom-icon', // Clase personalizada para el marcador
-            iconSize: [30, 15], // Ancho y altura personalizados
-            iconAnchor: [15, 15], // Alineación del icono en la parte inferior
+            iconSize: [60, 30], // Ancho y altura personalizados
+            iconAnchor: [30, 30], // Alineación del icono en la parte inferior
             html: '<i class="fas fa-map-marker-alt" style="color: red;"></i>', // Ícono rojo de Font Awesome
         }),
         }).addTo(map); // Crear un marcador de inicio        
         var endMarker = L.marker([0, 0], {
         icon: L.divIcon({
             className: 'custom-icon', // Clase personalizada para el marcador
-            iconSize: [30, 15], // Ancho y altura personalizados
-            iconAnchor: [15, 15], // Alineación del icono en la parte inferior
+            iconSize: [60, 30], // Ancho y altura personalizados
+            iconAnchor: [30, 30], // Alineación del icono en la parte inferior
             html: '<i class="fas fa-map-marker-alt" style="color: green;"></i>', // Ícono verde de Font Awesome
         }),
         }).addTo(map); // Crear un marcador de fin      
