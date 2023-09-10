@@ -274,13 +274,13 @@
                   // Si es la primera ubicación, actualizar el marcador de inicio
                   if (index === 0) {
                     startMarker.setLatLng([registro.latitud, registro.longitud]);
-                    startMarker.bindPopup(`<strong>Inicio</strong><br>Fecha: ${registro.fechaFormateada}<br>Hora: ${registro.hora}`).openPopup();
+                    startMarker.bindPopup(`<strong>Inicio</strong><br>Fecha: ${fechaFormateada}<br>Hora: ${registro.hora}`).openPopup();
                   }
       
                   // Si es la última ubicación, actualizar el marcador de fin
                   if (index === data.length - 1) {
                     endMarker.setLatLng([registro.latitud, registro.longitud]);
-                    endMarker.bindPopup(`<strong>Fin</strong><br><strong>Fecha:</strong> ${registro.fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
+                    endMarker.bindPopup(`<strong>Fin</strong><br><strong>Fecha:</strong> ${fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
                   }
                 });
       
