@@ -68,6 +68,9 @@ function insertarMensaje(remitente, mensaje) {
     console.log('Longitud:', datosFormateados.longitud);
     console.log();
 
+    // Formatear la fecha antes de insertarla en la base de datos
+    const fechaFormateada = datosFormateados.fecha.split('/').reverse().join('-');
+
     conexionDB.query(
       'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?)',
       [
