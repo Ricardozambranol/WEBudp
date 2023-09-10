@@ -112,4 +112,4 @@ udpServer.bind(PUERTO, IP);
 
 crearTabla(); // Asegurarse de que la tabla exista
 
-console.log(`Servidor UDP en ejecución. Esperando mensajes en 18.190.54.34:${PUERTO}`);
+console.log(`Servidor UDP en ejecución. Esperando mensajes en ${IP}:${PUERTO}`);
