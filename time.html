@@ -176,7 +176,7 @@
     <div class="leaflet-map-container">
       <div id="map-container" class="leaflet-map"></div>
     </div>
-    
+
     <!-- Tabla para mostrar los resultados -->
     <table>
       <thead>
@@ -210,12 +210,17 @@
         const buscarDatosBtn = document.getElementById('buscarDatos');
         const tablaResultados = document.getElementById('tablaResultados');
 
+
         buscarDatosBtn.addEventListener('click', () => {
           // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
           const fechaInicio = document.getElementById('fechaInicio').value;
           const horaInicio = document.getElementById('horaInicio').value;
           const fechaFin = document.getElementById('fechaFin').value;
           const horaFin = document.getElementById('horaFin').value;
+            
+          // Eliminar la ruta anterior en el mapa
+          polyline.removeFrom(map);
+          polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
 
           // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
           fetch(`/filterData?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}`)
