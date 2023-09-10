@@ -6,13 +6,16 @@
   <title>ON MY WAY - Database</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
   <style>
     table {
-      width: 100%;
+      width: 50%; /* Ancho de la tabla */
       border-collapse: collapse;
       margin-top: 20px;
+      float: left; /* Alinea la tabla a la izquierda */
+      margin-left: 5%; /* Margen izquierdo para dejar espacio para el mapa */
     }
-
     th, td {
       border: 1px solid #a3a3a3;
       padding: 8px;
@@ -100,6 +103,14 @@
       text-align: left; /* Centrar el texto */
       margin-left: 5%; /* Agregar margen izquierdo de 20px */
     }
+    .map-container {
+      width: 40%; /* Ancho del mapa */
+      height: 100vh; /* Altura del mapa (toma toda la altura de la ventana) */
+      position: fixed;
+      top: 80px; /* Altura de la barra de navegación */
+      right: 0;
+      z-index: 1; /* Coloca el mapa por encima del contenido */
+    }
   </style>
 </head>
 <body>
@@ -120,15 +131,26 @@
         <th>Fecha y Hora</th>
         <th>Latitud</th>
         <th>Longitud</th>
-        <th>Acción</th> <!-- Nueva columna para la acción -->
+        <th>Acciones</th> <!-- Nueva columna para las acciones -->
       </tr>
     </thead>
     <tbody id="tablaDatos">
     </tbody>
   </table>
 
+  <!-- Contenedor para el mapa fijo en la parte derecha -->
+  <div id="map" class="map-container"></div>
+
   <script>
     const tablaDatosElement = document.getElementById('tablaDatos');
+    const map = L.map('map').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Variable para almacenar el marcador actual en el mapa
+    let currentMarker = null;
 
     fetch('/alldata')
       .then(response => response.json())
@@ -144,25 +166,28 @@
           const cellFechaHora = newRow.insertCell(1);
           const cellLatitud = newRow.insertCell(2);
           const cellLongitud = newRow.insertCell(3);
-          const cellAccion = newRow.insertCell(4); // Nueva celda para la acción
+          const cellAcciones = newRow.insertCell(4); // Celda para las acciones
 
           cellRemitente.textContent = item.remitente;
           cellFechaHora.textContent = fechaHora;
           cellLatitud.textContent = latitud;
           cellLongitud.textContent = longitud;
 
-          // Crear un botón para mostrar la ubicación en el mapa
-          const mostrarUbicacionButton = document.createElement('button');
-          mostrarUbicacionButton.textContent = 'Mostrar Ubicación';
-          mostrarUbicacionButton.addEventListener('click', () => {
-            // Lógica para mostrar la ubicación en el mapa con un bindPopup
-            const lat = parseFloat(latitud);
-            const lng = parseFloat(longitud);
-            const marker = L.marker([lat, lng]).addTo(map);
-            marker.bindPopup(`<strong>Ubicación:</strong><br>Latitud: ${lat}<br>Longitud: ${lng}`).openPopup();
+          // Crear un enlace para ver la ubicación en el mapa
+          const viewLocationLink = document.createElement('a');
+          viewLocationLink.textContent = 'Ver ubicación';
+          viewLocationLink.href = '#'; // Enlace ficticio para manejar el evento click
+          viewLocationLink.addEventListener('click', () => {
+            // Eliminar el marcador anterior, si existe
+            if (currentMarker) {
+              currentMarker.removeFrom(map);
+            }
+
+            // Crear un nuevo marcador en el mapa
+            currentMarker = L.marker([parseFloat(latitud), parseFloat(longitud)]).addTo(map);
           });
 
-          cellAccion.appendChild(mostrarUbicacionButton);
+          cellAcciones.appendChild(viewLocationLink);
         });
       })
       .catch(error => console.error('Error al obtener los datos:', error));
