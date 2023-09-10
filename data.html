@@ -117,11 +117,10 @@
     <thead>
       <tr>
         <th>Remitente</th>
-        <th>Mensaje</th>
         <th>Fecha y Hora</th>
         <th>Latitud</th>
         <th>Longitud</th>
-        <th>Altitud</th>
+        <th>Acción</th> <!-- Nueva columna para la acción -->
       </tr>
     </thead>
     <tbody id="tablaDatos">
@@ -139,22 +138,31 @@
           const fechaHora = mensajeParts[1] + ' ' + mensajeParts[2];
           const latitud = mensajeParts[4];
           const longitud = mensajeParts[6];
-          const altitud = mensajeParts[8];
 
           const newRow = tablaDatosElement.insertRow();
           const cellRemitente = newRow.insertCell(0);
-          const cellMensaje = newRow.insertCell(1);
-          const cellFechaHora = newRow.insertCell(2);
-          const cellLatitud = newRow.insertCell(3);
-          const cellLongitud = newRow.insertCell(4);
-          const cellAltitud = newRow.insertCell(5);
+          const cellFechaHora = newRow.insertCell(1);
+          const cellLatitud = newRow.insertCell(2);
+          const cellLongitud = newRow.insertCell(3);
+          const cellAccion = newRow.insertCell(4); // Nueva celda para la acción
 
           cellRemitente.textContent = item.remitente;
-          cellMensaje.textContent = item.mensaje;
           cellFechaHora.textContent = fechaHora;
           cellLatitud.textContent = latitud;
           cellLongitud.textContent = longitud;
-          cellAltitud.textContent = altitud;
+
+          // Crear un botón para mostrar la ubicación en el mapa
+          const mostrarUbicacionButton = document.createElement('button');
+          mostrarUbicacionButton.textContent = 'Mostrar Ubicación';
+          mostrarUbicacionButton.addEventListener('click', () => {
+            // Lógica para mostrar la ubicación en el mapa con un bindPopup
+            const lat = parseFloat(latitud);
+            const lng = parseFloat(longitud);
+            const marker = L.marker([lat, lng]).addTo(map);
+            marker.bindPopup(`<strong>Ubicación:</strong><br>Latitud: ${lat}<br>Longitud: ${lng}`).openPopup();
+          });
+
+          cellAccion.appendChild(mostrarUbicacionButton);
         });
       })
       .catch(error => console.error('Error al obtener los datos:', error));
