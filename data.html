@@ -179,6 +179,12 @@
           viewLocationLink.textContent = 'Ver ubicación';
           viewLocationLink.href = 'javascript:void(0)'; // Enlace ficticio para manejar el evento click
           viewLocationLink.addEventListener('click', () => {
+              // Obtener la latitud y longitud de la ubicación actual
+              const lat = parseFloat(latitud);
+              const lng = parseFloat(longitud);
+
+              // Centrar el mapa en la ubicación actual
+              map.setView([lat, lng], 13);
             // Eliminar el marcador anterior, si existe
             if (currentMarker) {
               currentMarker.removeFrom(map);
