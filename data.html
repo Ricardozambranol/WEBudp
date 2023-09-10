@@ -16,6 +16,7 @@
       float: left; /* Alinea la tabla a la izquierda */
       margin-left: 5%; /* Margen izquierdo para dejar espacio para el mapa */
     }
+
     th, td {
       border: 1px solid #a3a3a3;
       padding: 8px;
@@ -176,7 +177,7 @@
           // Crear un enlace para ver la ubicación en el mapa
           const viewLocationLink = document.createElement('a');
           viewLocationLink.textContent = 'Ver ubicación';
-          viewLocationLink.href = '#'; // Enlace ficticio para manejar el evento click
+          viewLocationLink.href = 'javascript:void(0)'; // Enlace ficticio para manejar el evento click
           viewLocationLink.addEventListener('click', () => {
             // Eliminar el marcador anterior, si existe
             if (currentMarker) {
