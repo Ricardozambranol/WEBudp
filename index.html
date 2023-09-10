@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Server-Sent Events Example</title>
+  <title>ON MY WAY</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
 
   <style>
     /* Estilo para el cuerpo del documento */
     body {
-      margin: 0;
+      margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
+      font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
       padding: 0;
-      font-family: 'Source Sans Pro', sans-serif;
       background-color: #f2f2f2;
     }
 
@@ -136,11 +136,7 @@
       width: 12px;
       height: 12px;
     }
-    body {
-      margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
-      font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
-      padding: 0;
-    }
+    
     /* Estilo para el contenedor del contenido que quieres mover */
     #info-container {
       display: flex;
@@ -156,7 +152,7 @@
 
   <nav class="navbar">
     <ul class="navbar-list">
-      <li class="navbar-item"><a href="/index.html">INICIO</a></li>
+      <li class="navbar-item"><a href="/">INICIO</a></li>
       <li class="navbar-item"><a href="/data.html">DATA</a></li>
     </ul>
     <h1>ON MY WAY</h1>
@@ -176,7 +172,7 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
-  <h2>Datos almacenados en la base de datos de Ricardo:</h2>
+  <h2>Datos recientes:</h2>
   <!-- Agregar una tabla para mostrar los datos -->
   <table>
     <thead>
