@@ -73,7 +73,7 @@ app.get('/events', (req, res) => {
 
 const puerto = 80;
 server.listen(puerto, () => {
-  console.log(`Servidor web en ejecución en http://ec2-18-190-54-34.us-east-2.compute.amazonaws.com/`);
+  console.log(`Servidor web en ejecución`);
 });
 // Inicia el servidor UDP como un proceso secundario
 const udpServerProcess = spawn('node', ['udp-listener.js'], { stdio: 'inherit' });

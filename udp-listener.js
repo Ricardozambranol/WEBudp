@@ -77,7 +77,7 @@ function insertarMensaje(remitente, mensaje) {
         remitente,
         mensaje,
         fechaFormateada,
-        hora,
+        datosFormateados.hora,
         datosFormateados.latitud,
         datosFormateados.longitud,
       ],
