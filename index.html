@@ -5,7 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Server-Sent Events Example</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" type="text/css" href="estilos.css">
+  <link rel="preload" href="/lib/fonts/source-sans-pro-v14-latin-600.woff2" as="font" type="font/woff2" crossorigin="">
   <style>
+    .leaflet-map-container {
+      width: 50%;
+      text-align: center;
+      margin: 0 auto; /* Centrar el contenedor horizontalmente */
+      border: 1px solid #ddd; /* Agregar un borde alrededor del mapa */
+      padding: 5px; /* Agregar espacio interno alrededor del mapa */
+      box-sizing: border-box; /* Incluir el borde en el ancho total */
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -14,44 +24,79 @@
     th, td {
       border: 1px solid #ddd;
       padding: 8px;
-      text-align: left;
+      text-align: center;
     }
     th {
       background-color: #f2f2f2;
     }
-    .top-right {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
+    
     .leaflet-map {
-      width: 100%;
       height: 600px;
     }
+
     .start-marker {
-      background-color: red;
-      border: 2px solid white;
+      background-color: black;
+      border: 2px solid rgb(51, 136, 255);
       border-radius: 50%;
       width: 12px;
       height: 12px;
     }
+    /* Barra de navegación */
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+      position: fixed; /* Fijar la barra de navegación en la parte superior */
+      top: 0; /* Colocar la barra de navegación en la parte superior */
+      width: 100%; /* Ancho completo */
+      font-family: 'Source Sans Pro', sans-serif;
+      color: white; /* Color del texto */
+    }
+    /* Estilos para los enlaces en la barra de navegación */
+    .navbar a {
+      float: right; /* Mover los enlaces a la derecha */
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    /* Cambiar el color del enlace cuando el mouse pasa por encima */
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    /* Estilo de fuente para títulos */
+    h1, h2 {
+      font-family: 'Source Sans Pro', sans-serif;
+      color: #333; /* Color del texto */
+    }
+    th {
+      font-family: Arial, sans-serif; /* Fuente básica */
+    }
+
+    body {
+      margin-top: 50px; /* Ajusta según la altura de tu barra de navegación */
+    }
   </style>
 </head>
+
 <body>
-  <div class="top-right">
-    <a href="/data.html">Ver todos los datos MySQL Ricardo</a> 
-  </div>
+  <nav class="navbar">
+    <ul class="navbar-list">
+      <li class="navbar-item"><a href="/index.html">INICIO</a></li>
+      <li class="navbar-item"><a href="/data.html">DATA</a></li>
+    </ul>
+  </nav>
 
   <h1>Mensaje en tiempo real:</h1>
-  <div id="remitente"></div>
-  <div id="mensaje"></div>
   <div id="latitud"></div>
   <div id="longitud"></div>
-  <div id="altitud"></div>
   <div id="fechaHora"></div>
 
-  <h1>Mapa Leaflet:</h1>
-  <div id="map-container" class="leaflet-map"></div>
+  <h1></h1>
+  <div class="leaflet-map-container">
+    <div id="map-container" class="leaflet-map"></div>
+  </div>
 
   <h2>Datos almacenados en la base de datos de Ricardo:</h2>
   <!-- Agregar una tabla para mostrar los datos -->
@@ -59,11 +104,9 @@
     <thead>
       <tr>
         <th>Remitente</th>
-        <th>Mensaje</th>
         <th>Fecha y Hora</th>
         <th>Latitud</th>
         <th>Longitud</th>
-        <th>Altitud</th>
       </tr>
     </thead>
     <tbody id="tablaDatos">
@@ -132,18 +175,14 @@
       // Agregar fila a la tabla de datos
       const newRow = tablaDatosElement.insertRow(0);
       const cellRemitente = newRow.insertCell(0);
-      const cellMensaje = newRow.insertCell(1);
-      const cellFechaHora = newRow.insertCell(2);
-      const cellLatitud = newRow.insertCell(3);
-      const cellLongitud = newRow.insertCell(4);
-      const cellAltitud = newRow.insertCell(5);
+      const cellFechaHora = newRow.insertCell(1);
+      const cellLatitud = newRow.insertCell(2);
+      const cellLongitud = newRow.insertCell(3);
 
       cellRemitente.textContent = remitente;
-      cellMensaje.textContent = mensaje;
       cellFechaHora.textContent = fechaHora;
       cellLatitud.textContent = latitud;
       cellLongitud.textContent = longitud;
-      cellAltitud.textContent = altitud;
     };
   </script>
 </body>

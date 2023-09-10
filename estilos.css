@@ -1,0 +1,63 @@
+/* Estilo para la barra de navegación */
+.navbar {
+    background-color: #333;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0; /* Cambiar la posición izquierda a 0 para que no se superponga */
+    width: 100%;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: white;
+    z-index: 999; /* Añadir un valor alto al índice z para que esté por encima del mapa */
+}
+
+/* Estilo para el mapa */
+.leaflet-map-container {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    border: 5px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
+    z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
+}
+
+/* Ajustar la altura del mapa al espacio restante */
+.leaflet-map {
+    height: calc(100vh - 70px); /* Restar la altura de la barra de navegación y un margen superior */
+}
+
+.navbar-list {
+    list-style-type: none; /* Elimina los marcadores de lista */
+    margin: 0; /* Elimina el margen exterior de la lista */
+    padding: 0; /* Elimina el espacio interior de la lista */
+    text-align: center; /* Centra los elementos de la lista horizontalmente */
+}
+
+.navbar-item {
+    display: inline-block; /* Muestra los elementos en línea */
+    margin-right: 20px; /* Espacio entre elementos */
+}
+
+.navbar-item:last-child {
+    margin-right: 0; /* Elimina el margen derecho del último elemento */
+}
+
+.navbar-item a {
+    text-decoration: none; /* Elimina la subraya de los enlaces */
+    color: white; /* Color del texto de los enlaces */
+    font-weight: bold; /* Establece el grosor de la fuente en negrita */
+}
+
+.navbar-item a:hover {
+    text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
+}
+/* Asegurarse de que los controles de zoom estén por debajo de la barra de navegación */
+
+/* Botones de Zoom en Leaflet */
+.leaflet-top.leaflet-left .leaflet-control-zoom {
+    display: none;
+}
+  
+  
