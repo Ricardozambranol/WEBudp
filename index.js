@@ -34,6 +34,10 @@ app.get('/data.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'data.html'));
 });
 
+app.get('/time.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'time.html'));
+});
+
 app.get('/alldata', (req, res) => {
   conexionDB.query('SELECT * FROM mensajes', (error, resultados) => {
     if (error) {
@@ -70,6 +74,37 @@ app.get('/events', (req, res) => {
     clearInterval(interval);
   });
 });
+
+// Agrega esta ruta para manejar la solicitud de filtrado
+app.get('/filterData', (req, res) => {
+  const fechaInicio = req.query.fechaInicio;
+  const horaInicio = req.query.horaInicio;
+  const fechaFin = req.query.fechaFin;
+  const horaFin = req.query.horaFin;
+
+  // Combina la fecha y la hora de inicio en un solo formato de fecha y hora
+  const startTime = `${fechaInicio} ${horaInicio}:00`;
+  // Combina la fecha y la hora de fin en un solo formato de fecha y hora
+  const endTime = `${fechaFin} ${horaFin}:00`;
+
+  const query = `
+    SELECT remitente, mensaje, fechaHora, latitud, longitud, altitud
+    FROM mensajes
+    WHERE fechaHora >= ? AND fechaHora <= ?
+  `;
+
+  conexionDB.query(query, [startTime, endTime], (error, resultados) => {
+    if (error) {
+      console.error('Error al obtener datos filtrados:', error);
+      res.status(500).send('Error al obtener datos filtrados');
+      return;
+    }
+
+    res.json(resultados);
+  });
+});
+
+
 
 const puerto = 80;
 server.listen(puerto, () => {
