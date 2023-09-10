@@ -4,30 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ON MY WAY - Database</title>
+  
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
+  </head>
   <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #a3a3a3;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #d3d3d3;
-    }
+    /* Estilo para el cuerpo del documento */
     body {
       margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
       font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
       padding: 0;
       background-color: #f2f2f2;
     }
+
     /* Estilo para la barra de navegación */
     .navbar {
       background-color: #333;
@@ -95,13 +84,68 @@
     .navbar-item a:hover {
         text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
     }
+    /* Asegurarse de que los controles de zoom estén por debajo de la barra de navegación */
+
+    /* Botones de Zoom en Leaflet */
+    .leaflet-top.leaflet-left .leaflet-control-zoom {
+        display: none;
+    }
+
+    /* Estilo para el encabezado principal */
     h1, h2 {
       color: #333; /* Color del texto */
       text-align: left; /* Centrar el texto */
       margin-left: 5%; /* Agregar margen izquierdo de 20px */
     }
-  </style>
-</head>
+
+    /* Estilo para el mapa Leaflet */
+    .leaflet-map-container {
+      width: 60%;
+      text-align: center;
+      border: 5px solid #ddd;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
+      z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
+      margin: 0 auto;
+    }
+    /* Ajustar la altura del mapa al espacio restante */
+    .leaflet-map {
+      height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
+    }
+
+    /* Estilo para la tabla de datos */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #a3a3a3;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #d3d3d3;
+    }
+    .start-marker {
+      background-color: rosybrown;
+      border: 2px solid rgb(51, 136, 255);
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+    }
+    
+    /* Estilo para el contenedor del contenido que quieres mover */
+    #info-container {
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      margin-left: 8%; /* Agregar margen izquierdo de 20px */
+    }
+    </style>
 <body>
     <nav class="navbar">
       <ul class="navbar-list">
@@ -113,88 +157,111 @@
     </nav> 
     <h2>Buscar Datos por Rango de Fechas</h2>
 
-  <!-- Formulario para ingresar el rango de fechas -->
-  <div>
-    <label for="fechaInicio">Fecha de Inicio:</label>
-    <input type="date" id="fechaInicio">
-    <label for="horaInicio">Hora de Inicio:</label>
-    <input type="time" id="horaInicio">
-  </div>
-  <div>
-    <label for="fechaFin">Fecha de Fin:</label>
-    <input type="date" id="fechaFin">
-    <label for="horaFin">Hora de Fin:</label>
-    <input type="time" id="horaFin">
-  </div>
-  <button id="buscarDatos">Buscar Datos</button>
-  
-  <!-- Tabla para mostrar los resultados -->
-  <table>
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Latitud</th>
-        <th>Longitud</th>
-      </tr>
-    </thead>
-    <tbody id="tablaResultados">
-      <!-- Aquí se mostrarán los resultados de la búsqueda -->
-    </tbody>
-  </table>
+    <!-- Formulario para ingresar el rango de fechas -->
+    <div>
+      <label for="fechaInicio">Fecha de Inicio:</label>
+      <input type="date" id="fechaInicio">
+      <label for="horaInicio">Hora de Inicio:</label>
+      <input type="time" id="horaInicio">
+    </div>
+    <div>
+      <label for="fechaFin">Fecha de Fin:</label>
+      <input type="date" id="fechaFin">
+      <label for="horaFin">Hora de Fin:</label>
+      <input type="time" id="horaFin">
+    </div>
+    <button id="buscarDatos">Buscar Datos</button>
+    
+    <h2>Mapa de Datos:</h2>
+    <div class="leaflet-map-container">
+      <div id="map-container" class="leaflet-map"></div>
+    </div>
+    
+    <!-- Tabla para mostrar los resultados -->
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Latitud</th>
+          <th>Longitud</th>
+        </tr>
+      </thead>
+      <tbody id="tablaResultados">
+        <!-- Aquí se mostrarán los resultados de la búsqueda -->
+      </tbody>
+    </table>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-  const buscarDatosBtn = document.getElementById('buscarDatos');
-  const tablaResultados = document.getElementById('tablaResultados');
+    <!-- Agregar un contenedor para el mapa -->
+    
 
-  buscarDatosBtn.addEventListener('click', () => {
-    // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
-    const fechaInicio = document.getElementById('fechaInicio').value;
-    const horaInicio = document.getElementById('horaInicio').value;
-    const fechaFin = document.getElementById('fechaFin').value;
-    const horaFin = document.getElementById('horaFin').value;
+    <!-- JavaScript para la funcionalidad -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+      var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
 
-    // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
-    fetch(`/filterData?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('La solicitud no fue exitosa');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
-        // Limpiar la tabla de resultados
-        tablaResultados.innerHTML = '';
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-        // Recorrer los resultados y agregarlos a la tabla
-        data.forEach((registro) => {
-          const fila = document.createElement('tr');
-          const fecha = document.createElement('td');
-          const hora = document.createElement('td');
-          const latitud = document.createElement('td');
-          const longitud = document.createElement('td');
+      var polyline = L.polyline([]).addTo(map); // Crear una línea de ruta vacía
 
-          fecha.textContent = registro.fecha;
-          hora.textContent = registro.hora;
-          latitud.textContent = registro.latitud;
-          longitud.textContent = registro.longitud;
+      document.addEventListener('DOMContentLoaded', () => {
+        const buscarDatosBtn = document.getElementById('buscarDatos');
+        const tablaResultados = document.getElementById('tablaResultados');
 
-          fila.appendChild(fecha);
-          fila.appendChild(hora);
-          fila.appendChild(latitud);
-          fila.appendChild(longitud);
+        buscarDatosBtn.addEventListener('click', () => {
+          // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
+          const fechaInicio = document.getElementById('fechaInicio').value;
+          const horaInicio = document.getElementById('horaInicio').value;
+          const fechaFin = document.getElementById('fechaFin').value;
+          const horaFin = document.getElementById('horaFin').value;
 
-          tablaResultados.appendChild(fila);
+          // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
+          fetch(`/filterData?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error('La solicitud no fue exitosa');
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
+              // Limpiar la tabla de resultados
+              tablaResultados.innerHTML = '';
+
+              // Recorrer los resultados y agregarlos a la tabla y la línea de ruta
+              data.forEach((registro) => {
+                const fila = document.createElement('tr');
+                const fecha = document.createElement('td');
+                const hora = document.createElement('td');
+                const latitud = document.createElement('td');
+                const longitud = document.createElement('td');
+
+                fecha.textContent = registro.fecha;
+                hora.textContent = registro.hora;
+                latitud.textContent = registro.latitud;
+                longitud.textContent = registro.longitud;
+
+                fila.appendChild(fecha);
+                fila.appendChild(hora);
+                fila.appendChild(latitud);
+                fila.appendChild(longitud);
+
+                tablaResultados.appendChild(fila);
+
+                // Agregar la posición a la línea de ruta
+                polyline.addLatLng([registro.latitud, registro.longitud]);
+              });
+
+              // Ajustar el mapa para centrarse en la línea de ruta
+              map.fitBounds(polyline.getBounds());
+            })
+            .catch((error) => {
+              console.error('Error al buscar datos:', error);
+            });
         });
-      })
-      .catch((error) => {
-        console.error('Error al buscar datos:', error);
       });
-  });
-});
-
-  </script>
-</body>
+    </script>
+  </body>
 </html>
