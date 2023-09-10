@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ON MY WAY - Database</title>
+  <title>ON MY WAY - TimeSearch</title>
   
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
@@ -133,15 +133,15 @@
     .start-marker {
       background-color: orangered;
       border: 2px solid rgb(51, 136, 255);
-      border-radius: 50%;
-      width: 12px;
+      border-radius: 20%;
+      width: 24px;
       height: 12px;
     }
     .end-marker {
       background-color: greenyellow;
       border: 2px solid rgb(51, 136, 255);
-      border-radius: 50%;
-      width: 12px;
+      border-radius: 20%;
+      width: 24px;
       height: 12px;
     }
     
@@ -273,13 +273,13 @@
                   // Si es la primera ubicación, actualizar el marcador de inicio
                   if (index === 0) {
                     startMarker.setLatLng([registro.latitud, registro.longitud]);
-                    startMarker.bindPopup(`Inicio<br>Fecha: ${registro.fecha}<br>Hora: ${registro.hora}`).openPopup();
+                    startMarker.bindPopup(`<strong>Inicio</strong><br>Fecha: ${registro.fecha}<br>Hora: ${registro.hora}`).openPopup();
                   }
       
                   // Si es la última ubicación, actualizar el marcador de fin
                   if (index === data.length - 1) {
                     endMarker.setLatLng([registro.latitud, registro.longitud]);
-                    endMarker.bindPopup(`Fin<br>Fecha: ${registro.fecha}<br>Hora: ${registro.hora}`).openPopup();
+                    endMarker.bindPopup(`<strong>Fin</strong><br>Fecha: ${registro.fecha}<br>Hora: ${registro.hora}`).openPopup();
                   }
                 });
       
