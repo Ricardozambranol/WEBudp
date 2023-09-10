@@ -152,6 +152,11 @@
       align-items: left;
       margin-left: 8%; /* Agregar margen izquierdo de 20px */
     }
+    #buscarDatos {
+    width: 120px; /* Ancho deseado */
+    height: 20px; /* Alto deseado */
+    font-size: 14px; /* Tamaño de fuente deseado */
+    }
     </style>
 <body>
     <nav class="navbar">
@@ -165,19 +170,23 @@
     <h2>Buscar Datos por Rango de Fechas</h2>
 
     <!-- Formulario para ingresar el rango de fechas -->
-    <div>
-      <label for="fechaInicio">Fecha de Inicio:</label>
-      <input type="date" id="fechaInicio">
-      <label for="horaInicio">Hora de Inicio:</label>
-      <input type="time" id="horaInicio">
+    <div id="info-container">
+        <div>
+        <label for="fechaInicio">Fecha de Inicio:   </label>
+        <input type="date" id="fechaInicio">
+        <label for="horaInicio">Hora de Inicio:     </label>
+        <input type="time" id="horaInicio">
+        </div>
+        <div>
+        <label for="fechaFin">Fecha de Fin:         </label>
+        <input type="date" id="fechaFin">
+        <label for="horaFin">Hora de Fin:           </label>
+        <input type="time" id="horaFin">
+        </div>
+        <button id="buscarDatos">Buscar Datos</button>
     </div>
-    <div>
-      <label for="fechaFin">Fecha de Fin:</label>
-      <input type="date" id="fechaFin">
-      <label for="horaFin">Hora de Fin:</label>
-      <input type="time" id="horaFin">
-    </div>
-    <button id="buscarDatos">Buscar Datos</button>
+    
+
     
     <h2>Mapa de Datos:</h2>
     <div class="leaflet-map-container">
@@ -274,7 +283,7 @@
                   // Si es la primera ubicación, actualizar el marcador de inicio
                   if (index === 0) {
                     startMarker.setLatLng([registro.latitud, registro.longitud]);
-                    startMarker.bindPopup(`<strong>Inicio</strong><br>Fecha: ${fechaFormateada}<br>Hora: ${registro.hora}`).openPopup();
+                    startMarker.bindPopup(`<strong>Inicio</strong><br><strong>Fecha:</strong> ${fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
                   }
       
                   // Si es la última ubicación, actualizar el marcador de fin
