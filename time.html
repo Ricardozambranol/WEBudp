@@ -211,22 +211,26 @@
       
         var polyline = L.polyline([]).addTo(map); // Crear una línea de ruta vacía
         
+        // Crear un marcador de inicio con texto "INICIO" en negritas
         var startMarker = L.marker([0, 0], {
         icon: L.divIcon({
             className: 'custom-icon', // Clase personalizada para el marcador
-            iconSize: [60, 30], // Ancho y altura personalizados
-            iconAnchor: [30, 30], // Alineación del icono en la parte inferior
-            html: '<i class="fas fa-map-marker-alt" style="color: red;"></i>', // Ícono rojo de Font Awesome
+            iconSize: [30, 15], // Ancho y altura personalizados
+            iconAnchor: [15, 15], // Alineación del icono en la parte inferior
+            html: '<div style="text-align: center;"><b><strong>INICIO</strong></b></div><i class="fas fa-map-marker-alt" style="color: red;"></i>', // Texto "INICIO" en negritas y el ícono rojo de Font Awesome
         }),
-        }).addTo(map); // Crear un marcador de inicio        
+        }).addTo(map);
+
+        // Crear un marcador de fin con texto "FIN" en negritas
         var endMarker = L.marker([0, 0], {
         icon: L.divIcon({
             className: 'custom-icon', // Clase personalizada para el marcador
-            iconSize: [60, 30], // Ancho y altura personalizados
-            iconAnchor: [30, 30], // Alineación del icono en la parte inferior
-            html: '<i class="fas fa-map-marker-alt" style="color: green;"></i>', // Ícono verde de Font Awesome
+            iconSize: [30, 15], // Ancho y altura personalizados
+            iconAnchor: [15, 15], // Alineación del icono en la parte inferior
+            html: '<div style="text-align: center;"><b><strong>FIN</strong></b></div><i class="fas fa-map-marker-alt" style="color: green;"></i>', // Texto "FIN" en negritas y el ícono verde de Font Awesome
         }),
-        }).addTo(map); // Crear un marcador de fin      
+        }).addTo(map);
+     
         document.addEventListener('DOMContentLoaded', () => {
           const buscarDatosBtn = document.getElementById('buscarDatos');
           const tablaResultados = document.getElementById('tablaResultados');
