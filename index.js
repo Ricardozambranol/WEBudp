@@ -82,16 +82,22 @@ app.get('/filterData', (req, res) => {
   const fechaFin = req.query.fechaFin;
   const horaFin = req.query.horaFin;
 
+  console.log('Fecha de Inicio:', fechaInicio);
+  console.log('Hora de Inicio:', horaInicio);
+  console.log('Fecha de Fin:', fechaFin);
+  console.log('Hora de Fin:', horaFin);
+
   // Combina la fecha y la hora de inicio en un solo formato de fecha y hora
   const startTime = `${fechaInicio} ${horaInicio}:00`;
   // Combina la fecha y la hora de fin en un solo formato de fecha y hora
   const endTime = `${fechaFin} ${horaFin}:00`;
 
   const query = `
-    SELECT remitente, mensaje, fechaHora, latitud, longitud, altitud
-    FROM mensajes
-    WHERE fechaHora >= ? AND fechaHora <= ?
+  SELECT remitente, mensaje, fecha, hora, latitud, longitud, altitud
+  FROM mensajes
+  WHERE fecha >= ? AND hora >= ? AND fecha <= ? AND hora <= ?
   `;
+
 
   conexionDB.query(query, [startTime, endTime], (error, resultados) => {
     if (error) {
