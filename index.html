@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Server-Sent Events Example</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
+
   <style>
     /* Estilo para el cuerpo del documento */
     body {
@@ -36,6 +38,7 @@
       font-size: 24px; /* Tamaño de fuente del nombre de la página */
       font-weight: bold; /* Establece el grosor de la fuente en negrita */
       margin-right: 60px; /* Agregar margen izquierdo de 20px */
+      font-family: 'Montserrat', sans-serif; /* Aplica la fuente Montserrat */
     }
 
     /* Estilos para los enlaces en la barra de navegación */
@@ -127,7 +130,7 @@
       background-color: #d3d3d3;
     }
     .start-marker {
-      background-color: black;
+      background-color: rosybrown;
       border: 2px solid rgb(51, 136, 255);
       border-radius: 50%;
       width: 12px;
@@ -135,6 +138,11 @@
     }
     body {
       margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
+      font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
+      padding: 0;
+    }
+    h1, #remitente, #mensaje, #latitud, #longitud, #altitud, #fechaHora {
+      margin-right: 80px; /* Agrega el margen derecho que desees, por ejemplo, 20px */
     }
   </style>
 </head>
@@ -146,7 +154,7 @@
       <li class="navbar-item"><a href="/index.html">INICIO</a></li>
       <li class="navbar-item"><a href="/data.html">DATA</a></li>
     </ul>
-    <h1>Los GPS</h1>
+    <h1>ON MY WAY</h1>
   </nav>
 
   <h1>Mensaje en tiempo real:</h1>
@@ -158,8 +166,9 @@
   <div id="fechaHora"></div>
 
   <h1></h1>
-  <div id="map-container" class="leaflet-map"></div>
-
+  <div class="leaflet-map-container">
+    <div id="map-container" class="leaflet-map"></div>
+  </div>
   <h2>Datos almacenados en la base de datos de Ricardo:</h2>
   <!-- Agregar una tabla para mostrar los datos -->
   <table>
