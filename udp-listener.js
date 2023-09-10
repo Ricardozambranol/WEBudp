@@ -48,7 +48,7 @@ function formatearMensaje(mensaje) {
   const altitudParte = partes[8];
 
   // Extraer la fecha y la hora de las partes correspondientes
-  const fecha = fechaParte.split(':')[1]; // Obtener solo la fecha
+  const fecha = fechaParte; // Obtener solo la fecha
   const hora = horaParte.split(' ')[0]; // Obtener solo la hora
 
   return {
