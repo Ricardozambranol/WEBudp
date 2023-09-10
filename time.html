@@ -224,15 +224,15 @@
         var startIcon = L.divIcon({
         className: 'start-marker',
         html: '<div class="marker-label"><strong>Inicio</strong></div>',
-        iconSize: [15, 30], // Tamaño del icono
-        iconAnchor: [7, 30], // Punto de anclaje del icono (centro inferior)
+        iconSize: [30, 15], // Tamaño del icono
+        iconAnchor: [15, 15], // Punto de anclaje del icono (centro inferior)
         });
 
         var endIcon = L.divIcon({
         className: 'end-marker',
         html: '<div class="marker-label"><strong>Fin</strong></div>',
-        iconSize: [15, 30], // Tamaño del icono
-        iconAnchor: [7, 30], // Punto de anclaje del icono (centro inferior)
+        iconSize: [30, 15], // Tamaño del icono
+        iconAnchor: [15, 15], // Punto de anclaje del icono (centro inferior)
         });
 
         var startMarker = L.marker([0, 0], { icon: startIcon }).addTo(map);
