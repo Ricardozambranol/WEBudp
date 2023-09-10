@@ -254,8 +254,9 @@
                   const hora = document.createElement('td');
                   const latitud = document.createElement('td');
                   const longitud = document.createElement('td');
-      
-                  fecha.textContent = registro.fecha;
+                  const fechaFormateada = new Date(registro.fecha).toLocaleDateString();
+
+                  fecha.textContent = fechaFormateada;
                   hora.textContent = registro.hora;
                   latitud.textContent = registro.latitud;
                   longitud.textContent = registro.longitud;
@@ -273,13 +274,13 @@
                   // Si es la primera ubicación, actualizar el marcador de inicio
                   if (index === 0) {
                     startMarker.setLatLng([registro.latitud, registro.longitud]);
-                    startMarker.bindPopup(`<strong>Inicio</strong><br>Fecha: ${registro.fecha}<br>Hora: ${registro.hora}`).openPopup();
+                    startMarker.bindPopup(`<strong>Inicio</strong><br>Fecha: ${registro.fechaFormateada}<br>Hora: ${registro.hora}`).openPopup();
                   }
       
                   // Si es la última ubicación, actualizar el marcador de fin
                   if (index === data.length - 1) {
                     endMarker.setLatLng([registro.latitud, registro.longitud]);
-                    endMarker.bindPopup(`<strong>Fin</strong><br>Fecha: ${registro.fecha}<br>Hora: ${registro.hora}`).openPopup();
+                    endMarker.bindPopup(`<strong>Fin</strong><br><strong>Fecha:</strong> ${registro.fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
                   }
                 });
       
