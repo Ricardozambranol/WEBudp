@@ -22,7 +22,6 @@ conexionDB.connect((error) => {
     console.error('Error al conectar a la base de datos:', error);
     return;
   }
-  console.log('Conexión a la base de datos exitosa.');
 });
 
 let lastSentMessage = null;
@@ -74,7 +73,7 @@ app.get('/events', (req, res) => {
 
 const puerto = 80;
 server.listen(puerto, () => {
-  console.log(`Servidor web en ejecución en http://localhost:${puerto}`);
+  console.log(`Servidor web en ejecución en http://ec2-18-190-54-34.us-east-2.compute.amazonaws.com/`);
 });
 // Inicia el servidor UDP como un proceso secundario
 const udpServerProcess = spawn('node', ['udp-listener.js'], { stdio: 'inherit' });

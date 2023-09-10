@@ -23,14 +23,11 @@ function crearTabla() {
       fecha DATE,
       hora TIME,
       latitud DECIMAL(12, 10),
-      longitud DECIMAL(12, 10),
-      altitud DECIMAL(12, 2)  -- Añadir la columna para la altitud
+      longitud DECIMAL(12, 10)
     )
   `, (error) => {
     if (error) {
       console.error('Error al crear la tabla:', error);
-    } else {
-      console.log('Tabla creada o ya existente.');
     }
   });
 }
@@ -40,12 +37,11 @@ function formatearMensaje(mensaje) {
   // El mensaje tiene el formato: "FH: 09/09/2023 18:53:49 Lat: 10.993603506967576 Lon: -74.82182298606484 Alt: 122.0"
   const partes = mensaje.split(' ');
 
-  // Extraer la fecha, la hora y las partes de latitud, longitud y altitud
+  // Extraer la fecha, la hora y las partes de latitud y longitud
   const fechaParte = partes[1];
   const horaParte = partes[2];
   const latitudParte = partes[4];
   const longitudParte = partes[6];
-  const altitudParte = partes[8];
 
   // Extraer la fecha y la hora de las partes correspondientes
   const fecha = fechaParte; // Obtener solo la fecha
@@ -56,50 +52,43 @@ function formatearMensaje(mensaje) {
     hora,
     latitud: parseFloat(latitudParte),
     longitud: parseFloat(longitudParte),
-    altitud: parseFloat(altitudParte),
   };
 }
-
 
 // Insertar un mensaje en la base de datos
 function insertarMensaje(remitente, mensaje) {
   const datosFormateados = formatearMensaje(mensaje);
 
   if (datosFormateados) { // Verificar que los datos sean válidos
-    console.log('Valores a insertar en la tabla:');
     console.log('Remitente:', remitente);
     console.log('Mensaje:', mensaje);
     console.log('Fecha:', datosFormateados.fecha);
     console.log('Hora:', datosFormateados.hora);
     console.log('Latitud:', datosFormateados.latitud);
     console.log('Longitud:', datosFormateados.longitud);
-    console.log('Altitud:', datosFormateados.altitud);
-
-    // Formatear la fecha antes de insertarla en la base de datos
-    const fechaFormateada = datosFormateados.fecha.split('/').reverse().join('-');
+    console.log();
 
     conexionDB.query(
-      'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud, altitud) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?)',
       [
         remitente,
         mensaje,
-        fechaFormateada, // Utilizar la fecha formateada
+        datosFormateados.fecha,
         datosFormateados.hora,
         datosFormateados.latitud,
         datosFormateados.longitud,
-        datosFormateados.altitud,
       ],
       (error) => {
         if (error) {
           console.error('Error al insertar el mensaje en la base de datos:', error);
         } else {
           console.log('Mensaje almacenado en la base de datos:', mensaje);
+          console.log();
         }
       }
     );
   }
 }
-
 
 // Crear el servidor UDP
 const udpServer = dgram.createSocket('udp4');
@@ -112,8 +101,6 @@ udpServer.on('error', (err) => {
 udpServer.on('message', (message, remote) => {
   const remitente = remote.address;
   const mensaje = message.toString('utf8');
-  console.log(`Mensaje UDP recibido desde ${remitente}: ${mensaje}`);
-
   // Almacenar el mensaje en la base de datos MySQL
   insertarMensaje(remitente, mensaje);
 });
@@ -122,4 +109,4 @@ udpServer.bind(PUERTO, IP);
 
 crearTabla(); // Asegurarse de que la tabla exista
 
-console.log(`Servidor UDP en ejecución. Esperando mensajes en ${IP}:${PUERTO}...`);
+console.log(`Servidor UDP en ejecución. Esperando mensajes en 18.190.54.34:${PUERTO}`);
