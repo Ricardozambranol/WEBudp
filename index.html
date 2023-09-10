@@ -5,52 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Server-Sent Events Example</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <link rel="stylesheet" type="text/css" href="estilos.css">
   <link rel="preload" href="/lib/fonts/source-sans-pro-v14-latin-600.woff2" as="font" type="font/woff2" crossorigin="">
   <style>
-    .leaflet-map-container {
-      width: 50%;
-      text-align: center;
-      margin: 0 auto; /* Centrar el contenedor horizontalmente */
-      border: 1px solid #ddd; /* Agregar un borde alrededor del mapa */
-      padding: 5px; /* Agregar espacio interno alrededor del mapa */
-      box-sizing: border-box; /* Incluir el borde en el ancho total */
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
+    /* Estilo para el cuerpo del documento */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Source Sans Pro', sans-serif;
       background-color: #f2f2f2;
     }
-    
-    .leaflet-map {
-      height: 600px;
-    }
 
-    .start-marker {
-      background-color: black;
-      border: 2px solid rgb(51, 136, 255);
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-    }
-    /* Barra de navegación */
+    /* Estilo para la barra de navegación */
     .navbar {
       background-color: #333;
       overflow: hidden;
       position: fixed; /* Fijar la barra de navegación en la parte superior */
       top: 0; /* Colocar la barra de navegación en la parte superior */
+      left: 0; /* Cambiar la posición izquierda a 0 para que no se superponga */
       width: 100%; /* Ancho completo */
-      font-family: 'Source Sans Pro', sans-serif;
       color: white; /* Color del texto */
+      font-family: 'Source Sans Pro', sans-serif;
+      z-index: 999; /* Añadir un valor alto al índice z para que esté por encima del mapa */
+      display: flex; /* Utiliza un contenedor flexible para alinear elementos horizontalmente */
+      justify-content: space-between; /* Espacio entre elementos para alinear el nombre */
+      align-items: center; /* Centra verticalmente los elementos */
+      padding: 10px; /* Añade espacio alrededor de la barra de navegación */
     }
+    .navbar h1 {
+      color: white;
+      margin: 0;
+      font-size: 24px; /* Tamaño de fuente del nombre de la página */
+      font-weight: bold; /* Establece el grosor de la fuente en negrita */
+      margin-right: 60px; /* Agregar margen izquierdo de 20px */
+    }
+
     /* Estilos para los enlaces en la barra de navegación */
     .navbar a {
       float: right; /* Mover los enlaces a la derecha */
@@ -59,33 +47,107 @@
       text-align: center;
       padding: 14px 16px;
       text-decoration: none;
+      font-weight: bold;
     }
+
     /* Cambiar el color del enlace cuando el mouse pasa por encima */
     .navbar a:hover {
       background-color: #ddd;
       color: black;
-    }
-    /* Estilo de fuente para títulos */
-    h1, h2 {
-      font-family: 'Source Sans Pro', sans-serif;
-      color: #333; /* Color del texto */
-    }
-    th {
-      font-family: Arial, sans-serif; /* Fuente básica */
+      text-decoration: underline;
     }
 
+    .navbar-list {
+      list-style-type: none; /* Elimina los marcadores de lista */
+      margin: 0; /* Elimina el margen exterior de la lista */
+      padding: 0; /* Elimina el espacio interior de la lista */
+      text-align: center; /* Centra los elementos de la lista horizontalmente */
+    }
+    .navbar-item {
+    display: inline-block; /* Muestra los elementos en línea */
+    margin-right: 20px; /* Espacio entre elementos */
+    }
+
+    .navbar-item:last-child {
+        margin-right: 0; /* Elimina el margen derecho del último elemento */
+    }
+
+    .navbar-item a {
+        text-decoration: none; /* Elimina la subraya de los enlaces */
+        color: white; /* Color del texto de los enlaces */
+        font-weight: bold; /* Establece el grosor de la fuente en negrita */
+    }
+
+    .navbar-item a:hover {
+        text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
+    }
+    /* Asegurarse de que los controles de zoom estén por debajo de la barra de navegación */
+
+    /* Botones de Zoom en Leaflet */
+    .leaflet-top.leaflet-left .leaflet-control-zoom {
+        display: none;
+    }
+
+    /* Estilo para el encabezado principal */
+    h1, h2 {
+      color: #333; /* Color del texto */
+      text-align: left; /* Centrar el texto */
+      margin-left: 60px; /* Agregar margen izquierdo de 20px */
+    }
+
+    /* Estilo para el mapa Leaflet */
+    .leaflet-map-container {
+      width: 60%;
+      text-align: center;
+      border: 5px solid #ddd;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
+      z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
+      margin: 0 auto;
+    }
+    /* Ajustar la altura del mapa al espacio restante */
+    .leaflet-map {
+      height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
+    }
+
+    /* Estilo para la tabla de datos */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #a3a3a3;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #d3d3d3;
+    }
+    .start-marker {
+      background-color: black;
+      border: 2px solid rgb(51, 136, 255);
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+    }
     body {
-      margin-top: 50px; /* Ajusta según la altura de tu barra de navegación */
+      margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
     }
   </style>
 </head>
 
 <body>
+
   <nav class="navbar">
     <ul class="navbar-list">
       <li class="navbar-item"><a href="/index.html">INICIO</a></li>
       <li class="navbar-item"><a href="/data.html">DATA</a></li>
     </ul>
+    <h1>Los GPS</h1> <!-- Agrega el nombre de la página aquí -->
   </nav>
 
   <h1>Mensaje en tiempo real:</h1>
