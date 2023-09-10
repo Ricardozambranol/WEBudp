@@ -76,30 +76,20 @@ app.get('/events', (req, res) => {
 });
 
 // Agrega esta ruta para manejar la solicitud de filtrado
-// Agrega esta ruta para manejar la solicitud de filtrado
 app.get('/filterData', (req, res) => {
   const fechaInicio = req.query.fechaInicio;
-  const horaInicio = req.query.horaInicio;
   const fechaFin = req.query.fechaFin;
-  const horaFin = req.query.horaFin;
 
   console.log('Fecha de Inicio:', fechaInicio);
-  console.log('Hora de Inicio:', horaInicio);
   console.log('Fecha de Fin:', fechaFin);
-  console.log('Hora de Fin:', horaFin);
-
-  // Combina la fecha y la hora de inicio en un solo formato de fecha y hora
-  const startTime = `${fechaInicio} ${horaInicio}`;
-  // Combina la fecha y la hora de fin en un solo formato de fecha y hora
-  const endTime = `${fechaFin} ${horaFin}`;
 
   const query = `
-  SELECT remitente, mensaje, fecha, hora, latitud, longitud
-  FROM mensajes
-  WHERE CONCAT(fecha, ' ', hora) >= ? AND CONCAT(fecha, ' ', hora) <= ?
+    SELECT fecha, hora, latitud, longitud
+    FROM mensajes
+    WHERE fecha >= ? AND fecha <= ?
   `;
 
-  conexionDB.query(query, [startTime, endTime], (error, resultados) => {
+  conexionDB.query(query, [fechaInicio, fechaFin], (error, resultados) => {
     if (error) {
       console.error('Error al obtener datos filtrados:', error);
       res.status(500).send('Error al obtener datos filtrados');
@@ -109,8 +99,6 @@ app.get('/filterData', (req, res) => {
     res.json(resultados);
   });
 });
-
-
 
 const puerto = 80;
 server.listen(puerto, () => {
