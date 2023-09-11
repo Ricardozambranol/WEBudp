@@ -112,4 +112,15 @@ udpServer.bind(PUERTO, IP);
 
 crearTabla(); // Asegurarse de que la tabla exista
 
-console.log(`Servidor UDP en ejecución. Escuchando mensajes en ${IP}:${PUERTO}`);
+fetch('https://api.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+    const ipAddress = data.ip;
+    console.log('Mi dirección IP pública es:', ipAddress);
+  })
+  .catch(error => {
+    console.error('Error al obtener la dirección IP pública:', error);
+  });
+
+
+console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
