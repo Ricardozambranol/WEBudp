@@ -119,7 +119,7 @@ fetch('https://api.ipify.org?format=json')
   .then(response => response.json())
   .then(data => {
     const ipAddress = data.ip;
-    console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
+    console.log(`Servidor UDP en ejecución. Recibiendo mensajes en ${ipAddress}:${PUERTO}`);
   })
   .catch(error => {
     console.error('Error al obtener la dirección IP pública:', error);
