@@ -112,6 +112,8 @@ udpServer.bind(PUERTO, IP);
 
 crearTabla(); // Asegurarse de que la tabla exista
 
+let ipAddress;
+
 fetch('https://api.ipify.org?format=json')
   .then(response => response.json())
   .then(data => {
