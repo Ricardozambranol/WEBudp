@@ -61,14 +61,6 @@ function insertarMensaje(remitente, mensaje) {
   const datosFormateados = formatearMensaje(mensaje);
 
   if (datosFormateados) { // Verificar que los datos sean válidos
-    console.log('Remitente:', remitente);
-    console.log('Mensaje:', mensaje);
-    console.log('Fecha:', datosFormateados.fecha);
-    console.log('Hora:', datosFormateados.hora);
-    console.log('Latitud:', datosFormateados.latitud);
-    console.log('Longitud:', datosFormateados.longitud);
-    console.log();
-
     // Formatear la fecha antes de insertarla en la base de datos
     const fechaFormateada = datosFormateados.fecha.split('/').reverse().join('-');
 
@@ -119,7 +111,7 @@ fetch('https://api.ipify.org?format=json')
   .then(response => response.json())
   .then(data => {
     const ipAddress = data.ip;
-    console.log(`Servidor UDP en ejecución. Recibiendo mensajes en ${ipAddress}:${PUERTO}`);
+    console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
   })
   .catch(error => {
     console.error('Error al obtener la dirección IP pública:', error);
