@@ -38,6 +38,10 @@ app.get('/time.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'time.html'));
 });
 
+app.get('/position.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'position.html'));
+});
+
 app.get('/alldata', (req, res) => {
   conexionDB.query('SELECT * FROM mensajes', (error, resultados) => {
     if (error) {
@@ -83,10 +87,8 @@ app.get('/filterData', (req, res) => {
   const fechaFin = req.query.fechaFin;
   const horaFin = req.query.horaFin;
 
-  console.log('Fecha de Inicio:', fechaInicio);
-  console.log('Hora de Inicio:', horaInicio);
-  console.log('Fecha de Fin:', fechaFin);
-  console.log('Hora de Fin:', horaFin);
+  console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin);
+  console.log();
 
   const query = `
     SELECT fecha, hora, latitud, longitud
