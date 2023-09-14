@@ -9,8 +9,8 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
 />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.1.5/dist/leaflet.draw.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
-  </head>
   <style>
     /* Estilo para el cuerpo del documento */
     body {
@@ -147,43 +147,39 @@
     font-size: 14px; /* Tamaño de fuente deseado */
     }
     </style>
+</head>
 <body>
-    <nav class="navbar">
-      <ul class="navbar-list">
-        <li class="navbar-item"><a href="/">INICIO</a></li>
-        <li class="navbar-item"><a href="/data.html">DATA</a></li>
-        <li class="navbar-item"><a href="/time.html">TIME</a></li>
-        <li class="navbar-item"><a href="/position.html">POSITION</a></li>
-      </ul>
-      <h1>ON MY WAY</h1>
-    </nav> 
-    <h2>Buscar Datos por Rango de Fechas</h2>
-
-    <!-- Formulario para ingresar el rango de fechas -->
-    <div id="info-container">
-        <div>
-        <label for="fechaInicio">Fecha de Inicio:   </label>
+  <nav class="navbar">
+    <ul class="navbar-list">
+      <li class="navbar-item"><a href="/">INICIO</a></li>
+      <li class="navbar-item"><a href="/data.html">DATA</a></li>
+      <li class="navbar-item"><a href="/time.html">TIME</a></li>
+      <li class="navbar-item"><a href="/position.html">POSITION</a></li>
+    </ul>
+    <h1>ON MY WAY</h1>
+  </nav>
+    <div id="search-container">
+      <div id="search-form">
+        <label for="fechaInicio">Fecha de Inicio:</label>
         <input type="date" id="fechaInicio">
-        <label for="horaInicio">Hora de Inicio:     </label>
+        <label for="horaInicio">Hora de Inicio:</label>
         <input type="time" id="horaInicio">
-        </div>
-        <div>
-        <label for="fechaFin">Fecha de Fin:         </label>
+        <label for="fechaFin">Fecha de Fin:</label>
         <input type="date" id="fechaFin">
-        <label for="horaFin">Hora de Fin:           </label>
+        <label for="horaFin">Hora de Fin:</label>
         <input type="time" id="horaFin">
-        </div>
         <button id="buscarDatos">Buscar Datos</button>
+      </div>
+      <div id="draw-controls">
+        <label for="draw">Dibujar Área:</label>
+        <button id="draw" class="btn btn-primary">Dibujar</button>
+        <button id="clear" class="btn btn-danger">Limpiar</button>
+      </div>
     </div>
-    
-
-    
     <h2>Mapa de Datos:</h2>
     <div class="leaflet-map-container">
       <div id="map-container" class="leaflet-map"></div>
     </div>
-
-    <!-- Tabla para mostrar los resultados -->
     <table>
       <thead>
         <tr>
@@ -197,114 +193,122 @@
         <!-- Aquí se mostrarán los resultados de la búsqueda -->
       </tbody>
     </table>
-
-    <!-- Agregar un contenedor para el mapa -->
-    
-
-    <!-- JavaScript para la funcionalidad -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.1.5/dist/leaflet.draw.js"></script>
     <script>
-        var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
-      
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-      
-        var polyline = L.polyline([]).addTo(map); // Crear una línea de ruta vacía
-        
-        // Crear un marcador de inicio con texto "INICIO" en negritas
-        var startMarker = L.marker([0, 0], {
-        icon: L.divIcon({
-            className: 'custom-icon', // Clase personalizada para el marcador
-            iconSize: [30, 30], // Ancho y altura personalizados
-            iconAnchor: [15, 30], // Alineación del icono en la parte inferior
-            html: '<div style="text-align: center;"><b><strong>INICIO</strong></b></div><i class="fas fa-map-marker-alt" style="color: red;"></i>', // Texto "INICIO" en negritas y el ícono rojo de Font Awesome
-        }),
-        }).addTo(map);
+      // Inicializar el mapa
+    var map = L.map('map-container').setView([51.505, -0.09], 13);
 
-        // Crear un marcador de fin con texto "FIN" en negritas
-        var endMarker = L.marker([0, 0], {
-        icon: L.divIcon({
-            className: 'custom-icon', // Clase personalizada para el marcador
-            iconSize: [30, 15], // Ancho y altura personalizados
-            iconAnchor: [15, 30], // Alineación del icono en la parte inferior
-            html: '<div style="text-align: center;"><b><strong>FIN</strong></b></div><i class="fas fa-map-marker-alt" style="color: green;"></i>', // Texto "FIN" en negritas y el ícono verde de Font Awesome
-        }),
-        }).addTo(map);
-     
-        document.addEventListener('DOMContentLoaded', () => {
-          const buscarDatosBtn = document.getElementById('buscarDatos');
-          const tablaResultados = document.getElementById('tablaResultados');
-      
-          buscarDatosBtn.addEventListener('click', () => {
-            // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
-            const fechaInicio = document.getElementById('fechaInicio').value;
-            const horaInicio = document.getElementById('horaInicio').value;
-            const fechaFin = document.getElementById('fechaFin').value;
-            const horaFin = document.getElementById('horaFin').value;
-      
-            // Eliminar la ruta anterior en el mapa
-            polyline.removeFrom(map);
-            polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
-      
-            // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
-            fetch(`/filterData?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}`)
-              .then((response) => {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
+
+    // Inicializar el control de dibujo y la capa para almacenar formas dibujadas
+    var drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    var drawControl = new L.Control.Draw({
+        edit: {
+            featureGroup: drawnItems
+        }
+    });
+    map.addControl(drawControl);
+
+    // Variable para almacenar la ruta dibujada
+    var polyline = L.polyline([]).addTo(map);
+
+    // Evento cuando se completa el dibujo
+    map.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+        drawnItems.addLayer(layer);
+    });
+
+    // Evento cuando se edita una forma dibujada
+    map.on(L.Draw.Event.EDITED, function (event) {
+        var layers = event.layers;
+        layers.eachLayer(function (layer) {
+            if (layer instanceof L.Polyline) {
+                polyline.setLatLngs(layer.getLatLngs());
+            }
+        });
+    });
+
+    // Agrega el evento click al botón "Dibujar"
+    document.getElementById('draw').addEventListener('click', function () {
+        if (drawControl._enabled) {
+            drawControl.disable();
+            this.textContent = 'Dibujar';
+        } else {
+            drawControl.enable();
+            this.textContent = 'Finalizar Dibujo';
+        }
+    });
+
+    // Agrega el evento click al botón "Limpiar"
+    document.getElementById('clear').addEventListener('click', function () {
+        drawnItems.clearLayers();
+        polyline.setLatLngs([]);
+    });
+
+    // Agrega el evento click al botón "Buscar Datos"
+    document.getElementById('buscarDatos').addEventListener('click', function () {
+        // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
+        const fechaInicio = document.getElementById('fechaInicio').value;
+        const horaInicio = document.getElementById('horaInicio').value;
+        const fechaFin = document.getElementById('fechaFin').value;
+        const horaFin = document.getElementById('horaFin').value;
+
+        // Eliminar la ruta anterior en el mapa
+        polyline.removeFrom(map);
+        polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
+
+        // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
+        fetch(`/filterData?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}`)
+            .then((response) => {
                 if (!response.ok) {
-                  throw new Error('La solicitud no fue exitosa');
+                    throw new Error('La solicitud no fue exitosa');
                 }
                 return response.json();
-              })
-              .then((data) => {
+            })
+            .then((data) => {
                 console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
                 // Limpiar la tabla de resultados
+                const tablaResultados = document.getElementById('tablaResultados');
                 tablaResultados.innerHTML = '';
-      
+
                 // Recorrer los resultados y agregarlos a la tabla y la nueva línea de ruta
                 data.forEach((registro, index) => {
-                  const fila = document.createElement('tr');
-                  const fecha = document.createElement('td');
-                  const hora = document.createElement('td');
-                  const latitud = document.createElement('td');
-                  const longitud = document.createElement('td');
-                  const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
+                    const fila = document.createElement('tr');
+                    const fecha = document.createElement('td');
+                    const hora = document.createElement('td');
+                    const latitud = document.createElement('td');
+                    const longitud = document.createElement('td');
+                    const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
 
-                  fecha.textContent = fechaFormateada;
-                  hora.textContent = registro.hora;
-                  latitud.textContent = registro.latitud;
-                  longitud.textContent = registro.longitud;
-      
-                  fila.appendChild(fecha);
-                  fila.appendChild(hora);
-                  fila.appendChild(latitud);
-                  fila.appendChild(longitud);
-      
-                  tablaResultados.appendChild(fila);
-      
-                  // Agregar la posición a la nueva línea de ruta
-                  polyline.addLatLng([registro.latitud, registro.longitud]);
-      
-                  // Si es la primera ubicación, actualizar el marcador de inicio
-                  if (index === 0) {
-                    startMarker.setLatLng([registro.latitud, registro.longitud]);
-                    startMarker.bindPopup(`<strong>Inicio</strong><br><strong>Fecha:</strong> ${fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
-                  }
-      
-                  // Si es la última ubicación, actualizar el marcador de fin
-                  if (index === data.length - 1) {
-                    endMarker.setLatLng([registro.latitud, registro.longitud]);
-                    endMarker.bindPopup(`<strong>Fin</strong><br><strong>Fecha:</strong> ${fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
-                  }
+                    fecha.textContent = fechaFormateada;
+                    hora.textContent = registro.hora;
+                    latitud.textContent = registro.latitud;
+                    longitud.textContent = registro.longitud;
+
+                    fila.appendChild(fecha);
+                    fila.appendChild(hora);
+                    fila.appendChild(latitud);
+                    fila.appendChild(longitud);
+
+                    tablaResultados.appendChild(fila);
+
+                    // Agregar la posición a la nueva línea de ruta
+                    polyline.addLatLng([registro.latitud, registro.longitud]);
                 });
-      
+
                 // Ajustar el mapa para centrarse en la nueva línea de ruta
                 map.fitBounds(polyline.getBounds());
-              })
-              .catch((error) => {
+            })
+            .catch((error) => {
                 console.error('Error al buscar datos:', error);
-              });
-          });
-        });
-      </script>
+            });
+    });
+
+    </script>
   </body>
 </html>
