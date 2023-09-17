@@ -116,9 +116,7 @@ app.get('/filterData', (req, res) => {
     const fechaFin = req.query.fechaFin;
     const horaFin = req.query.horaFin;
   
-    console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin);
-    console.log();
-  
+    
     const query = `
       SELECT fecha, hora, latitud, longitud
       FROM mensajes
@@ -151,8 +149,10 @@ app.get('/filterData', (req, res) => {
           longitud <= longitudMax
         );
       });
-  
+      
       console.log('Resultados después del filtrado por coordenadas:', resultadosFiltrados);
+      console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin, 'longitud', longitudMin, longitudMax, 'latitud ',latitudMin, latitudMax);
+      console.log();
   
       res.json(resultadosFiltrados);
     });
