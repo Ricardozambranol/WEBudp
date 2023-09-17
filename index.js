@@ -126,17 +126,17 @@ app.get('/filterdataposition', (req, res) => {
 
   conexionDB.query(
     query,
-    [latMin, latMax, lngMin, lngMax, `${fechaInicio} ${horaInicio}`, `${fechaFin} ${horaFin}`],
+    [latitudMin, latitudMax, longitudMin, longitudMax, `${fechaInicio} ${horaInicio}`, `${fechaFin} ${horaFin}`],
     (error, resultados) => {
       if (error) {
         console.error('Error al obtener datos filtrados por posición y tiempo:', error);
         res.status(500).send('Error al obtener datos filtrados por posición y tiempo');
         return;
       }
-
+  
       res.json(resultados);
     }
-  );
+  );  
 });
 
 
