@@ -133,10 +133,17 @@ app.get('/filterdataposition', (req, res) => {
         res.status(500).send('Error al obtener datos filtrados por posición y tiempo');
         return;
       }
-  
+
+      // Agregamos un console.log para mostrar los resultados en la consola
+      console.log('Resultados de la consulta:', resultados);
+
+      if (resultados.length === 0) {
+        console.log('No se encontraron resultados.');
+      }
+
       res.json(resultados);
     }
-  );  
+  );
 });
 
 
