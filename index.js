@@ -111,6 +111,11 @@ app.get('/filterData', (req, res) => {
     const horaInicio = req.query.horaInicio;
     const fechaFin = req.query.fechaFin;
     const horaFin = req.query.horaFin;
+
+    const latitudMin = req.query.latitudMin;
+    const latitudMax = req.query.latitudMax;
+    const longitudMin = req.query.longitudMin;
+    const longitudMax = req.query.longitudMax;  
   
     
     const query = `
@@ -129,10 +134,7 @@ app.get('/filterData', (req, res) => {
       console.log('Resultados antes del filtrado por coordenadas:', resultados);
   
       // Ahora, vamos a filtrar los resultados por latitud y longitud
-      const latitudMin = req.query.latitudMin;
-      const latitudMax = req.query.latitudMax;
-      const longitudMin = req.query.longitudMin;
-      const longitudMax = req.query.longitudMax;   
+       
   
       const resultadosFiltrados = resultados.filter((registro) => {
         const latitud = ((registro.latitud));
