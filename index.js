@@ -107,6 +107,38 @@ app.get('/filterData', (req, res) => {
   });
 });
 
+app.get('/filterdataposition', (req, res) => {
+  const latitudMin = req.query.latitudMin;
+  const latitudMax = req.query.latitudMax;
+  const longitudMin = req.query.longitudMin;
+  const longitudMax = req.query.longitudMax;
+  const fechaInicio = req.query.fechaInicio;
+  const horaInicio = req.query.horaInicio;
+  const fechaFin = req.query.fechaFin;
+  const horaFin = req.query.horaFin;
+
+  const query = `
+    SELECT fecha, hora, latitud, longitud
+    FROM mensajes
+    WHERE latitud >= ? AND latitud <= ? AND longitud >= ? AND longitud <= ?
+    AND CONCAT(fecha, ' ', hora) >= ? AND CONCAT(fecha, ' ', hora) <= ?
+  `;
+
+  conexionDB.query(
+    query,
+    [latMin, latMax, lngMin, lngMax, `${fechaInicio} ${horaInicio}`, `${fechaFin} ${horaFin}`],
+    (error, resultados) => {
+      if (error) {
+        console.error('Error al obtener datos filtrados por posición y tiempo:', error);
+        res.status(500).send('Error al obtener datos filtrados por posición y tiempo');
+        return;
+      }
+
+      res.json(resultados);
+    }
+  );
+});
+
 
 const puerto = 80;
 server.listen(puerto, () => {
