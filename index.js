@@ -106,10 +106,6 @@ app.get('/filterData', (req, res) => {
     res.json(resultados);
   });
 });
-  const roundTo5Decimals = (value) => {
-    return Math.round(value * 100000) / 100000;
-  };
-  
   app.get('/filterdataposition', (req, res) => {
     const fechaInicio = req.query.fechaInicio;
     const horaInicio = req.query.horaInicio;
