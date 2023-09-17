@@ -106,7 +106,10 @@ app.get('/filterData', (req, res) => {
     res.json(resultados);
   });
 });
-
+  const roundTo5Decimals = (value) => {
+    return Math.round(value * 100000) / 100000;
+  };
+  
   app.get('/filterdataposition', (req, res) => {
     const fechaInicio = req.query.fechaInicio;
     const horaInicio = req.query.horaInicio;
@@ -132,20 +135,20 @@ app.get('/filterData', (req, res) => {
       console.log('Resultados antes del filtrado por coordenadas:', resultados);
   
       // Ahora, vamos a filtrar los resultados por latitud y longitud
-      const latitudMin = req.query.latitudMin;
-      const latitudMax = req.query.latitudMax;
-      const longitudMin = req.query.longitudMin;
-      const longitudMax = req.query.longitudMax;
+      const latitudMin = roundTo5Decimals(parseFloat(req.query.latitudMin));
+      const latitudMax = roundTo5Decimals(parseFloat(req.query.latitudMax));
+      const longitudMin = roundTo5Decimals(parseFloat(req.query.longitudMin));
+      const longitudMax = roundTo5Decimals(parseFloat(req.query.longitudMax));
   
       const resultadosFiltrados = resultados.filter((registro) => {
-        const latitud = parseFloat(registro.latitud);
-        const longitud = parseFloat(registro.longitud);
+        const latitud = roundTo5Decimals(parseFloat(registro.latitud));
+        const longitud = roundTo5Decimals(parseFloat(registro.longitud));
   
         return (
-          latitud >= parseFloat(latitudMin) &&
-          latitud <= parseFloat(latitudMax) &&
-          longitud >= parseFloat(longitudMin) &&
-          longitud <= parseFloat(longitudMax)
+          latitud >= latitudMin &&
+          latitud <= latitudMax &&
+          longitud >= longitudMin &&
+          longitud <= longitudMax
         );
       });
   
@@ -154,7 +157,7 @@ app.get('/filterData', (req, res) => {
       res.json(resultadosFiltrados);
     });
   });
-  
+
 
 
 
