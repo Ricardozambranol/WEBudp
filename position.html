@@ -271,6 +271,26 @@
                 map.setView([registro.latitud, registro.longitud], 13);
               }
             });
+            // Limpiar la tabla de resultados
+            tablaResultados.innerHTML = '';
+            // Recorrer los resultados y agregarlos a la tabla
+            data.forEach((registro) => {
+              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
+              // Crear una nueva fila en la tabla
+              const row = tablaResultados.insertRow();
+
+              // Crear celdas para cada columna en la tabla
+              const fechaCell = row.insertCell(0);
+              const horaCell = row.insertCell(1);
+              const latitudCell = row.insertCell(2);
+              const longitudCell = row.insertCell(3);
+
+              // Llenar las celdas con los datos correspondientes
+              fechaCell.textContent = fechaFormateada;
+              horaCell.textContent = registro.hora;
+              latitudCell.textContent = registro.latitud;
+              longitudCell.textContent = registro.longitud;
+            });
           })
           .catch((error) => {
             console.error('Error al buscar datos:', error);
