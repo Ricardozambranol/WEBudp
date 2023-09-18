@@ -157,6 +157,9 @@
     fetch('/alldata')
       .then(response => response.json())
       .then(data => {
+
+        data.reverse();
+        
         data.forEach(item => {
           const mensajeParts = item.mensaje.split(' ');
           const fechaHora = mensajeParts[1] + ' ' + mensajeParts[2];
