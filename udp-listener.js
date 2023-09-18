@@ -1,7 +1,7 @@
 const dgram = require('dgram');
 const mysql = require('mysql2');
 //const fetch = require('node-fetch'); // Importar el módulo node-fetch
-// hola mundo
+// hola mundo 2
 // Configuración del socket UDP
 const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
 const PUERTO = 25565;
