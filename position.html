@@ -210,28 +210,6 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var polyline = L.polyline([]).addTo(map); // Crear una línea de ruta vacía
-
-    // Crear un marcador de inicio con texto "INICIO" en negritas
-    var startMarker = L.marker([0, 0], {
-      icon: L.divIcon({
-        className: 'custom-icon', // Clase personalizada para el marcador
-        iconSize: [30, 30], // Ancho y altura personalizados
-        iconAnchor: [15, 30], // Alineación del icono en la parte inferior
-        html: '<div style="text-align: center;"><b><strong>INICIO</strong></b></div><i class="fas fa-map-marker-alt" style="color: red;"></i>', // Texto "INICIO" en negritas y el ícono rojo de Font Awesome
-      }),
-    }).addTo(map);
-
-    // Crear un marcador de fin con texto "FIN" en negritas
-    var endMarker = L.marker([0, 0], {
-      icon: L.divIcon({
-        className: 'custom-icon', // Clase personalizada para el marcador
-        iconSize: [30, 15], // Ancho y altura personalizados
-        iconAnchor: [15, 30], // Alineación del icono en la parte inferior
-        html: '<div style="text-align: center;"><b><strong>FIN</strong></b></div><i class="fas fa-map-marker-alt" style="color: green;"></i>', // Texto "FIN" en negritas y el ícono verde de Font Awesome
-      }),
-    }).addTo(map);
-
     document.addEventListener('DOMContentLoaded', () => {
       const buscarDatosBtn = document.getElementById('buscarDatos');
       const tablaResultados = document.getElementById('tablaResultados');
@@ -247,13 +225,16 @@
         const longitudMin = document.getElementById('longitudMin').value;
         const longitudMax = document.getElementById('longitudMax').value;
 
-        // Eliminar la ruta anterior en el mapa
-        polyline.removeFrom(map);
-        polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
+        // Eliminar marcadores anteriores del mapa
+        map.eachLayer((layer) => {
+          if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+          }
+        });
 
         // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
         fetch(`/filterdataposition?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}&latitudMin=${latitudMin}&latitudMax=${latitudMax}&longitudMin=${longitudMin}&longitudMax=${longitudMax}`)
-            .then((response) => {
+          .then((response) => {
             if (!response.ok) {
               throw new Error('La solicitud no fue exitosa');
             }
@@ -264,7 +245,7 @@
             // Limpiar la tabla de resultados
             tablaResultados.innerHTML = '';
 
-            // Recorrer los resultados y agregarlos a la tabla y la nueva línea de ruta
+            // Recorrer los resultados y agregarlos a la tabla y el mapa
             data.forEach((registro, index) => {
               const fila = document.createElement('tr');
               const fecha = document.createElement('td');
@@ -285,24 +266,21 @@
 
               tablaResultados.appendChild(fila);
 
-              // Agregar la posición a la nueva línea de ruta
-              polyline.addLatLng([registro.latitud, registro.longitud]);
+              // Agregar un marcador azul en cada punto con un popup que muestra la hora
+              const marker = L.marker([registro.latitud, registro.longitud], {
+                icon: L.divIcon({
+                  className: 'custom-icon', // Clase personalizada para el marcador
+                  iconSize: [30, 30], // Ancho y altura personalizados
+                  iconAnchor: [15, 30], // Alineación del icono en la parte inferior
+                  html: `<div style="text-align: center;"><b>${registro.hora}</b></div><i class="fas fa-map-marker-alt" style="color: blue;"></i>`, // Texto de la hora y el icono azul de Font Awesome
+                }),
+              }).addTo(map);
 
-              // Si es la primera ubicación, actualizar el marcador de inicio
-              if (index === 0) {
-                startMarker.setLatLng([registro.latitud, registro.longitud]);
-                startMarker.bindPopup(`<strong>Inicio</strong><br><strong>Fecha:</strong> ${fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
-              }
-
-              // Si es la última ubicación, actualizar el marcador de fin
+              // Centrar el mapa en el último marcador agregado
               if (index === data.length - 1) {
-                endMarker.setLatLng([registro.latitud, registro.longitud]);
-                endMarker.bindPopup(`<strong>Fin</strong><br><strong>Fecha:</strong> ${fechaFormateada}<br><strong>Hora:</strong> ${registro.hora}`).openPopup();
+                map.setView([registro.latitud, registro.longitud], 13);
               }
             });
-
-            // Ajustar el mapa para centrarse en la nueva línea de ruta
-            map.fitBounds(polyline.getBounds());
           })
           .catch((error) => {
             console.error('Error al buscar datos:', error);
