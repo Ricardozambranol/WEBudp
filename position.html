@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
   <style>
     /* Estilo para el cuerpo del documento */
     body {
@@ -203,6 +204,7 @@
 
   <!-- JavaScript para la funcionalidad -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   <script>
     var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
 
@@ -213,6 +215,52 @@
     document.addEventListener('DOMContentLoaded', () => {
       const buscarDatosBtn = document.getElementById('buscarDatos');
       const tablaResultados = document.getElementById('tablaResultados');
+      const drawnItems = new L.FeatureGroup();
+      map.addLayer(drawnItems);
+
+      const drawControl = new L.Control.Draw({
+        draw: {
+          polygon: true, // Permitir dibujar polígonos
+          polyline: false,
+          rectangle: true, // Permitir dibujar rectángulos
+          circle: false,
+          marker: false,
+        },
+        edit: {
+          featureGroup: drawnItems,
+        },
+      });
+
+      map.addControl(drawControl);
+
+      // Escuchar el evento cuando se dibuje en el mapa
+      map.on('draw:created', (e) => {
+        const type = e.layerType;
+        const layer = e.layer;
+
+        if (type === 'polygon' || type === 'rectangle') {
+          // Obtener la geometría del área dibujada
+          const geoJSON = layer.toGeoJSON();
+          const coordinates = geoJSON.geometry.coordinates;
+          const polygon = coordinates[0]; // Obtener las coordenadas del polígono
+
+          // Calcular los límites (bounding box) del polígono dibujado
+          const bounds = layer.getBounds();
+          const latitudMin = bounds.getSouth();
+          const latitudMax = bounds.getNorth();
+          const longitudMin = bounds.getWest();
+          const longitudMax = bounds.getEast();
+
+          // Actualizar los campos de entrada de latitud y longitud en el formulario
+          document.getElementById('latitudMin').value = latitudMin;
+          document.getElementById('latitudMax').value = latitudMax;
+          document.getElementById('longitudMin').value = longitudMin;
+          document.getElementById('longitudMax').value = longitudMax;
+
+          // Agregar la capa dibujada al mapa
+          drawnItems.addLayer(layer);
+        }
+      });
 
       buscarDatosBtn.addEventListener('click', () => {
         // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
