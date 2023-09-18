@@ -260,7 +260,7 @@
                 }),
               });
 
-               // Crear el contenido HTML del popup con estilo similar al original
+              // Crear el contenido HTML del popup con estilo similar al original
               const popupContent = `
                 <div style="text-align: center;">
                   <b>${registro.hora}</b><br>
@@ -271,6 +271,7 @@
 
               // Agregar el popup al marcador
               marker.bindPopup(popupContent);
+
               // Centrar el mapa en el último marcador agregado
               if (index === data.length - 1) {
                 map.setView([registro.latitud, registro.longitud], 13);
