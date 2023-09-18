@@ -106,55 +106,57 @@ app.get('/filterData', (req, res) => {
     res.json(resultados);
   });
 });
-  app.get('/filterdataposition', (req, res) => {
-    const fechaInicio = req.query.fechaInicio;
-    const horaInicio = req.query.horaInicio;
-    const fechaFin = req.query.fechaFin;
-    const horaFin = req.query.horaFin;
 
-    const latitudMin = req.query.latitudMin;
-    const latitudMax = req.query.latitudMax;
-    const longitudMin = req.query.longitudMin;
-    const longitudMax = req.query.longitudMax;  
-    console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin, 'longitud', longitudMin, longitudMax, 'latitud ',latitudMin, latitudMax);
-    console.log();
 
-    
-    const query = `
-      SELECT fecha, hora, latitud, longitud
-      FROM mensajes
-      WHERE CONCAT(fecha, ' ', hora) >= ? AND CONCAT(fecha, ' ', hora) <= ?
-    `;
+app.get('/filterdataposition', (req, res) => {
+  const fechaInicio = req.query.fechaInicio;
+  const horaInicio = req.query.horaInicio;
+  const fechaFin = req.query.fechaFin;
+  const horaFin = req.query.horaFin;
+
+  const latitudMin = req.query.latitudMin;
+  const latitudMax = req.query.latitudMax;
+  const longitudMin = req.query.longitudMin;
+  const longitudMax = req.query.longitudMax;  
+  console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin, 'longitud', longitudMin, longitudMax, 'latitud ',latitudMin, latitudMax);
+  console.log();
+
   
-    conexionDB.query(query, [`${fechaInicio} ${horaInicio}`, `${fechaFin} ${horaFin}`], (error, resultados) => {
-      if (error) {
-        console.error('Error al obtener datos filtrados por fecha y hora:', error);
-        res.status(500).send('Error al obtener datos filtrados por fecha y hora');
-        return;
-      }
-  
-      console.log('Resultados antes del filtrado por coordenadas:', resultados);
-  
-      // Ahora, vamos a filtrar los resultados por latitud y longitud
-       
-  
-      const resultadosFiltrados = resultados.filter((registro) => {
-        const latitud = registro.latitud;
-        const longitud = registro.longitud;
-  
-        return (
-          latitud >= latitudMin &&
-          latitud <= latitudMax &&
-          longitud >= longitudMin &&
-          longitud <= longitudMax
-        );
-      });
+  const query = `
+    SELECT fecha, hora, latitud, longitud
+    FROM mensajes
+    WHERE CONCAT(fecha, ' ', hora) >= ? AND CONCAT(fecha, ' ', hora) <= ?
+  `;
+
+  conexionDB.query(query, [`${fechaInicio} ${horaInicio}`, `${fechaFin} ${horaFin}`], (error, resultados) => {
+    if (error) {
+      console.error('Error al obtener datos filtrados por fecha y hora:', error);
+      res.status(500).send('Error al obtener datos filtrados por fecha y hora');
+      return;
+    }
+
+    console.log('Resultados antes del filtrado por coordenadas:', resultados);
+
+    // Ahora, vamos a filtrar los resultados por latitud y longitud
       
-      console.log('Resultados después del filtrado por coordenadas:', resultadosFiltrados);
-  
-      res.json(resultadosFiltrados);
+
+    const resultadosFiltrados = resultados.filter((registro) => {
+      const latitud = registro.latitud;
+      const longitud = registro.longitud;
+
+      return (
+        latitud >= latitudMin &&
+        latitud <= latitudMax &&
+        longitud >= longitudMin &&
+        longitud <= longitudMax
+      );
     });
+    
+    console.log('Resultados después del filtrado por coordenadas:', resultadosFiltrados);
+
+    res.json(resultadosFiltrados);
   });
+});
 
 
 

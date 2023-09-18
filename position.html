@@ -168,7 +168,7 @@
   </div>
   <div>
     <label for="latitudMin">Latitud Mínima:</label>
-    <input type="text" id="latitudMin" name="latitudMin"> <!-- Agrega el atributo name -->
+    <input type="number" id="latitudMin" name="latitudMin"> <!-- Agrega el atributo name -->
     <label for="latitudMax">Latitud Máxima:</label>
     <input type="number" id="latitudMax" name="latitudMax"> <!-- Agrega el atributo name -->
   </div>
@@ -246,6 +246,7 @@
         const latitudMax = document.getElementById('latitudMax').value;
         const longitudMin = document.getElementById('longitudMin').value;
         const longitudMax = document.getElementById('longitudMax').value;
+
         // Eliminar la ruta anterior en el mapa
         polyline.removeFrom(map);
         polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
