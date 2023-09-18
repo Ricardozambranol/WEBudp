@@ -262,9 +262,9 @@
 
               // Agregar el marcador al grupo
               markersGroup.addLayer(marker);
-
+              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
               // Agregar un popup al marcador que muestra la hora y la fecha cuando se hace clic en él
-              marker.bindPopup(`<b>${registro.hora}</b><br>${new Date(registro.fecha).toLocaleString()}`);
+              marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
 
               // Centrar el mapa en el último marcador agregado
               if (index === data.length - 1) {
