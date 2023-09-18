@@ -242,7 +242,10 @@
         const horaInicio = document.getElementById('horaInicio').value;
         const fechaFin = document.getElementById('fechaFin').value;
         const horaFin = document.getElementById('horaFin').value;
-
+        const latitudMin = document.getElementById('latitudMin').value;
+        const latitudMax = document.getElementById('latitudMax').value;
+        const longitudMin = document.getElementById('longitudMin').value;
+        const longitudMax = document.getElementById('longitudMax').value;
         // Eliminar la ruta anterior en el mapa
         polyline.removeFrom(map);
         polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
