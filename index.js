@@ -141,14 +141,16 @@ app.get('/filterdataposition', (req, res) => {
       
 
     const resultadosFiltrados = resultados.filter((registro) => {
-      const latitud = registro.latitud;
-      const longitud = registro.longitud;
-
+      const latitud = parseFloat(registro.latitud); // Convertir la latitud a número
+      const longitud = parseFloat(registro.longitud); // Convertir la longitud a número
+   
       return (
-        latitud >= latitudMin &&
-        latitud <= latitudMax &&
-        longitud >= longitudMin &&
-        longitud <= longitudMax
+        !isNaN(latitud) && // Verificar si la conversión fue exitosa
+        !isNaN(longitud) && // Verificar si la conversión fue exitosa
+        latitud >= parseFloat(latitudMin) &&
+        latitud <= parseFloat(latitudMax) &&
+        longitud >= parseFloat(longitudMin) &&
+        longitud <= parseFloat(longitudMax)
       );
     });
     
