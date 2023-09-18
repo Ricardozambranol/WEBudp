@@ -263,17 +263,8 @@
               // Agregar el marcador al grupo
               markersGroup.addLayer(marker);
 
-              // Crear el contenido HTML del popup con estilo similar al original
-              const popupContent = `
-                <div style="text-align: center;">
-                  <b>${registro.hora}</b><br>
-                  <strong>Fecha:</strong> ${fechaFormateada}<br>
-                  <strong>Hora:</strong> ${registro.hora}
-                </div>
-              `;
-
-              // Agregar el popup al marcador
-              marker.bindPopup(popupContent);
+              // Agregar un popup al marcador que muestra la hora y la fecha cuando se hace clic en él
+              marker.bindPopup(`<b>${registro.hora}</b><br>${new Date(registro.fecha).toLocaleString()}`);
 
               // Centrar el mapa en el último marcador agregado
               if (index === data.length - 1) {
