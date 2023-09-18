@@ -251,7 +251,8 @@
         polyline = L.polyline([]).addTo(map); // Crear una nueva línea de ruta vacía
 
         // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
-        fetch(`/filterdataposition?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}&latitudMin=${latitudMin}&latitudMax=${latitudMax}&longitudMin=${longitudMin}&longitudMax=${longitudMax}`)          .then((response) => {
+        fetch(`/filterdataposition?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}&latitudMin=${latitudMin}&latitudMax=${latitudMax}&longitudMin=${longitudMin}&longitudMax=${longitudMax}`)
+            .then((response) => {
             if (!response.ok) {
               throw new Error('La solicitud no fue exitosa');
             }
