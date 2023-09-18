@@ -116,7 +116,9 @@ app.get('/filterData', (req, res) => {
     const latitudMax = req.query.latitudMax;
     const longitudMin = req.query.longitudMin;
     const longitudMax = req.query.longitudMax;  
-  
+    console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin, 'longitud', longitudMin, longitudMax, 'latitud ',latitudMin, latitudMax);
+    console.log();
+
     
     const query = `
       SELECT fecha, hora, latitud, longitud
@@ -137,8 +139,8 @@ app.get('/filterData', (req, res) => {
        
   
       const resultadosFiltrados = resultados.filter((registro) => {
-        const latitud = ((registro.latitud));
-        const longitud = ((registro.longitud));
+        const latitud = registro.latitud;
+        const longitud = registro.longitud;
   
         return (
           latitud >= latitudMin &&
@@ -149,8 +151,6 @@ app.get('/filterData', (req, res) => {
       });
       
       console.log('Resultados después del filtrado por coordenadas:', resultadosFiltrados);
-      console.log('Fecha de Inicio:', fechaInicio, 'Hora de Inicio:', horaInicio, 'Fecha de Fin:', fechaFin, 'Hora de Fin:', horaFin, 'longitud', longitudMin, longitudMax, 'latitud ',latitudMin, latitudMax);
-      console.log();
   
       res.json(resultadosFiltrados);
     });
