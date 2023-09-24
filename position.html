@@ -143,6 +143,15 @@
       height: 20px; /* Alto deseado */
       font-size: 14px; /* Tamaño de fuente deseado */
     }
+    #instructions-container {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    width: 15%;
+    float: right;
+    margin-top: 5%; /* Ajusta la distancia desde la parte superior según sea necesario */
+    margin-right: 2%; /* Ajusta el margen derecho para separarlo del info-container */
+    clear: right; /* Evita que se superponga con elementos flotantes anteriores */
+    }
   </style>
 </head>
 <body>
@@ -186,6 +195,18 @@
     </div>
   </div>
   <button id="buscarDatos">Buscar Datos</button>
+</div>
+
+<div id="instructions-container">
+  <h3>Instrucciones:</h3>
+  <ol>
+    <li>Ingrese la <strong>Fecha de Inicio</strong> y la <strong>Hora de Inicio</strong>.</li>
+    <li>Ingrese la <strong>Fecha de Fin</strong> y la <strong>Hora de Fin</strong>.</li>
+    <li>Seleccione un área en el mapa: dibuje un <strong>rectángulo</strong> al hacer clic en el botón correspondiente en el mapa y luego arrastre para seleccionar un área.</li>
+    <li>Las coordenadas de <strong>Latitud Mínima</strong>, <strong>Latitud Máxima</strong>, <strong>Longitud Mínima</strong>, y <strong>Longitud Máxima</strong> se llenarán automáticamente.</li>
+    <li>Una vez que haya ingresado todas las fechas, horas y coordenadas, haga clic en el botón <strong>Buscar Datos</strong>.</li>
+  </ol>
+  <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer clic en "Buscar Datos".</p>
 </div>
 
 
@@ -339,7 +360,7 @@
 
           if (data.length === 0) {
             // Si no se encontraron datos, muestra una alerta
-            alert('No se encontraron datos en esa zona durante ese tiempo.');
+            alert('No se encontraron datos en esta zona durante este tiempo, intente ampliando la zona o escogiendo otra ventana de tiempo');
           } else {
             data.forEach((registro, index) => {
               const marker = L.marker([registro.latitud, registro.longitud], {
