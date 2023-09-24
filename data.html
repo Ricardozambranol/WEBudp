@@ -112,6 +112,18 @@
       right: 0;
       z-index: 1; /* Coloca el mapa por encima del contenido */
     }
+    #footer-link {
+    background-color: #f2f2f2; /* Fondo gris claro */
+    text-align: center; /* Alinea el texto al centro */
+    padding: 10px; /* Agrega un espacio alrededor del texto */
+    font-size: 12px; /* Tamaño de fuente de 12px */
+    }
+
+    /* Estilo para el texto subrayado */
+    #footer-link a {
+      text-decoration: underline; /* Subraya el enlace */
+      color: #333; /* Color de texto gris oscuro */
+    }
   </style>
 </head>
 <body>
@@ -142,6 +154,10 @@
 
   <!-- Contenedor para el mapa fijo en la parte derecha -->
   <div id="map" class="map-container"></div>
+
+  <div id="footer-link">
+    <a href="/data.html">On my Way</a>
+  </div>
 
   <script>
     const tablaDatosElement = document.getElementById('tablaDatos');

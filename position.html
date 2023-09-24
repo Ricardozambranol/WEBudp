@@ -152,15 +152,25 @@
     margin-right: 2%; /* Ajusta el margen derecho para separarlo del info-container */
     clear: right; /* Evita que se superponga con elementos flotantes anteriores */
     }
+    #footer-link {
+    background-color: #f2f2f2; /* Fondo gris claro */
+    text-align: center; /* Alinea el texto al centro */
+    padding: 10px; /* Agrega un espacio alrededor del texto */
+    font-size: 12px; /* Tamaño de fuente de 12px */
+    }
+
+    /* Estilo para el texto subrayado */
+    #footer-link a {
+      text-decoration: underline; /* Subraya el enlace */
+      color: #333; /* Color de texto gris oscuro */
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <ul class="navbar-list">
-      <li class="navbar-item"><a href="/">INICIO</a></li>
-      <li class="navbar-item"><a href="/data.html">DATA</a></li>
-      <li class="navbar-item"><a href="/time.html">TIME</a></li>
-      <li class="navbar-item"><a href="/position.html">POSITION</a></li>
+      <li class="navbar-item"><a href="/">UBICACION EN VIVO</a></li>
+      <li class="navbar-item"><a href="/position.html">HISTORICOS</a></li>
     </ul>
     <h1>ON MY WAY</h1>
   </nav>
@@ -233,6 +243,10 @@
       <!-- Aquí se mostrarán los resultados de la búsqueda -->
     </tbody>
   </table>
+
+  <div id="footer-link">
+    <a href="/data.html">On my Way</a>
+  </div>
 
   <!-- JavaScript para la funcionalidad -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
