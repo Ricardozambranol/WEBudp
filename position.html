@@ -273,7 +273,22 @@
         const latitudMax = document.getElementById('latitudMax').value;
         const longitudMin = document.getElementById('longitudMin').value;
         const longitudMax = document.getElementById('longitudMax').value;
+        
+        // Validar que se ingresen todas las fechas y horas
+        if (!fechaInicio || !horaInicio || !fechaFin || !horaFin) {
+          alert('Por favor, complete todos los campos de fecha y hora.');
+          return;
+        }
 
+        // Convertir las fechas y horas a objetos Date para comparar
+        const fechaInicioObj = new Date(`${fechaInicio}T${horaInicio}`);
+        const fechaFinObj = new Date(`${fechaFin}T${horaFin}`);
+
+        // Validar que la fecha de inicio sea menor que la fecha de fin
+        if (fechaInicioObj >= fechaFinObj) {
+          alert('La fecha de inicio debe ser menor que la fecha de fin.');
+          return;
+        }
         // Eliminar marcadores anteriores del mapa
         map.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
