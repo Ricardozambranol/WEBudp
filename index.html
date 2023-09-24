@@ -257,12 +257,12 @@
       const altitud = parseFloat(mensaje.match(/Alt: ([^ ]+)/)[1]);
       const fechaHora = mensaje.match(/FH: (\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/)[1];
 
-      remitenteElement.textContent = `Remitente: ${remitente}`;
-      mensajeElement.textContent = `Mensaje: ${mensaje}`;
-      latitudElement.textContent = `Latitud: ${latitud}`;
-      longitudElement.textContent = `Longitud: ${longitud}`;
-      altitudElement.textContent = `Altitud: ${altitud}`;
-      fechaHoraElement.textContent = `Fecha y Hora: ${fechaHora}`;
+      remitenteElement.textContent = `<strong>Remitente:</strong> ${remitente}`;
+      mensajeElement.textContent = `<strong>Mensaje:</strong> ${mensaje}`;
+      latitudElement.textContent = `<strong>Latitud:</strong> ${latitud}`;
+      longitudElement.textContent = `<strong>Longitud:</strong> ${longitud}`;
+      altitudElement.textContent = `<strong>Altitud:</strong> ${altitud}`;
+      fechaHoraElement.textContent = `<strong>Fecha y Hora:</strong> ${fechaHora}`;
 
       // Llamar a la función para actualizar la posición del marcador
       actualizarPosicion(latitud, longitud);
