@@ -234,23 +234,9 @@
     <label for="rangoTiempo">Rango de Tiempo:</label>
     <div id="slider"></div>
   </div>
-  <!-- Tabla para mostrar los resultados -->
-  <table>
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Latitud</th>
-        <th>Longitud</th>
-      </tr>
-    </thead>
-    <tbody id="tablaResultados">
-      <!-- Aquí se mostrarán los resultados de la búsqueda -->
-    </tbody>
-  </table>
 
   <div id="footer-link">
-    <a href="/inicio.html">On my Way</a>
+    <a href="/index.html">On my Way</a>
   </div>
 
   <!-- JavaScript para la funcionalidad -->
@@ -398,19 +384,6 @@
               if (index === data.length - 1) {
                 map.setView([registro.latitud, registro.longitud], 13);
               }
-            });
-            tablaResultados.innerHTML = '';
-            data.forEach((registro) => {
-              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-              const row = tablaResultados.insertRow();
-              const fechaCell = row.insertCell(0);
-              const horaCell = row.insertCell(1);
-              const latitudCell = row.insertCell(2);
-              const longitudCell = row.insertCell(3);
-              fechaCell.textContent = fechaFormateada;
-              horaCell.textContent = registro.hora;
-              latitudCell.textContent = registro.latitud;
-              longitudCell.textContent = registro.longitud;
             });
           }
         })

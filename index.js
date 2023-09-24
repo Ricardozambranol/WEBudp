@@ -30,6 +30,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'inicio.html'));
 });
 
+app.get('/historicos.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'historicos.html'));
+});
+
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
