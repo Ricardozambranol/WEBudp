@@ -27,6 +27,10 @@ conexionDB.connect((error) => {
 let lastSentMessage = null;
 
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'inicio.html'));
+});
+
+app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
