@@ -144,13 +144,16 @@
       font-size: 14px; /* Tamaño de fuente deseado */
     }
     #instructions-container {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    width: 15%;
-    float: right;
-    margin-top: 5%; /* Ajusta la distancia desde la parte superior según sea necesario */
-    margin-right: 2%; /* Ajusta el margen derecho para separarlo del info-container */
-    clear: right; /* Evita que se superponga con elementos flotantes anteriores */
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      width: 15%;
+      position: fixed; /* Fijar el contenedor en una posición */
+      top: 60px; /* Espacio desde la parte superior, teniendo en cuenta la barra de navegación */
+      right: 2%; /* Margen derecho */
+      background-color: white; /* Fondo blanco */
+      padding: 20px; /* Espaciado interno */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+      z-index: 999; /* Asegura que esté por encima de otros elementos */
     }
     #footer-link {
     background-color: #f2f2f2; /* Fondo gris claro */
@@ -169,8 +172,10 @@
 <body>
   <nav class="navbar">
     <ul class="navbar-list">
-      <li class="navbar-item"><a href="/">UBICACION EN VIVO</a></li>
-      <li class="navbar-item"><a href="/position.html">HISTORICOS</a></li>
+      <li class="navbar-item"><a href="/">INICIO</a></li>
+      <li class="navbar-item"><a href="/data.html">DATA</a></li>
+      <li class="navbar-item"><a href="/time.html">TIME</a></li>
+      <li class="navbar-item"><a href="/position.html">POSITION</a></li>
     </ul>
     <h1>ON MY WAY</h1>
   </nav>

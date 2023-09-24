@@ -6,10 +6,7 @@
   <title>ON MY WAY</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
   <style>
     /* Estilo para el cuerpo del documento */
@@ -117,35 +114,30 @@
       height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
     }
 
-    /* Estilo para la tabla de datos */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #a3a3a3;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #d3d3d3;
-    }  
     /* Estilo para el contenedor del contenido que quieres mover */
     #info-container {
       display: flex;
       flex-direction: column;
       align-items: left;
       margin-left: 8%; /* Agregar margen izquierdo de 20px */
-      display: none;
+    }
+    #instructions-container {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        width: 15%;
+        position: fixed; /* Fijar el contenedor en una posición */
+        top: 60px; /* Espacio desde la parte superior, teniendo en cuenta la barra de navegación */
+        right: 2%; /* Margen derecho */
+        background-color: white; /* Fondo blanco */
+        padding: 20px; /* Espaciado interno */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+        z-index: 999; /* Asegura que esté por encima de otros elementos */
     }
     #footer-link {
-    background-color: #f2f2f2; /* Fondo gris claro */
-    text-align: center; /* Alinea el texto al centro */
-    padding: 10px; /* Agrega un espacio alrededor del texto */
-    font-size: 12px; /* Tamaño de fuente de 12px */
+        background-color: #f2f2f2; /* Fondo gris claro */
+        text-align: center; /* Alinea el texto al centro */
+        padding: 10px; /* Agrega un espacio alrededor del texto */
+        font-size: 12px; /* Tamaño de fuente de 12px */
     }
 
     /* Estilo para el texto subrayado */
@@ -160,10 +152,8 @@
 <body>
   <nav class="navbar">
     <ul class="navbar-list">
-      <li class="navbar-item"><a href="/">INICIO</a></li>
-      <li class="navbar-item"><a href="/data.html">DATA</a></li>
-      <li class="navbar-item"><a href="/time.html">TIME</a></li>
-      <li class="navbar-item"><a href="/position.html">POSITION</a></li>
+      <li class="navbar-item"><a href="/inicio.html">INICIO</a></li>
+      <li class="navbar-item"><a href="/historicos.html">HISTORICOS</a></li>
     </ul>
     <h1>ON MY WAY</h1>
   </nav>
@@ -182,22 +172,15 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
-  <h2>Datos recientes:</h2>
-  <!-- Agregar una tabla para mostrar los datos -->
-  <table>
-    <thead>
-      <tr>
-        <th>Remitente</th>
-        <th>Mensaje</th>
-        <th>Fecha y Hora</th>
-        <th>Latitud</th>
-        <th>Longitud</th>
-        <th>Altitud</th>
-      </tr>
-    </thead>
-    <tbody id="tablaDatos">
-    </tbody>
-  </table>
+  <div id="instructions-container">
+    <h1>Ubicaciones GPS en tiempo real:</h1>
+    <p>En esta página, puedes realizar un seguimiento en tiempo real de las ubicaciones GPS. Aquí está lo que encontrarás:</p>
+    <ul>
+      <li><strong>Mapa Interactivo:</strong> En el centro de la página, se muestra un mapa interactivo que te permite visualizar las ubicaciones GPS en tiempo real. Puedes hacer zoom, arrastrar y explorar el mapa.</li>
+      <li><strong>Información en Tiempo Real:</strong> Justo arriba del mapa, encontrarás información en tiempo real sobre las ubicaciones. Esto incluye detalles como el remitente, el mensaje, la latitud, la longitud, la altitud y la fecha y hora de las ubicaciones más recientes.</li>
+    </ul>
+    <p>¡Explora y disfruta de la visualización de ubicaciones GPS en tiempo real en "ON MY WAY"! Si tienes alguna pregunta o necesitas más información, no dudes en preguntar.</p>
+  </div>
 
   <div id="footer-link">
     <a href="/data.html">On my Way</a>
@@ -245,7 +228,6 @@
     const longitudElement = document.getElementById('longitud');
     const altitudElement = document.getElementById('altitud');
     const fechaHoraElement = document.getElementById('fechaHora');
-    const tablaDatosElement = document.getElementById('tablaDatos');
 
     const eventSource = new EventSource('/events');
     eventSource.onmessage = function(event) {
@@ -266,22 +248,6 @@
 
       // Llamar a la función para actualizar la posición del marcador
       actualizarPosicion(latitud, longitud);
-
-      // Agregar fila a la tabla de datos
-      const newRow = tablaDatosElement.insertRow(0);
-      const cellRemitente = newRow.insertCell(0);
-      const cellMensaje = newRow.insertCell(1);
-      const cellFechaHora = newRow.insertCell(2);
-      const cellLatitud = newRow.insertCell(3);
-      const cellLongitud = newRow.insertCell(4);
-      const cellAltitud = newRow.insertCell(5);
-
-      cellRemitente.textContent = remitente;
-      cellMensaje.textContent = mensaje;
-      cellFechaHora.textContent = fechaHora;
-      cellLatitud.textContent = latitud;
-      cellLongitud.textContent = longitud;
-      cellAltitud.textContent = altitud;
     };
   </script>
 </body>
