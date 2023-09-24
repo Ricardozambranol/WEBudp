@@ -141,6 +141,18 @@
       margin-left: 8%; /* Agregar margen izquierdo de 20px */
       display: none;
     }
+    #instructions-container {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      width: 15%;
+      position: fixed; /* Fijar el contenedor en una posición */
+      top: 60px; /* Espacio desde la parte superior, teniendo en cuenta la barra de navegación */
+      right: 2%; /* Margen derecho */
+      background-color: white; /* Fondo blanco */
+      padding: 20px; /* Espaciado interno */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+      z-index: 999; /* Asegura que esté por encima de otros elementos */
+    }
     #footer-link {
     background-color: #f2f2f2; /* Fondo gris claro */
     text-align: center; /* Alinea el texto al centro */
@@ -196,7 +208,15 @@
     <tbody id="tablaDatos">
     </tbody>
   </table>
-
+  <div id="instructions-container">
+    <h1>Ubicaciones GPS en tiempo real:</h1>
+    <p>En esta página, puedes realizar un seguimiento en tiempo real de las ubicaciones GPS. Aquí está lo que encontrarás:</p>
+    <ul>
+      <li><strong>Mapa Interactivo:</strong> En el centro de la página, se muestra un mapa interactivo que te permite visualizar las ubicaciones GPS en tiempo real. Puedes hacer zoom, arrastrar y explorar el mapa.</li>
+      <li><strong>Información en Tiempo Real:</strong> Justo arriba del mapa, encontrarás información en tiempo real sobre las ubicaciones. Esto incluye detalles como el remitente, el mensaje, la latitud, la longitud, la altitud y la fecha y hora de las ubicaciones más recientes.</li>
+    </ul>
+    <p>¡Explora y disfruta de la visualización de ubicaciones GPS en tiempo real en "ON MY WAY"! Si tienes alguna pregunta o necesitas más información, no dudes en preguntar.</p>
+  </div>
   <div id="footer-link">
     <a href="/data.html">On my Way</a>
   </div>
