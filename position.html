@@ -133,6 +133,9 @@
       align-items: left;
       margin-left: 8%; /* Agregar margen izquierdo de 20px */
     }
+    #info-position {
+      display: none;
+    }
 
     #buscarDatos {
       width: 120px; /* Ancho deseado */
@@ -167,17 +170,19 @@
     <label for="horaFin">Hora de Fin:</label>
     <input type="time" id="horaFin">
   </div>
-  <div>
-    <label for="latitudMin">Latitud Mínima:</label>
-    <input type="number" id="latitudMin" name="latitudMin"> <!-- Agrega el atributo name -->
-    <label for="latitudMax">Latitud Máxima:</label>
-    <input type="number" id="latitudMax" name="latitudMax"> <!-- Agrega el atributo name -->
-  </div>
-  <div>
-    <label for="longitudMin">Longitud Mínima:</label>
-    <input type="number" id="longitudMin" name="longitudMin"> <!-- Agrega el atributo name -->
-    <label for="longitudMax">Longitud Máxima:</label>
-    <input type="number" id="longitudMax" name="longitudMax"> <!-- Agrega el atributo name -->
+  <div id="info-position">
+    <div>
+      <label for="latitudMin">Latitud Mínima:</label>
+      <input type="number" id="latitudMin" name="latitudMin"> <!-- Agrega el atributo name -->
+      <label for="latitudMax">Latitud Máxima:</label>
+      <input type="number" id="latitudMax" name="latitudMax"> <!-- Agrega el atributo name -->
+    </div>
+    <div>
+      <label for="longitudMin">Longitud Mínima:</label>
+      <input type="number" id="longitudMin" name="longitudMin"> <!-- Agrega el atributo name -->
+      <label for="longitudMax">Longitud Máxima:</label>
+      <input type="number" id="longitudMax" name="longitudMax"> <!-- Agrega el atributo name -->
+    </div>
   </div>
   <button id="buscarDatos">Buscar Datos</button>
 </div>
@@ -301,7 +306,7 @@
 
         // Validar que se haya dibujado un área en el mapa si no se proporcionan coordenadas
         if (latitudMin.trim() === '' || latitudMax.trim() === '' || longitudMin.trim() === '' || longitudMax.trim() === '') {
-          alert('Por favor, seleccione un área en el mapa o complete todos los campos de latitud y longitud.');
+          alert('Por favor, seleccione un área en el mapa');
           return;
         }
         // Eliminar marcadores anteriores del mapa
