@@ -184,7 +184,7 @@
 
   <h2>Mapa de Datos:</h2>
   <div class="leaflet-map-container">
-    <div id="map-container" class="leaflet-map"></div>
+    <div id="map-container" class="leaflet-map">< 1/div>
   </div>
 
   <!-- Tabla para mostrar los resultados -->
@@ -236,6 +236,11 @@
 
       // Escuchar el evento cuando se dibuje en el mapa
       map.on('draw:created', (e) => {
+
+        if (drawnLayer) {
+          drawnItems.removeLayer(drawnLayer);
+        }
+
         const type = e.layerType;
         const layer = e.layer;
 
