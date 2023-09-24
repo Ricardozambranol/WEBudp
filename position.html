@@ -289,6 +289,12 @@
           alert('La fecha de inicio debe ser menor que la fecha de fin.');
           return;
         }
+
+        // Validar que se haya dibujado un área en el mapa si no se proporcionan coordenadas
+        if (latitudMin.trim() === '' || latitudMax.trim() === '' || longitudMin.trim() === '' || longitudMax.trim() === '') {
+          alert('Por favor, seleccione un área en el mapa o complete todos los campos de latitud y longitud.');
+          return;
+        }
         // Eliminar marcadores anteriores del mapa
         map.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
