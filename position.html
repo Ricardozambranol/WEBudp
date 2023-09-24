@@ -332,57 +332,48 @@
             return response.json();
           })
           .then((data) => {
-            console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
-            // Limpiar la tabla de resultados
-            tablaResultados.innerHTML = '';
+          console.log('Datos recibidos:', data);
+          tablaResultados.innerHTML = '';
 
-            // Crear un grupo de marcadores para facilitar la gestión de eventos
-            var markersGroup = L.layerGroup().addTo(map);
+          var markersGroup = L.layerGroup().addTo(map);
 
-            // Recorrer los resultados y agregarlos a la tabla y el mapa
+          if (data.length === 0) {
+            // Si no se encontraron datos, muestra una alerta
+            alert('No se encontraron datos en esa zona durante ese tiempo.');
+          } else {
             data.forEach((registro, index) => {
-              // Agregar un marcador azul en cada punto
               const marker = L.marker([registro.latitud, registro.longitud], {
                 icon: L.divIcon({
-                  className: 'custom-icon', // Clase personalizada para el marcador
-                  iconSize: [30, 30], // Ancho y altura personalizados
-                  iconAnchor: [15, 30], // Alineación del icono en la parte inferior
-                  html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`, // Icono azul de Font Awesome
+                  className: 'custom-icon',
+                  iconSize: [30, 30],
+                  iconAnchor: [15, 30],
+                  html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`,
                 }),
               });
 
-              // Agregar el marcador al grupo
               markersGroup.addLayer(marker);
-              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
-              // Agregar un popup al marcador que muestra la hora y la fecha cuando se hace clic en él
+              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
               marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
 
-              // Centrar el mapa en el último marcador agregado
               if (index === data.length - 1) {
                 map.setView([registro.latitud, registro.longitud], 13);
               }
             });
-            // Limpiar la tabla de resultados
             tablaResultados.innerHTML = '';
-            // Recorrer los resultados y agregarlos a la tabla
             data.forEach((registro) => {
-              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
-              // Crear una nueva fila en la tabla
+              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
               const row = tablaResultados.insertRow();
-
-              // Crear celdas para cada columna en la tabla
               const fechaCell = row.insertCell(0);
               const horaCell = row.insertCell(1);
               const latitudCell = row.insertCell(2);
               const longitudCell = row.insertCell(3);
-
-              // Llenar las celdas con los datos correspondientes
               fechaCell.textContent = fechaFormateada;
               horaCell.textContent = registro.hora;
               latitudCell.textContent = registro.latitud;
               longitudCell.textContent = registro.longitud;
             });
-          })
+          }
+        })
           .catch((error) => {
             console.error('Error al buscar datos:', error);
           });
