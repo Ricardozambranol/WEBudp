@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css" />
   <style>
     /* Estilo para el cuerpo del documento */
     body {
@@ -142,6 +143,11 @@
       height: 20px; /* Alto deseado */
       font-size: 14px; /* Tamaño de fuente deseado */
     }
+    #dateRangeSlider {
+      width: 80%; /* Ancho personalizado */
+      height: 40px; /* Altura personalizada */
+      margin-left: 10%; /* Agregar margen izquierdo de 20px */
+    }
   </style>
 </head>
 <body>
@@ -191,7 +197,9 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
-
+  <!-- Slider -->
+  <h2>Seleccionar Tramo de Tiempo:</h2>
+  <input type="text" id="dateRangeSlider" />
   <!-- Tabla para mostrar los resultados -->
   <table>
     <thead>
@@ -207,7 +215,11 @@
     </tbody>
   </table>
 
+
+
+
   <!-- JavaScript para la funcionalidad -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   <script>
@@ -276,6 +288,55 @@
           drawnLayer = layer;
         }
       });
+
+      // Inicializa el slider
+      $("#dateRangeSlider").ionRangeSlider({
+        type: "double",
+        grid: true,
+        min: 0,
+        max: 100, // Puedes ajustar el máximo según tus necesidades
+        from: 0,
+        to: 100,
+        onFinish: function (data) {
+          // Obtén los valores del rango seleccionado
+          const percentFrom = data.from;
+          const percentTo = data.to;
+
+          // Calcula las fechas de inicio y fin en función del rango seleccionado
+          const fechaInicio = new Date(
+            new Date().getTime() - percentFrom * (1000 * 60 * 60 * 24 * 30) // 30 días en milisegundos
+          ).toISOString();
+
+          const fechaFin = new Date(
+            new Date().getTime() - percentTo * (1000 * 60 * 60 * 24 * 30) // 30 días en milisegundos
+          ).toISOString();
+
+          // Realiza la solicitud al servidor para obtener datos dentro del rango de fechas
+          fetch(
+            `/filterdataposition?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`
+          )
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("La solicitud no fue exitosa");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Datos recibidos:", data); // Muestra los datos en la consola para depuración
+              // Limpiar la tabla de resultados
+              tablaResultados.innerHTML = "";
+
+              // Recorrer los resultados y agregarlos a la tabla y el mapa
+              data.forEach((registro, index) => {
+                // Resto del código para agregar marcadores y filas a la tabla, similar a tu código actual
+              });
+            })
+            .catch((error) => {
+              console.error("Error al buscar datos:", error);
+            });
+        },
+      });
+
 
       buscarDatosBtn.addEventListener('click', () => {
         // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
