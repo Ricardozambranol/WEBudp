@@ -172,10 +172,8 @@
 <body>
   <nav class="navbar">
     <ul class="navbar-list">
-      <li class="navbar-item"><a href="/index.html">INICIO</a></li>
-      <li class="navbar-item"><a href="/data.html">DATA</a></li>
-      <li class="navbar-item"><a href="/time.html">TIME</a></li>
-      <li class="navbar-item"><a href="/position.html">POSITION</a></li>
+      <li class="navbar-item"><a href="/">INICIO</a></li>
+      <li class="navbar-item"><a href="/position.html">HISTORICO</a></li>
     </ul>
     <h1>ON MY WAY</h1>
   </nav>
@@ -234,9 +232,23 @@
     <label for="rangoTiempo">Rango de Tiempo:</label>
     <div id="slider"></div>
   </div>
+  <!-- Tabla para mostrar los resultados -->
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Latitud</th>
+        <th>Longitud</th>
+      </tr>
+    </thead>
+    <tbody id="tablaResultados">
+      <!-- Aquí se mostrarán los resultados de la búsqueda -->
+    </tbody>
+  </table>
 
   <div id="footer-link">
-    <a href="/index.html">On my Way</a>
+    <a href="/data.html">On my Way</a>
   </div>
 
   <!-- JavaScript para la funcionalidad -->
@@ -244,154 +256,156 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
   <script>
-    var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
-    var drawnLayer; // Variable global para almacenar la capa dibujada
+        var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
+        var drawnLayer; // Variable global para almacenar la capa dibujada
+        var trayectos = []; // Matriz para almacenar las coordenadas de los trayectos
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const buscarDatosBtn = document.getElementById('buscarDatos');
-      const tablaResultados = document.getElementById('tablaResultados');
-      const drawnItems = new L.FeatureGroup();
-      map.addLayer(drawnItems);
+        document.addEventListener('DOMContentLoaded', () => {
+          const buscarDatosBtn = document.getElementById('buscarDatos');
+          const tablaResultados = document.getElementById('tablaResultados');
+          const drawnItems = new L.FeatureGroup();
+          map.addLayer(drawnItems);
 
-      const drawControl = new L.Control.Draw({
-        draw: {
-          polygon: false, // Permitir dibujar polígonos
-          polyline: false,
-          rectangle: true, // Permitir dibujar rectángulos
-          circle: false,
-          marker: false,
-          circlemarker: false,
-        },
-        edit: {
-          featureGroup: drawnItems,
-        },
-      });
+          const drawControl = new L.Control.Draw({
+            draw: {
+              polygon: false,
+              polyline: false,
+              rectangle: true,
+              circle: false,
+              marker: false,
+              circlemarker: false,
+            },
+            edit: {
+              featureGroup: drawnItems,
+            },
+          });
 
-      map.addControl(drawControl);
+          map.addControl(drawControl);
 
-      // Escuchar el evento cuando se dibuje en el mapa
-      // Escuchar el evento cuando se dibuje en el mapa
-      map.on('draw:created', (e) => {
-        if (drawnLayer) {
-          drawnItems.removeLayer(drawnLayer);
-        }
-
-        const type = e.layerType;
-        const layer = e.layer;
-
-        if (type === 'polygon' || type === 'rectangle') {
-          // Obtener la geometría del área dibujada
-          const geoJSON = layer.toGeoJSON();
-          const coordinates = geoJSON.geometry.coordinates;
-          const polygon = coordinates[0]; // Obtener las coordenadas del polígono
-
-          // Calcular los límites (bounding box) del polígono dibujado
-          const bounds = layer.getBounds();
-          const latitudMin = bounds.getSouth();
-          const latitudMax = bounds.getNorth();
-          const longitudMin = bounds.getWest();
-          const longitudMax = bounds.getEast();
-
-          // Actualizar los campos de entrada de latitud y longitud en el formulario
-          document.getElementById('latitudMin').value = latitudMin;
-          document.getElementById('latitudMax').value = latitudMax;
-          document.getElementById('longitudMin').value = longitudMin;
-          document.getElementById('longitudMax').value = longitudMax;
-
-          // Agregar la capa dibujada al mapa
-          drawnItems.addLayer(layer);
-          
-          // Asignar la capa dibujada a la variable drawnLayer
-          drawnLayer = layer;
-        }
-      });
-
-      buscarDatosBtn.addEventListener('click', () => {
-        // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
-        const fechaInicio = document.getElementById('fechaInicio').value;
-        const horaInicio = document.getElementById('horaInicio').value;
-        const fechaFin = document.getElementById('fechaFin').value;
-        const horaFin = document.getElementById('horaFin').value;
-        const latitudMin = document.getElementById('latitudMin').value;
-        const latitudMax = document.getElementById('latitudMax').value;
-        const longitudMin = document.getElementById('longitudMin').value;
-        const longitudMax = document.getElementById('longitudMax').value;
-        
-        // Validar que se ingresen todas las fechas y horas
-        if (!fechaInicio || !horaInicio || !fechaFin || !horaFin) {
-          alert('Por favor, complete todos los campos de fecha y hora.');
-          return;
-        }
-
-        // Convertir las fechas y horas a objetos Date para comparar
-        const fechaInicioObj = new Date(`${fechaInicio}T${horaInicio}`);
-        const fechaFinObj = new Date(`${fechaFin}T${horaFin}`);
-
-        // Validar que la fecha de inicio sea menor que la fecha de fin
-        if (fechaInicioObj >= fechaFinObj) {
-          alert('La fecha de inicio debe ser menor que la fecha de fin.');
-          return;
-        }
-
-        // Validar que se haya dibujado un área en el mapa si no se proporcionan coordenadas
-        if (latitudMin.trim() === '' || latitudMax.trim() === '' || longitudMin.trim() === '' || longitudMax.trim() === '') {
-          alert('Por favor, seleccione un área en el mapa');
-          return;
-        }
-        // Eliminar marcadores anteriores del mapa
-        map.eachLayer((layer) => {
-          if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-          }
-        });
-
-        // Realizar la solicitud al servidor para obtener datos dentro del rango de fechas y horas
-        fetch(`/filterdataposition?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}&latitudMin=${latitudMin}&latitudMax=${latitudMax}&longitudMin=${longitudMin}&longitudMax=${longitudMax}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('La solicitud no fue exitosa');
+          map.on('draw:created', (e) => {
+            if (drawnLayer) {
+              drawnItems.removeLayer(drawnLayer);
             }
-            return response.json();
-          })
-          .then((data) => {
-          console.log('Datos recibidos:', data);
-          tablaResultados.innerHTML = '';
 
-          var markersGroup = L.layerGroup().addTo(map);
+            const type = e.layerType;
+            const layer = e.layer;
 
-          if (data.length === 0) {
-            // Si no se encontraron datos, muestra una alerta
-            alert('No se encontraron datos en esta zona durante este tiempo, intente ampliando la zona o escogiendo otra ventana de tiempo');
-          } else {
-            data.forEach((registro, index) => {
-              const marker = L.marker([registro.latitud, registro.longitud], {
-                icon: L.divIcon({
-                  className: 'custom-icon',
-                  iconSize: [30, 30],
-                  iconAnchor: [15, 30],
-                  html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`,
-                }),
-              });
+            if (type === 'polygon' || type === 'rectangle') {
+              const geoJSON = layer.toGeoJSON();
+              const coordinates = geoJSON.geometry.coordinates;
+              const polygon = coordinates[0];
 
-              markersGroup.addLayer(marker);
-              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-              marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+              const bounds = layer.getBounds();
+              const latitudMin = bounds.getSouth();
+              const latitudMax = bounds.getNorth();
+              const longitudMin = bounds.getWest();
+              const longitudMax = bounds.getEast();
 
-              if (index === data.length - 1) {
-                map.setView([registro.latitud, registro.longitud], 13);
+              document.getElementById('latitudMin').value = latitudMin;
+              document.getElementById('latitudMax').value = latitudMax;
+              document.getElementById('longitudMin').value = longitudMin;
+              document.getElementById('longitudMax').value = longitudMax;
+
+              drawnItems.addLayer(layer);
+              drawnLayer = layer;
+            }
+          });
+
+          buscarDatosBtn.addEventListener('click', () => {
+            const fechaInicio = document.getElementById('fechaInicio').value;
+            const horaInicio = document.getElementById('horaInicio').value;
+            const fechaFin = document.getElementById('fechaFin').value;
+            const horaFin = document.getElementById('horaFin').value;
+            const latitudMin = document.getElementById('latitudMin').value;
+            const latitudMax = document.getElementById('latitudMax').value;
+            const longitudMin = document.getElementById('longitudMin').value;
+            const longitudMax = document.getElementById('longitudMax').value;
+
+            if (!fechaInicio || !horaInicio || !fechaFin || !horaFin) {
+              alert('Por favor, complete todos los campos de fecha y hora.');
+              return;
+            }
+
+            const fechaInicioObj = new Date(`${fechaInicio}T${horaInicio}`);
+            const fechaFinObj = new Date(`${fechaFin}T${horaFin}`);
+
+            if (fechaInicioObj >= fechaFinObj) {
+              alert('La fecha de inicio debe ser menor que la fecha de fin.');
+              return;
+            }
+
+            if (latitudMin.trim() === '' || latitudMax.trim() === '' || longitudMin.trim() === '' || longitudMax.trim() === '') {
+              alert('Por favor, seleccione un área en el mapa');
+              return;
+            }
+
+            map.eachLayer((layer) => {
+              if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
               }
             });
-          }
-        })
-          .catch((error) => {
-            console.error('Error al buscar datos:', error);
+
+            fetch(`/filterdataposition?fechaInicio=${fechaInicio}&horaInicio=${horaInicio}&fechaFin=${fechaFin}&horaFin=${horaFin}&latitudMin=${latitudMin}&latitudMax=${latitudMax}&longitudMin=${longitudMin}&longitudMax=${longitudMax}`)
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error('La solicitud no fue exitosa');
+                }
+                return response.json();
+              })
+              .then((data) => {
+                console.log('Datos recibidos:', data);
+                tablaResultados.innerHTML = '';
+
+                if (data.length === 0) {
+                  alert('No se encontraron datos en esta zona durante este tiempo, intente ampliando la zona o escogiendo otra ventana de tiempo');
+                } else {
+                  data.forEach((registro) => {
+                    trayectos.push([registro.latitud, registro.longitud]);
+                  });
+
+                  var polyline = L.polyline(trayectos, { color: 'blue' }).addTo(map);
+                  polyline.bindPopup(`
+                    <div id="slider-container">
+                      <input type="range" id="trayecto-slider" min="0" max="${trayectos.length - 1}" value="0">
+                      <div id="trayecto-info"></div>
+                    </div>
+                  `);
+
+                  const trayectoSlider = document.getElementById('trayecto-slider');
+                  const trayectoInfo = document.getElementById('trayecto-info');
+
+                  trayectoSlider.addEventListener('input', (event) => {
+                    const sliderValue = parseInt(event.target.value);
+                    polyline.setLatLngs(trayectos.slice(0, sliderValue + 1));
+                    const fechaFormateada = new Date(data[sliderValue].fecha).toISOString().split('T')[0];
+                    trayectoInfo.textContent = `Fecha: ${fechaFormateada}, Hora: ${data[sliderValue].hora}`;
+                  });
+
+                  tablaResultados.innerHTML = '';
+                  data.forEach((registro) => {
+                    const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
+                    const row = tablaResultados.insertRow();
+                    const fechaCell = row.insertCell(0);
+                    const horaCell = row.insertCell(1);
+                    const latitudCell = row.insertCell(2);
+                    const longitudCell = row.insertCell(3);
+                    fechaCell.textContent = fechaFormateada;
+                    horaCell.textContent = registro.hora;
+                    latitudCell.textContent = registro.latitud;
+                    longitudCell.textContent = registro.longitud;
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error('Error al buscar datos:', error);
+              });
           });
-      });
-    });
+        });
+
   </script>
 </body>
 </html>
