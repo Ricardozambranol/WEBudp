@@ -94,6 +94,7 @@
   }
   #info-box {
     width: 15%; /* Ancho deseado */
+    height: 140px;
     float: left; /* Coloca la caja a la izquierda */
     padding: 0px; /* Agrega espacio interno */
     margin-right: 1%; /* Espaciado derecho para separar del mapa */
@@ -101,6 +102,7 @@
     margin-left: 2%; 
     background-color: white; /* Fondo blanco */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    text-align: center; /* Centrar el texto */
   }
 
   /* Estilo para el mapa Leaflet */
@@ -326,7 +328,7 @@
 
 <h2>Mapa de Datos:</h2>
 <div id="info-box">
-  <!-- Aquí se mostrará la información del punto señalado -->
+  <p>Seleccione un dato en el mapa para ver sus detalles</p>
 </div>
 <div class="leaflet-map-container">
   <div id="map-container" class="leaflet-map"></div>
