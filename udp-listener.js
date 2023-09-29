@@ -1,6 +1,6 @@
 const dgram = require('dgram');
 const mysql = require('mysql2');
-//const fetch = require('node-fetch'); // Importar el módulo node-fetch
+const fetch = require('node-fetch'); // Importar el módulo node-fetch
 
 // Configuración del socket UDP
 const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
@@ -115,7 +115,7 @@ fetch('https://api.ipify.org?format=json')
   })
   .catch(error => {
     console.error('Error al obtener la dirección IP pública:', error);
-});
+  });
 
 
 
