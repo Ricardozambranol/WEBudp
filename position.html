@@ -558,6 +558,7 @@
               marker.on('click', () => {
                 const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
                 infoBox.innerHTML = `
+                  <strong>Dato:</strong> ${posicion + 1} de ${datos.length}<br>
                   <strong>Fecha:</strong> ${fechaFormateada}<br>
                   <strong>Hora:</strong>${registro.hora}<br>
                   <strong>Latitud:</strong> ${registro.latitud}<br>
@@ -641,7 +642,15 @@
             });
             markersGroup.addLayer(marker);
             const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-            marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+            // Muestra el número del dato en el info-box
+            infoBox.innerHTML = `
+              <strong>Dato:</strong> ${posicion + 1} de ${datos.length}<br>
+              <strong>Fecha:</strong> ${fechaFormateada}<br>
+              <strong>Hora:</strong>${registro.hora}<br>
+              <strong>Latitud:</strong> ${registro.latitud}<br>
+              <strong>Longitud:</strong> ${registro.longitud}
+            `;
+
             map.setView([registro.latitud, registro.longitud], 13);
           }
         })
