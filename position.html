@@ -112,7 +112,9 @@
 
     /* Estilo para la tabla de datos */
     table {
-      width: 100%;
+      width: 60%; /* Establece el ancho de la tabla en el 80% del contenedor padre */
+      margin-right: 20%; /* Agrega un margen del 20% a la derecha de la tabla */
+      margin-left: 20%; /* Agrega un margen del 20% a la izquierda de la tabla */
       border-collapse: collapse;
       margin-top: 20px;
       display: none;
@@ -169,14 +171,18 @@
       cursor: pointer; /* Cambia el cursor a un puntero */
       z-index: 999; /* Asegura que esté por encima de otros elementos */
       transition: background-color 0.3s ease; /* Agregar transición suave para el cambio de fondo */
+      overflow: hidden; /* Oculta el desbordamiento */
+      text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto si no cabe */
     }
     #instructions-container:hover {
       background-color: rgba(236, 236, 236, 0.9); /* Oscurecer el fondo al pasar el mouse */
     }
+    
     #instructions-container.collapsed {
-      width: 15px; /* Ancho mínimo cuando está contraído */
+      width: 15%; /* Ancho mínimo cuando está contraído */
       overflow: hidden; /* Ocultar el contenido cuando está contraído */
       transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
+      text-overflow: ellipsis;
     }
 
     /* Estilo para el contenedor de instrucciones expandido */
@@ -214,6 +220,16 @@
     /* Cambiar el estilo al pasar el mouse sobre el botón */
     #toggleTable:hover {
       background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
+    }
+    .borrar-button {
+      background-color: #343363; /* Color de fondo rojo */
+      color: white; /* Color del texto */
+      border: none; /* Elimina el borde */
+      border-radius: 5px; /* Borde redondeado */
+      cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+      padding: 5px 10px; /* Espaciado interno */
+      font-size: 14px; /* Tamaño de fuente */
+      margin-right: 5px; /* Espaciado a la derecha */
     }
   </style>
 </head>
@@ -260,7 +276,7 @@
 </div>
 
 <div id="instructions-container">
-  <li>Click aquí para minimizar</li>
+  <li>Click aquí para reducir y ampliar tamaño</li>
   <h2><strong>Instrucciones:</strong></h2>
   <ol>
     <li>Ingrese la <strong>Fecha de Inicio</strong> y la <strong>Hora de Inicio</strong>.</li>
@@ -288,6 +304,7 @@
         <th>Hora</th>
         <th>Latitud</th>
         <th>Longitud</th>
+        <th>Ver Ubicacion</th> <!-- Nueva columna para el botón de acción -->
       </tr>
     </thead>
     <tbody id="tablaResultados">
@@ -502,10 +519,35 @@
               const horaCell = row.insertCell(1);
               const latitudCell = row.insertCell(2);
               const longitudCell = row.insertCell(3);
+              const accionesCell = row.insertCell(4); // Nueva celda para las acciones
+
               fechaCell.textContent = fechaFormateada;
               horaCell.textContent = registro.hora;
               latitudCell.textContent = registro.latitud;
               longitudCell.textContent = registro.longitud;
+
+              // Agrega el botón de acción y le asigna un manejador de eventos
+              const borrarBoton = document.createElement('button');
+              borrarBoton.textContent = 'Borrar Puntos';
+              borrarBoton.classList.add('borrar-button');
+              borrarBoton.addEventListener('click', () => {
+                // Limpia el mapa de todos los marcadores excepto el punto seleccionado
+                markersGroup.clearLayers();
+                const marker = L.marker([registro.latitud, registro.longitud], {
+                  icon: L.divIcon({
+                    className: 'custom-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 30],
+                    html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`,
+                  }),
+                });
+                markersGroup.addLayer(marker);
+                const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
+                marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+                map.setView([registro.latitud, registro.longitud], 13);
+              });
+
+              accionesCell.appendChild(borrarBoton);
             });
           }
         })
