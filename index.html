@@ -11,162 +11,272 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
 />
 
-  <style>
-    /* Estilo para el cuerpo del documento */
-    body {
-      margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
-      font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
-      padding: 0;
-      background-color: #f2f2f2;
-    }
+<style>
+  /* Estilo para el cuerpo del documento */
+  body {
+    margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
+    font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
+    padding: 0;
+    background-color: #f2f2f2;
+  }
 
-    /* Estilo para la barra de navegación */
-    .navbar {
-      background-color: #333;
-      overflow: hidden;
-      position: fixed; /* Fijar la barra de navegación en la parte superior */
-      top: 0; /* Colocar la barra de navegación en la parte superior */
-      left: 0; /* Cambiar la posición izquierda a 0 para que no se superponga */
-      width: 100%; /* Ancho completo */
-      color: white; /* Color del texto */
-      font-family: 'Source Sans Pro', sans-serif;
-      z-index: 999; /* Añadir un valor alto al índice z para que esté por encima del mapa */
-      display: flex; /* Utiliza un contenedor flexible para alinear elementos horizontalmente */
-      justify-content: space-between; /* Espacio entre elementos para alinear el nombre */
-      align-items: center; /* Centra verticalmente los elementos */
-      padding: 10px; /* Añade espacio alrededor de la barra de navegación */
-    }
-    .navbar h1 {
-      color: white;
-      margin: 0;
-      font-size: 24px; /* Tamaño de fuente del nombre de la página */
-      font-weight: bold; /* Establece el grosor de la fuente en negrita */
-      margin-right: 60px; /* Agregar margen izquierdo de 20px */
-      font-family: 'Montserrat', sans-serif; /* Aplica la fuente Montserrat */
-    }
+  /* Estilo para la barra de navegación */
+  .navbar {
+    background-color: #333;
+    overflow: hidden;
+    position: fixed; /* Fijar la barra de navegación en la parte superior */
+    top: 0; /* Colocar la barra de navegación en la parte superior */
+    left: 0; /* Cambiar la posición izquierda a 0 para que no se superponga */
+    width: 100%; /* Ancho completo */
+    color: white; /* Color del texto */
+    font-family: 'Source Sans Pro', sans-serif;
+    z-index: 999; /* Añadir un valor alto al índice z para que esté por encima del mapa */
+    display: flex; /* Utiliza un contenedor flexible para alinear elementos horizontalmente */
+    justify-content: space-between; /* Espacio entre elementos para alinear el nombre */
+    align-items: center; /* Centra verticalmente los elementos */
+    padding: 10px; /* Añade espacio alrededor de la barra de navegación */
+  }
+  .navbar h1 {
+    color: white;
+    margin: 0;
+    font-size: 24px; /* Tamaño de fuente del nombre de la página */
+    font-weight: bold; /* Establece el grosor de la fuente en negrita */
+    margin-right: 60px; /* Agregar margen izquierdo de 20px */
+    font-family: 'Montserrat', sans-serif; /* Aplica la fuente Montserrat */
+  }
 
-    /* Estilos para los enlaces en la barra de navegación */
-    .navbar a {
-      float: right; /* Mover los enlaces a la derecha */
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+  /* Estilos para los enlaces en la barra de navegación */
+  .navbar a {
+    float: right; /* Mover los enlaces a la derecha */
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-weight: bold;
+  }
 
-    /* Cambiar el color del enlace cuando el mouse pasa por encima */
-    .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-      text-decoration: underline;
-    }
+  /* Cambiar el color del enlace cuando el mouse pasa por encima */
+  .navbar a:hover {
+    background-color: #ddd;
+    color: black;
+    text-decoration: underline;
+  }
 
-    .navbar-list {
-      list-style-type: none; /* Elimina los marcadores de lista */
-      margin: 0; /* Elimina el margen exterior de la lista */
-      padding: 0; /* Elimina el espacio interior de la lista */
-      text-align: center; /* Centra los elementos de la lista horizontalmente */
-    }
-    .navbar-item {
+  .navbar-list {
+    list-style-type: none; /* Elimina los marcadores de lista */
+    margin: 0; /* Elimina el margen exterior de la lista */
+    padding: 0; /* Elimina el espacio interior de la lista */
+    text-align: center; /* Centra los elementos de la lista horizontalmente */
+  }
+  .navbar-item {
     display: inline-block; /* Muestra los elementos en línea */
     margin-right: 20px; /* Espacio entre elementos */
-    }
+  }
 
-    .navbar-item:last-child {
-        margin-right: 0; /* Elimina el margen derecho del último elemento */
-    }
+  .navbar-item:last-child {
+    margin-right: 0; /* Elimina el margen derecho del último elemento */
+  }
 
-    .navbar-item a {
-        text-decoration: none; /* Elimina la subraya de los enlaces */
-        color: white; /* Color del texto de los enlaces */
-        font-weight: bold; /* Establece el grosor de la fuente en negrita */
-    }
+  .navbar-item a {
+    text-decoration: none; /* Elimina la subraya de los enlaces */
+    color: white; /* Color del texto de los enlaces */
+    font-weight: bold; /* Establece el grosor de la fuente en negrita */
+  }
 
-    .navbar-item a:hover {
-        text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
-    }
-    /* Asegurarse de que los controles de zoom estén por debajo de la barra de navegación */
+  .navbar-item a:hover {
+    text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
+  }
 
-    /* Botones de Zoom en Leaflet */
-    .leaflet-top.leaflet-left .leaflet-control-zoom {
-        display: none;
-    }
+  /* Estilo para el encabezado principal */
+  h1, h2 {
+    color: #333; /* Color del texto */
+    text-align: left; /* Centrar el texto */
+    margin-left: 5%; /* Agregar margen izquierdo de 20px */
+  }
+  #info-box {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    width: 15%; /* Ancho deseado */
+    height: 200px;
+    float: left; /* Coloca la caja a la izquierda */
+    padding: 0px; /* Agrega espacio interno */
+    margin-right: 1%; /* Espaciado derecho para separar del mapa */
+    margin-top: 8%; 
+    margin-left: 2%; 
+    background-color: white; /* Fondo blanco */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    display: flex; /* Utiliza flexbox */
+    flex-direction: column; /* Apila elementos verticalmente */
+    text-align: center; /* Centrar el texto */
+    justify-content: center; /* Centra verticalmente */
+  }
 
-    /* Estilo para el encabezado principal */
-    h1, h2 {
-      color: #333; /* Color del texto */
-      text-align: left; /* Centrar el texto */
-      margin-left: 5%; /* Agregar margen izquierdo de 20px */
-    }
+  /* Estilo para el mapa Leaflet */
+  .leaflet-map-container {
+    width: 60%;
+    text-align: center;
+    border: 5px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
+    z-index: 0;
+    margin: 0 auto;
+  }
 
-    /* Estilo para el mapa Leaflet */
-    .leaflet-map-container {
-      width: 60%;
-      text-align: center;
-      border: 5px solid #ddd;
-      padding: 10px;
-      box-sizing: border-box;
-      margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
-      z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
-      margin: 0 auto;
-    }
-    /* Ajustar la altura del mapa al espacio restante */
-    .leaflet-map {
-      height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
-    }
+  /* Ajustar la altura del mapa al espacio restante */
+  .leaflet-map {
+    height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
+  }
 
-    /* Estilo para la tabla de datos */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+  /* Estilo para la tabla de datos */
+  table {
+    width: 60%; /* Establece el ancho de la tabla en el 80% del contenedor padre */
+    margin-right: 20%; /* Agrega un margen del 20% a la derecha de la tabla */
+    margin-left: 20%; /* Agrega un margen del 20% a la izquierda de la tabla */
+    border-collapse: collapse;
+    margin-top: 20px;
+    display: none;
+  }
 
-    th, td {
-      border: 1px solid #a3a3a3;
-      padding: 8px;
-      text-align: center;
-    }
+  th, td {
+    border: 1px solid #a3a3a3;
+    padding: 8px;
+    text-align: center;
+  }
 
-    th {
-      background-color: #d3d3d3;
-    }  
-    /* Estilo para el contenedor del contenido que quieres mover */
-    #info-container {
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      margin-left: 8%; /* Agregar margen izquierdo de 20px */
-      display: none;
-    }
-    #instructions-container {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 14px;
-      width: 15%;
-      position: fixed; /* Fijar el contenedor en una posición */
-      top: 60px; /* Espacio desde la parte superior, teniendo en cuenta la barra de navegación */
-      right: 2%; /* Margen derecho */
-      background-color: white; /* Fondo blanco */
-      padding: 20px; /* Espaciado interno */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
-      z-index: 999; /* Asegura que esté por encima de otros elementos */
-    }
-    #footer-link {
-    background-color: #f2f2f2; /* Fondo gris claro */
-    text-align: center; /* Alinea el texto al centro */
-    padding: 10px; /* Agrega un espacio alrededor del texto */
-    font-size: 12px; /* Tamaño de fuente de 12px */
-    }
+  th {
+    background-color: #d3d3d3;
+  }
 
-    /* Estilo para el texto subrayado */
-    #footer-link a {
-      text-decoration: underline; /* Subraya el enlace */
-      color: #333; /* Color de texto gris oscuro */
-    }
+  /* Estilo para el contenedor del contenido que quieres mover */
+  #info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-left: 8%; /* Agregar margen izquierdo de 20px */
+  }
+  #info-position {
+    display: none;
+  }
 
-  </style>
+  /* Estilo para el botón "Buscar Datos" */
+  #buscarDatos {
+    width: 180px; /* Ancho deseado */
+    height: 40px; /* Alto deseado */
+    font-size: 18px; /* Tamaño de fuente deseado */
+    background-color: #a3a3a3; /* Color de fondo */
+    color: white; /* Color de texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    margin-top: 20px; /* Espaciado superior */
+  }
+
+  /* Cambiar el estilo al pasar el mouse sobre el botón */
+  #buscarDatos:hover {
+    background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
+  }
+  #instructions-container {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    width: 15%;
+    position: fixed;
+    top: 60px;
+    right: 2%;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;  
+    z-index: 999;
+    transition: background-color 0.3s ease, max-height 0.3s ease; /* Agregamos max-height aquí */
+    max-height: 300px; /* Altura máxima predeterminada */
+    overflow-y: auto; /* Habilitar el desplazamiento vertical si el contenido se desborda */
+  }
+
+  #instructions-container:hover {
+    background-color: rgba(236, 236, 236, 0.9);
+  }
+
+  #instructions-container.collapsed {
+    width: 15%;
+    max-height: 60px; /* Altura máxima cuando está colapsado */
+    overflow: hidden;
+  }
+
+  #instructions-container.expanded {
+    width: 15%;
+    max-height: 300px; /* Altura máxima cuando está expandido */
+    overflow-y: auto; /* Habilitar el desplazamiento vertical si es necesario */
+  }
+
+  #footer-link {
+  background-color: #f2f2f2; /* Fondo gris claro */
+  text-align: center; /* Alinea el texto al centro */
+  padding: 10px; /* Agrega un espacio alrededor del texto */
+  font-size: 12px; /* Tamaño de fuente de 12px */
+  }
+
+  /* Estilo para el texto subrayado */
+  #footer-link a {
+    text-decoration: underline; /* Subraya el enlace */
+    color: #333; /* Color de texto gris oscuro */
+  }
+  #toggleTable {
+    width: 30%; /* Ancho deseado */
+    height: 40px; /* Alto deseado */
+    font-size: 18px; /* Tamaño de fuente deseado */
+    background-color: #a3a3a3; /* Color de fondo */
+    color: white; /* Color de texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    margin-top: 20px; /* Espaciado superior */
+    margin-left: 35%; /* Agregar margen izquierdo de 20px */
+    margin-right: 35%; /* Agregar margen izquierdo de 20px */
+  }
+
+  /* Cambiar el estilo al pasar el mouse sobre el botón */
+  #toggleTable:hover {
+    background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
+  }
+  .borrar-button {
+    background-color: #343363; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    padding: 5px 10px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    margin-right: 5px; /* Espaciado a la derecha */
+  }
+  .button-container {
+    text-align: center; /* Centrar contenido horizontalmente */
+    margin-top: 20px; /* Espacio superior (ajusta según sea necesario) */
+  }
+  /* Estilo para los botones "Anterior" y "Siguiente" */
+  #mostrarAnterior,
+  #mostrarSiguiente {
+    width: 10%; /* Ancho deseado */
+    height: 10%; /* Alto deseado */
+    background-color: #343363; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    padding: 5px 10px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    display: inline-block; /* Coloca los botones en línea uno al lado del otro */
+    margin-right: 5px; /* Agregar un margen derecho para separar los botones */
+  }
+
+  /* Estilo para los botones "Anterior" y "Siguiente" al pasar el mouse sobre ellos */
+  #mostrarAnterior:hover,
+  #mostrarSiguiente:hover {
+    background-color: #555; /* Color de fondo al pasar el mouse */
+  }
+
+</style>
 </head>
 
 <body>
@@ -181,7 +291,7 @@
   </nav>
 
   <h1>Ubicaciones GPS en tiempo real:</h1>
-  <div id="info-container">
+  <div id="info-box">
     <div id="remitente"></div>
     <div id="mensaje"></div>
     <div id="latitud"></div>
