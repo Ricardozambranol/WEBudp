@@ -146,17 +146,28 @@
     height: 20px; /* Alto deseado */
     font-size: 14px; /* Tamaño de fuente deseado */
     }
+    #footer-link {
+    background-color: #f2f2f2; /* Fondo gris claro */
+    text-align: center; /* Alinea el texto al centro */
+    padding: 10px; /* Agrega un espacio alrededor del texto */
+    font-size: 12px; /* Tamaño de fuente de 12px */
+    }
+
+    /* Estilo para el texto subrayado */
+    #footer-link a {
+      text-decoration: underline; /* Subraya el enlace */
+      color: #333; /* Color de texto gris oscuro */
+    }
     </style>
 <body>
-    <nav class="navbar">
-      <ul class="navbar-list">
-        <li class="navbar-item"><a href="/">INICIO</a></li>
-        <li class="navbar-item"><a href="/data.html">DATA</a></li>
-        <li class="navbar-item"><a href="/time.html">TIME</a></li>
-        <li class="navbar-item"><a href="/position.html">POSITION</a></li>
-      </ul>
-      <h1>ON MY WAY</h1>
-    </nav> 
+  <nav class="navbar">
+    <ul class="navbar-list">
+      <li class="navbar-item"><a href="/">INICIO</a></li>
+      <li class="navbar-item"><a href="/time.html">HISTORICO TIEMPO</a></li>
+      <li class="navbar-item"><a href="/position.html">HISTORICO POSICION</a></li>
+    </ul>
+    <h1>ON MY WAY</h1>
+  </nav>
     <h2>Buscar Datos por Rango de Fechas</h2>
 
     <!-- Formulario para ingresar el rango de fechas -->
@@ -198,9 +209,10 @@
       </tbody>
     </table>
 
-    <!-- Agregar un contenedor para el mapa -->
+    <div id="footer-link">
+      <a href="/">On my Way</a>
+    </div>
     
-
     <!-- JavaScript para la funcionalidad -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>

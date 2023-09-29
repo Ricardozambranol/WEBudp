@@ -8,184 +8,322 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
-  <style>
-    /* Estilo para el cuerpo del documento */
-    body {
-      margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
-      font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
-      padding: 0;
-      background-color: #f2f2f2;
-    }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.css">
+<style>
+  /* Estilo para el cuerpo del documento */
+  body {
+    margin-top: 80px; /* Ajusta según la altura de tu barra de navegación */
+    font-family: Arial, sans-serif; /* Cambia la fuente a Arial y luego a fuentes genéricas sans-serif */
+    padding: 0;
+    background-color: #f2f2f2;
+  }
 
-    /* Estilo para la barra de navegación */
-    .navbar {
-      background-color: #333;
-      overflow: hidden;
-      position: fixed; /* Fijar la barra de navegación en la parte superior */
-      top: 0; /* Colocar la barra de navegación en la parte superior */
-      left: 0; /* Cambiar la posición izquierda a 0 para que no se superponga */
-      width: 100%; /* Ancho completo */
-      color: white; /* Color del texto */
-      font-family: 'Source Sans Pro', sans-serif;
-      z-index: 999; /* Añadir un valor alto al índice z para que esté por encima del mapa */
-      display: flex; /* Utiliza un contenedor flexible para alinear elementos horizontalmente */
-      justify-content: space-between; /* Espacio entre elementos para alinear el nombre */
-      align-items: center; /* Centra verticalmente los elementos */
-      padding: 10px; /* Añade espacio alrededor de la barra de navegación */
-    }
-    .navbar h1 {
-      color: white;
-      margin: 0;
-      font-size: 24px; /* Tamaño de fuente del nombre de la página */
-      font-weight: bold; /* Establece el grosor de la fuente en negrita */
-      margin-right: 60px; /* Agregar margen izquierdo de 20px */
-      font-family: 'Montserrat', sans-serif; /* Aplica la fuente Montserrat */
-    }
+  /* Estilo para la barra de navegación */
+  .navbar {
+    background-color: #333;
+    overflow: hidden;
+    position: fixed; /* Fijar la barra de navegación en la parte superior */
+    top: 0; /* Colocar la barra de navegación en la parte superior */
+    left: 0; /* Cambiar la posición izquierda a 0 para que no se superponga */
+    width: 100%; /* Ancho completo */
+    color: white; /* Color del texto */
+    font-family: 'Source Sans Pro', sans-serif;
+    z-index: 999; /* Añadir un valor alto al índice z para que esté por encima del mapa */
+    display: flex; /* Utiliza un contenedor flexible para alinear elementos horizontalmente */
+    justify-content: space-between; /* Espacio entre elementos para alinear el nombre */
+    align-items: center; /* Centra verticalmente los elementos */
+    padding: 10px; /* Añade espacio alrededor de la barra de navegación */
+  }
+  .navbar h1 {
+    color: white;
+    margin: 0;
+    font-size: 24px; /* Tamaño de fuente del nombre de la página */
+    font-weight: bold; /* Establece el grosor de la fuente en negrita */
+    margin-right: 60px; /* Agregar margen izquierdo de 20px */
+    font-family: 'Montserrat', sans-serif; /* Aplica la fuente Montserrat */
+  }
 
-    /* Estilos para los enlaces en la barra de navegación */
-    .navbar a {
-      float: right; /* Mover los enlaces a la derecha */
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+  /* Estilos para los enlaces en la barra de navegación */
+  .navbar a {
+    float: right; /* Mover los enlaces a la derecha */
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-weight: bold;
+  }
 
-    /* Cambiar el color del enlace cuando el mouse pasa por encima */
-    .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-      text-decoration: underline;
-    }
+  /* Cambiar el color del enlace cuando el mouse pasa por encima */
+  .navbar a:hover {
+    background-color: #ddd;
+    color: black;
+    text-decoration: underline;
+  }
 
-    .navbar-list {
-      list-style-type: none; /* Elimina los marcadores de lista */
-      margin: 0; /* Elimina el margen exterior de la lista */
-      padding: 0; /* Elimina el espacio interior de la lista */
-      text-align: center; /* Centra los elementos de la lista horizontalmente */
-    }
-    .navbar-item {
-      display: inline-block; /* Muestra los elementos en línea */
-      margin-right: 20px; /* Espacio entre elementos */
-    }
+  .navbar-list {
+    list-style-type: none; /* Elimina los marcadores de lista */
+    margin: 0; /* Elimina el margen exterior de la lista */
+    padding: 0; /* Elimina el espacio interior de la lista */
+    text-align: center; /* Centra los elementos de la lista horizontalmente */
+  }
+  .navbar-item {
+    display: inline-block; /* Muestra los elementos en línea */
+    margin-right: 20px; /* Espacio entre elementos */
+  }
 
-    .navbar-item:last-child {
-      margin-right: 0; /* Elimina el margen derecho del último elemento */
-    }
+  .navbar-item:last-child {
+    margin-right: 0; /* Elimina el margen derecho del último elemento */
+  }
 
-    .navbar-item a {
-      text-decoration: none; /* Elimina la subraya de los enlaces */
-      color: white; /* Color del texto de los enlaces */
-      font-weight: bold; /* Establece el grosor de la fuente en negrita */
-    }
+  .navbar-item a {
+    text-decoration: none; /* Elimina la subraya de los enlaces */
+    color: white; /* Color del texto de los enlaces */
+    font-weight: bold; /* Establece el grosor de la fuente en negrita */
+  }
 
-    .navbar-item a:hover {
-      text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
-    }
+  .navbar-item a:hover {
+    text-decoration: underline; /* Subraya los enlaces al pasar el mouse sobre ellos */
+  }
 
-    /* Estilo para el encabezado principal */
-    h1, h2 {
-      color: #333; /* Color del texto */
-      text-align: left; /* Centrar el texto */
-      margin-left: 5%; /* Agregar margen izquierdo de 20px */
-    }
+  /* Estilo para el encabezado principal */
+  h1, h2 {
+    color: #333; /* Color del texto */
+    text-align: left; /* Centrar el texto */
+    margin-left: 5%; /* Agregar margen izquierdo de 20px */
+  }
 
-    /* Estilo para el mapa Leaflet */
-    .leaflet-map-container {
-      width: 60%;
-      text-align: center;
-      border: 5px solid #ddd;
-      padding: 10px;
-      box-sizing: border-box;
-      margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
-      z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
-      margin: 0 auto;
-    }
+  /* Estilo para el mapa Leaflet */
+  .leaflet-map-container {
+    width: 60%;
+    text-align: center;
+    border: 5px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
+    z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
+    margin: 0 auto;
+  }
 
-    /* Ajustar la altura del mapa al espacio restante */
-    .leaflet-map {
-      height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
-    }
+  /* Ajustar la altura del mapa al espacio restante */
+  .leaflet-map {
+    height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
+  }
 
-    /* Estilo para la tabla de datos */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+  /* Estilo para la tabla de datos */
+  table {
+    width: 60%; /* Establece el ancho de la tabla en el 80% del contenedor padre */
+    margin-right: 20%; /* Agrega un margen del 20% a la derecha de la tabla */
+    margin-left: 20%; /* Agrega un margen del 20% a la izquierda de la tabla */
+    border-collapse: collapse;
+    margin-top: 20px;
+    display: none;
+  }
 
-    th, td {
-      border: 1px solid #a3a3a3;
-      padding: 8px;
-      text-align: center;
-    }
+  th, td {
+    border: 1px solid #a3a3a3;
+    padding: 8px;
+    text-align: center;
+  }
 
-    th {
-      background-color: #d3d3d3;
-    }
+  th {
+    background-color: #d3d3d3;
+  }
 
-    /* Estilo para el contenedor del contenido que quieres mover */
-    #info-container {
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      margin-left: 8%; /* Agregar margen izquierdo de 20px */
-    }
+  /* Estilo para el contenedor del contenido que quieres mover */
+  #info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-left: 8%; /* Agregar margen izquierdo de 20px */
+  }
+  #info-position {
+    display: none;
+  }
 
-    #buscarDatos {
-      width: 120px; /* Ancho deseado */
-      height: 20px; /* Alto deseado */
-      font-size: 14px; /* Tamaño de fuente deseado */
-    }
-  </style>
+  /* Estilo para el botón "Buscar Datos" */
+  #buscarDatos {
+    width: 180px; /* Ancho deseado */
+    height: 40px; /* Alto deseado */
+    font-size: 18px; /* Tamaño de fuente deseado */
+    background-color: #a3a3a3; /* Color de fondo */
+    color: white; /* Color de texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    margin-top: 20px; /* Espaciado superior */
+  }
+
+  /* Cambiar el estilo al pasar el mouse sobre el botón */
+  #buscarDatos:hover {
+    background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
+  }
+  #instructions-container {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    width: 15%;
+    position: fixed; /* Fijar el contenedor en una posición */
+    top: 60px; /* Espacio desde la parte superior, teniendo en cuenta la barra de navegación */
+    right: 2%; /* Margen derecho */
+    background-color: white; /* Fondo blanco */
+    padding: 20px; /* Espaciado interno */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    cursor: pointer; /* Cambia el cursor a un puntero */
+    z-index: 999; /* Asegura que esté por encima de otros elementos */
+    transition: background-color 0.3s ease; /* Agregar transición suave para el cambio de fondo */
+    overflow: hidden; /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto si no cabe */
+  }
+  #instructions-container:hover {
+    background-color: rgba(236, 236, 236, 0.9); /* Oscurecer el fondo al pasar el mouse */
+  }
+  
+  #instructions-container.collapsed {
+    width: 15%; /* Ancho mínimo cuando está contraído */
+    overflow: hidden; /* Ocultar el contenido cuando está contraído */
+    transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
+    text-overflow: ellipsis;
+  }
+
+  /* Estilo para el contenedor de instrucciones expandido */
+  #instructions-container.expanded {
+    width: 15%; /* Ancho deseado cuando está expandido */
+    transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
+  }
+
+  #footer-link {
+  background-color: #f2f2f2; /* Fondo gris claro */
+  text-align: center; /* Alinea el texto al centro */
+  padding: 10px; /* Agrega un espacio alrededor del texto */
+  font-size: 12px; /* Tamaño de fuente de 12px */
+  }
+
+  /* Estilo para el texto subrayado */
+  #footer-link a {
+    text-decoration: underline; /* Subraya el enlace */
+    color: #333; /* Color de texto gris oscuro */
+  }
+  #toggleTable {
+    width: 30%; /* Ancho deseado */
+    height: 40px; /* Alto deseado */
+    font-size: 18px; /* Tamaño de fuente deseado */
+    background-color: #a3a3a3; /* Color de fondo */
+    color: white; /* Color de texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    margin-top: 20px; /* Espaciado superior */
+    margin-left: 35%; /* Agregar margen izquierdo de 20px */
+    margin-right: 35%; /* Agregar margen izquierdo de 20px */
+  }
+
+  /* Cambiar el estilo al pasar el mouse sobre el botón */
+  #toggleTable:hover {
+    background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
+  }
+  .borrar-button {
+    background-color: #343363; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    padding: 5px 10px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    margin-right: 5px; /* Espaciado a la derecha */
+  }
+  .button-container {
+    text-align: center; /* Centrar contenido horizontalmente */
+    margin-top: 20px; /* Espacio superior (ajusta según sea necesario) */
+  }
+  /* Estilo para los botones "Anterior" y "Siguiente" */
+  #mostrarAnterior,
+  #mostrarSiguiente {
+    width: 10%; /* Ancho deseado */
+    height: 10%; /* Alto deseado */
+    background-color: #343363; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    padding: 5px 10px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    display: inline-block; /* Coloca los botones en línea uno al lado del otro */
+    margin-right: 5px; /* Agregar un margen derecho para separar los botones */
+  }
+
+  /* Estilo para los botones "Anterior" y "Siguiente" al pasar el mouse sobre ellos */
+  #mostrarAnterior:hover,
+  #mostrarSiguiente:hover {
+    background-color: #555; /* Color de fondo al pasar el mouse */
+  }
+
+</style>
 </head>
 <body>
   <nav class="navbar">
     <ul class="navbar-list">
       <li class="navbar-item"><a href="/">INICIO</a></li>
-      <li class="navbar-item"><a href="/data.html">DATA</a></li>
-      <li class="navbar-item"><a href="/time.html">TIME</a></li>
-      <li class="navbar-item"><a href="/position.html">POSITION</a></li>
+      <li class="navbar-item"><a href="/time.html">HISTORICO TIEMPO</a></li>
+      <li class="navbar-item"><a href="/position.html">HISTORICO POSICION</a></li>
     </ul>
     <h1>ON MY WAY</h1>
   </nav>
-  <h2>Buscar Datos de Posición</h2>
+  <h2>Buscar Datos por tiempo y posición</h2>
 
 <!-- Formulario para ingresar el rango de fechas y coordenadas -->
 <div id="info-container">
   <div>
     <label for="fechaInicio">Fecha de Inicio:</label>
-    <input type="date" id="fechaInicio">
+    <input type="date" id="fechaInicio" value="2023-09-01">
     <label for="horaInicio">Hora de Inicio:</label>
-    <input type="time" id="horaInicio">
+    <input type="time" id="horaInicio" value="00:00">
   </div>
   <div>
     <label for="fechaFin">Fecha de Fin:</label>
-    <input type="date" id="fechaFin">
+    <input type="date" id="fechaFin" value="2023-09-30">
     <label for="horaFin">Hora de Fin:</label>
-    <input type="time" id="horaFin">
+    <input type="time" id="horaFin" value="00:00">
   </div>
-  <div>
-    <label for="latitudMin">Latitud Mínima:</label>
-    <input type="number" id="latitudMin" name="latitudMin"> <!-- Agrega el atributo name -->
-    <label for="latitudMax">Latitud Máxima:</label>
-    <input type="number" id="latitudMax" name="latitudMax"> <!-- Agrega el atributo name -->
-  </div>
-  <div>
-    <label for="longitudMin">Longitud Mínima:</label>
-    <input type="number" id="longitudMin" name="longitudMin"> <!-- Agrega el atributo name -->
-    <label for="longitudMax">Longitud Máxima:</label>
-    <input type="number" id="longitudMax" name="longitudMax"> <!-- Agrega el atributo name -->
+  <div id="info-position">
+    <div>
+      <label for="latitudMin">Latitud Mínima:</label>
+      <input type="number" id="latitudMin" name="latitudMin"> <!-- Agrega el atributo name -->
+      <label for="latitudMax">Latitud Máxima:</label>
+      <input type="number" id="latitudMax" name="latitudMax"> <!-- Agrega el atributo name -->
+    </div>
+    <div>
+      <label for="longitudMin">Longitud Mínima:</label>
+      <input type="number" id="longitudMin" name="longitudMin"> <!-- Agrega el atributo name -->
+      <label for="longitudMax">Longitud Máxima:</label>
+      <input type="number" id="longitudMax" name="longitudMax"> <!-- Agrega el atributo name -->
+    </div>
   </div>
   <button id="buscarDatos">Buscar Datos</button>
 </div>
+
+<div id="instructions-container">
+  <li>Click aquí para reducir y ampliar tamaño</li>
+  <h2><strong>Instrucciones:</strong></h2>
+  <ol>
+    <li>Ingrese la <strong>Fecha de Inicio</strong> y la <strong>Hora de Inicio</strong>.</li>
+    <li>Ingrese la <strong>Fecha de Fin</strong> y la <strong>Hora de Fin</strong>.</li>
+    <li>Seleccione un área en el mapa: dibuje un <strong>rectángulo</strong> al hacer clic en el botón correspondiente en el mapa y luego arrastre para seleccionar un área.</li>
+    <li>Las coordenadas de <strong>Latitud Mínima</strong>, <strong>Latitud Máxima</strong>, <strong>Longitud Mínima</strong>, y <strong>Longitud Máxima</strong> se llenarán automáticamente.</li>
+    <li>Una vez que haya ingresado todas las fechas, horas y coordenadas, haga clic en el botón <strong>Buscar Datos</strong>.</li>
+  </ol>
+  <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer clic en "Buscar Datos".</p>
+</div>
+
 
   <h2>Mapa de Datos:</h2>
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
+  <div class="button-container">
+    <button id="mostrarAnterior"><<</button>
+    <button id="mostrarSiguiente">>></button>
+  </div>
+  <button id="toggleTable">Mostrar/Ocultar Tabla</button>
 
   <!-- Tabla para mostrar los resultados -->
   <table>
@@ -195,6 +333,7 @@
         <th>Hora</th>
         <th>Latitud</th>
         <th>Longitud</th>
+        <th>Ver Ubicacion</th> <!-- Nueva columna para el botón de acción -->
       </tr>
     </thead>
     <tbody id="tablaResultados">
@@ -202,19 +341,52 @@
     </tbody>
   </table>
 
+  <div id="footer-link">
+    <a href="/data.html">On my Way</a>
+  </div>
+
   <!-- JavaScript para la funcionalidad -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
   <script>
     var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
+    var drawnLayer; // Variable global para almacenar la capa dibujada
+    let datos = [];
+    let posicionActual = -1;
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
-      const buscarDatosBtn = document.getElementById('buscarDatos');
+      
+      const toggleTableBtn = document.getElementById('toggleTable');
       const tablaResultados = document.getElementById('tablaResultados');
+      const Tabla = document.querySelector('table'); // Selecciona toda la tabla
+
+      // Agrega un manejador de eventos al botón para alternar la visibilidad de la tabla
+      toggleTableBtn.addEventListener('click', () => {
+        if (Tabla.style.display === 'none' || Tabla.style.display === '') {
+          Tabla.style.display = 'table'; // Muestra la tabla si está oculta
+        } else {
+          Tabla.style.display = 'none'; // Oculta la tabla si está visible
+        }
+      });
+      const instructionsContainer = document.getElementById('instructions-container');
+
+      // Agregar un manejador de eventos de clic al contenedor de instrucciones
+      instructionsContainer.addEventListener('click', () => {
+        if (instructionsContainer.style.height === 'auto' || instructionsContainer.style.height === '') {
+          instructionsContainer.style.height = '38px'; // Cambia la altura deseada al hacer clic
+          instructionsContainer.style.overflow = 'hidden'; // Oculta el desbordamiento
+        } else {
+          instructionsContainer.style.height = 'auto'; // Expande la altura al hacer clic nuevamente
+          instructionsContainer.style.overflow = 'visible'; // Muestra el desbordamiento
+        }
+      });
+
+      const buscarDatosBtn = document.getElementById('buscarDatos');
       const drawnItems = new L.FeatureGroup();
       map.addLayer(drawnItems);
 
@@ -235,7 +407,12 @@
       map.addControl(drawControl);
 
       // Escuchar el evento cuando se dibuje en el mapa
+      // Escuchar el evento cuando se dibuje en el mapa
       map.on('draw:created', (e) => {
+        if (drawnLayer) {
+          drawnItems.removeLayer(drawnLayer);
+        }
+
         const type = e.layerType;
         const layer = e.layer;
 
@@ -260,8 +437,35 @@
 
           // Agregar la capa dibujada al mapa
           drawnItems.addLayer(layer);
+          
+          // Asignar la capa dibujada a la variable drawnLayer
+          drawnLayer = layer;
         }
       });
+
+      map.addControl(drawControl);
+
+      // Agregar manejador de eventos para el evento draw:edited
+      map.on('draw:edited', (e) => {
+        // Obtener todas las capas editadas
+        const editedLayers = e.layers;
+
+        // Verificar si hay capas editadas
+        if (editedLayers.getLayers().length > 0) {
+          // Recorrer todas las capas editadas
+          editedLayers.eachLayer((layer) => {
+            if (layer instanceof L.Rectangle) {
+              // Si la capa editada es un rectángulo, actualiza las coordenadas automáticamente
+              const bounds = layer.getBounds();
+              document.getElementById('latitudMin').value = bounds.getSouth();
+              document.getElementById('latitudMax').value = bounds.getNorth();
+              document.getElementById('longitudMin').value = bounds.getWest();
+              document.getElementById('longitudMax').value = bounds.getEast();
+            }
+          });
+        }
+      });
+
 
       buscarDatosBtn.addEventListener('click', () => {
         // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
@@ -273,7 +477,28 @@
         const latitudMax = document.getElementById('latitudMax').value;
         const longitudMin = document.getElementById('longitudMin').value;
         const longitudMax = document.getElementById('longitudMax').value;
+        
+        // Validar que se ingresen todas las fechas y horas
+        if (!fechaInicio || !horaInicio || !fechaFin || !horaFin) {
+          alert('Por favor, complete todos los campos de fecha y hora.');
+          return;
+        }
 
+        // Convertir las fechas y horas a objetos Date para comparar
+        const fechaInicioObj = new Date(`${fechaInicio}T${horaInicio}`);
+        const fechaFinObj = new Date(`${fechaFin}T${horaFin}`);
+
+        // Validar que la fecha de inicio sea menor que la fecha de fin
+        if (fechaInicioObj >= fechaFinObj) {
+          alert('La fecha de inicio debe ser menor que la fecha de fin.');
+          return;
+        }
+
+        // Validar que se haya dibujado un área en el mapa si no se proporcionan coordenadas
+        if (latitudMin.trim() === '' || latitudMax.trim() === '' || longitudMin.trim() === '' || longitudMax.trim() === '') {
+          alert('Por favor, seleccione un área en el mapa');
+          return;
+        }
         // Eliminar marcadores anteriores del mapa
         map.eachLayer((layer) => {
           if (layer instanceof L.Marker) {
@@ -290,57 +515,109 @@
             return response.json();
           })
           .then((data) => {
-            console.log('Datos recibidos:', data); // Muestra los datos en la consola para depuración
-            // Limpiar la tabla de resultados
-            tablaResultados.innerHTML = '';
+          console.log('Datos recibidos:', data);
+          tablaResultados.innerHTML = '';
 
-            // Crear un grupo de marcadores para facilitar la gestión de eventos
-            var markersGroup = L.layerGroup().addTo(map);
+          var markersGroup = L.layerGroup().addTo(map);
 
-            // Recorrer los resultados y agregarlos a la tabla y el mapa
+          if (data.length === 0) {
+            // Si no se encontraron datos, muestra una alerta
+            alert('No se encontraron datos en esta zona durante este tiempo, intente ampliando la zona o escogiendo otra ventana de tiempo');
+          } else {
             data.forEach((registro, index) => {
-              // Agregar un marcador azul en cada punto
               const marker = L.marker([registro.latitud, registro.longitud], {
                 icon: L.divIcon({
-                  className: 'custom-icon', // Clase personalizada para el marcador
-                  iconSize: [30, 30], // Ancho y altura personalizados
-                  iconAnchor: [15, 30], // Alineación del icono en la parte inferior
-                  html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`, // Icono azul de Font Awesome
+                  className: 'custom-icon',
+                  iconSize: [30, 30],
+                  iconAnchor: [15, 30],
+                  html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`,
                 }),
               });
 
-              // Agregar el marcador al grupo
               markersGroup.addLayer(marker);
-              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
-              // Agregar un popup al marcador que muestra la hora y la fecha cuando se hace clic en él
+              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
               marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
 
-              // Centrar el mapa en el último marcador agregado
               if (index === data.length - 1) {
                 map.setView([registro.latitud, registro.longitud], 13);
               }
             });
-            // Limpiar la tabla de resultados
             tablaResultados.innerHTML = '';
-            // Recorrer los resultados y agregarlos a la tabla
             data.forEach((registro) => {
-              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0]; // Formatear la fecha
-              // Crear una nueva fila en la tabla
+              const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
               const row = tablaResultados.insertRow();
-
-              // Crear celdas para cada columna en la tabla
               const fechaCell = row.insertCell(0);
               const horaCell = row.insertCell(1);
               const latitudCell = row.insertCell(2);
               const longitudCell = row.insertCell(3);
+              const accionesCell = row.insertCell(4); // Nueva celda para las acciones
 
-              // Llenar las celdas con los datos correspondientes
               fechaCell.textContent = fechaFormateada;
               horaCell.textContent = registro.hora;
               latitudCell.textContent = registro.latitud;
               longitudCell.textContent = registro.longitud;
+
+              // Agrega el botón de acción y le asigna un manejador de eventos
+              const borrarBoton = document.createElement('button');
+              borrarBoton.textContent = 'Mostrar Ubicación';
+              borrarBoton.classList.add('borrar-button');
+              borrarBoton.addEventListener('click', () => {
+                // Limpia el mapa de todos los marcadores excepto el punto seleccionado
+                markersGroup.clearLayers();
+                const marker = L.marker([registro.latitud, registro.longitud], {
+                  icon: L.divIcon({
+                    className: 'custom-icon',
+                    iconSize: [60, 60],
+                    iconAnchor: [30, 60],
+                    html: `<i class="fas fa-map-marker-alt" style="color: red;"></i>`,
+                  }),
+                });
+                markersGroup.addLayer(marker);
+                const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
+                marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+                map.setView([registro.latitud, registro.longitud], 13);
+              });
+
+              accionesCell.appendChild(borrarBoton);
+              datos.push(registro);
             });
-          })
+          }
+          // Agrega manejadores de eventos para los botones de "Siguiente" y "Anterior"
+          const mostrarSiguienteBtn = document.getElementById('mostrarSiguiente');
+          const mostrarAnteriorBtn = document.getElementById('mostrarAnterior');
+
+          mostrarSiguienteBtn.addEventListener('click', () => {
+            if (posicionActual < datos.length - 1) {
+              posicionActual++;
+              mostrarUbicacionEnMapa(posicionActual);
+            }
+          });
+
+          mostrarAnteriorBtn.addEventListener('click', () => {
+            if (posicionActual > 0) {
+              posicionActual--;
+              mostrarUbicacionEnMapa(posicionActual);
+            }
+          });
+
+          function mostrarUbicacionEnMapa(posicion) {
+            const registro = datos[posicion];
+            // Limpia el mapa de todos los marcadores excepto el punto seleccionado
+            markersGroup.clearLayers();
+            const marker = L.marker([registro.latitud, registro.longitud], {
+              icon: L.divIcon({
+                    className: 'custom-icon',
+                    iconSize: [60, 60],
+                    iconAnchor: [30, 60],
+                    html: `<i class="fas fa-map-marker-alt" style="color: red;"></i>`,
+                  }),
+            });
+            markersGroup.addLayer(marker);
+            const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
+            marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+            map.setView([registro.latitud, registro.longitud], 13);
+          }
+        })
           .catch((error) => {
             console.error('Error al buscar datos:', error);
           });
