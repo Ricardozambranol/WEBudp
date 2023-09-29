@@ -115,7 +115,7 @@ fetch('https://api.ipify.org?format=json')
   })
   .catch(error => {
     console.error('Error al obtener la dirección IP pública:', error);
-  });
+});
 
 
 
