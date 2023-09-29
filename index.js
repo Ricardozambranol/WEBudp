@@ -42,6 +42,10 @@ app.get('/position.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'position.html'));
 });
 
+app.get('/about.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'about.html'));
+});
+
 app.get('/alldata', (req, res) => {
   conexionDB.query('SELECT * FROM mensajes', (error, resultados) => {
     if (error) {
