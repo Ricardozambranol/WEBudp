@@ -30,10 +30,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/about.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'about.html'));
-});
-
 app.get('/data.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'data.html'));
 });
@@ -44,6 +40,10 @@ app.get('/time.html', (req, res) => {
 
 app.get('/position.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'position.html'));
+});
+
+app.get('/about.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'about.html'));
 });
 
 app.get('/alldata', (req, res) => {
