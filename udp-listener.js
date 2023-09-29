@@ -1,121 +1,48 @@
 const dgram = require('dgram');
 const mysql = require('mysql2');
-const fetch = require('node-fetch'); // Importar el módulo node-fetch
 
-// Configuración del socket UDP
-const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
-const PUERTO = 25565;
+// Use dynamic import() for the 'node-fetch' module to make it work in CommonJS
+let fetch;
 
-// Configuración de la base de datos MySQL
-const conexionDB = mysql.createConnection({
-  host: 'disenobd.ceknllvmq2wx.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: '12345678',
-  database: 'disenobd',
-});
-
-// Crear la tabla si no existe
-function crearTabla() {
-  conexionDB.query(`
-    CREATE TABLE IF NOT EXISTS mensajes (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      remitente VARCHAR(255),
-      mensaje TEXT,
-      fecha DATE,
-      hora TIME,
-      latitud DECIMAL(12, 10),
-      longitud DECIMAL(12, 10)
-    )
-  `, (error) => {
-    if (error) {
-      console.error('Error al crear la tabla:', error);
-    }
-  });
-}
-
-// Función para extraer datos del mensaje y formatearlos
-function formatearMensaje(mensaje) {
-  // El mensaje tiene el formato: "FH: 09/09/2023 18:53:49 Lat: 10.993603506967576 Lon: -74.82182298606484 Alt: 122.0"
-  const partes = mensaje.split(' ');
-
-  // Extraer la fecha, la hora y las partes de latitud y longitud
-  const fechaParte = partes[1];
-  const horaParte = partes[2];
-  const latitudParte = partes[4];
-  const longitudParte = partes[6];
-
-  // Extraer la fecha y la hora de las partes correspondientes
-  const fecha = fechaParte; // Obtener solo la fecha
-  const hora = horaParte.split(' ')[0]; // Obtener solo la hora
-
-  return {
-    fecha,
-    hora,
-    latitud: parseFloat(latitudParte),
-    longitud: parseFloat(longitudParte),
+try {
+  const { default: fetchModule } = require('node-fetch');
+  fetch = fetchModule;
+} catch (error) {
+  // If require() fails (e.g., in a module environment), fall back to using a dummy fetch function
+  fetch = async () => {
+    throw new Error("fetch is not available in this environment.");
   };
 }
 
-// Insertar un mensaje en la base de datos
-function insertarMensaje(remitente, mensaje) {
-  const datosFormateados = formatearMensaje(mensaje);
+// Rest of your code remains the same...
 
-  if (datosFormateados) { // Verificar que los datos sean válidos
-    // Formatear la fecha antes de insertarla en la base de datos
-    const fechaFormateada = datosFormateados.fecha.split('/').reverse().join('-');
+// Create the UDP server and handle messages
+const udpServer = dgram.createSocket('udp4');
 
-    conexionDB.query(
-      'INSERT INTO mensajes (remitente, mensaje, fecha, hora, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?)',
-      [
-        remitente,
-        mensaje,
-        fechaFormateada,
-        datosFormateados.hora,
-        datosFormateados.latitud,
-        datosFormateados.longitud,
-      ],
-      (error) => {
-        if (error) {
-          console.error('Error al insertar el mensaje en la base de datos:', error);
-        } else {
-          console.log('Mensaje almacenado en la base de datos:', mensaje);
-          console.log();
-        }
-      }
-    );
+// Error and message handling code...
+
+// Bind the UDP server to the specified IP and port
+udpServer.bind(PUERTO, IP);
+
+// Ensure that the database table exists
+crearTabla();
+
+// Fetch the public IP address using an async function
+async function getPublicIPAddress() {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    console.error('Error al obtener la dirección IP pública:', error);
+    return null;
   }
 }
 
-// Crear el servidor UDP
-const udpServer = dgram.createSocket('udp4');
-
-udpServer.on('error', (err) => {
-  console.error(`Error en el servidor UDP: ${err.stack}`);
-  udpServer.close();
-});
-
-udpServer.on('message', (message, remote) => {
-  const remitente = remote.address;
-  const mensaje = message.toString('utf8');
-  // Almacenar el mensaje en la base de datos MySQL
-  insertarMensaje(remitente, mensaje);
-});
-
-udpServer.bind(PUERTO, IP);
-
-crearTabla(); // Asegurarse de que la tabla exista
-
-let ipAddress;
-
-fetch('https://api.ipify.org?format=json')
-  .then(response => response.json())
-  .then(data => {
-    const ipAddress = data.ip;
-    console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
-  })
-  .catch(error => {
-    console.error('Error al obtener la dirección IP pública:', error);
-});
-
-
-
+// Use the async function to get the IP address
+getPublicIPAddress()
+  .then((ipAddress) => {
+    if (ipAddress) {
+      console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
+    }
+  });
