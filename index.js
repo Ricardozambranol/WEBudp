@@ -42,10 +42,6 @@ app.get('/position.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'position.html'));
 });
 
-app.get('/about.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'about.html'));
-});
-
 app.get('/alldata', (req, res) => {
   conexionDB.query('SELECT * FROM mensajes', (error, resultados) => {
     if (error) {
@@ -168,7 +164,12 @@ app.get('/filterdataposition', (req, res) => {
 
 
 const puerto = 80;
-
 server.listen(puerto, () => {
   console.log(`Servidor web en ejecución`);
+});
+// Inicia el servidor UDP como un proceso secundario
+const udpServerProcess = spawn('node', ['udp-listener.js'], { stdio: 'inherit' });
+
+udpServerProcess.on('exit', (code, signal) => {
+  console.log(`Proceso del servidor UDP finalizado con código: ${code} y señal: ${signal}`);
 });
