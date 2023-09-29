@@ -252,12 +252,6 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
-
-  <div id="slider-container">
-    <label for="slider">Slider:</label>
-    <div id="slider"></div>
-  </div>
- 
   <!-- Tabla para mostrar los resultados -->
   <table>
     <thead>
@@ -282,8 +276,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
   <script>
-        // Configura el slider con el rango y los valores iniciales
-        var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
+    var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
     var drawnLayer; // Variable global para almacenar la capa dibujada
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -291,15 +284,7 @@
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
-
-      noUiSlider.create(slider, {
-        start: 0, // Valor inicial
-        connect: 'lower', // Conectar el control deslizante desde el inicio
-        range: {
-          min: 0,
-          max: data.length - 1, // Suponiendo que 'data' contiene tus registros
-        },
-      });
+      
       const instructionsContainer = document.getElementById('instructions-container');
 
       // Agregar un manejador de eventos de clic al contenedor de instrucciones
@@ -484,73 +469,6 @@
               longitudCell.textContent = registro.longitud;
             });
           }
-          // Obtén una referencia al elemento del slider
-        const slider = document.getElementById('slider');
-
-        // Obtén una referencia al contenedor de resultados de la tabla
-        const tablaResultados = document.getElementById('tablaResultados');
-
-        // Variable para almacenar la posición actual del slider
-        let sliderValue = 0;
-
-        // Función para actualizar el mapa y la tabla según la posición del slider
-        function updateMapAndTable() {
-          // Oculta todos los marcadores en el mapa
-          map.eachLayer((layer) => {
-            if (layer instanceof L.Marker) {
-              map.removeLayer(layer);
-            }
-          });
-
-          // Muestra el marcador en la posición actual del slider
-          const registro = data[sliderValue]; // Suponiendo que 'data' contiene tus registros
-          if (registro) {
-            const marker = L.marker([registro.latitud, registro.longitud], {
-              icon: L.divIcon({
-                className: 'custom-icon',
-                iconSize: [30, 30],
-                iconAnchor: [15, 30],
-                html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`,
-              }),
-            });
-
-            map.addLayer(marker);
-            const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-            marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
-
-            // Centra el mapa en la posición del marcador
-            map.setView([registro.latitud, registro.longitud], 13);
-
-            // Actualiza la tabla de resultados
-            tablaResultados.innerHTML = '';
-            const fechaFormateadaTabla = new Date(registro.fecha).toISOString().split('T')[0];
-            const row = tablaResultados.insertRow();
-            const fechaCell = row.insertCell(0);
-            const horaCell = row.insertCell(1);
-            const latitudCell = row.insertCell(2);
-            const longitudCell = row.insertCell(3);
-            fechaCell.textContent = fechaFormateadaTabla;
-            horaCell.textContent = registro.hora;
-            latitudCell.textContent = registro.latitud;
-            longitudCell.textContent = registro.longitud;
-          }
-        }
-
-
-        // Agrega un evento al cambiar el valor del slider
-        slider.noUiSlider.on('update', (values, handle) => {
-          sliderValue = Math.round(values[handle]);
-          updateMapAndTable();
-        });
-
-        // Agrega un manejador de eventos al botón "Buscar Datos" para desactivar el slider
-        buscarDatosBtn.addEventListener('click', () => {
-          // Restablece el slider a su valor inicial y actualiza el mapa y la tabla
-          slider.noUiSlider.set(0);
-          sliderValue = 0;
-          updateMapAndTable();
-        });
-
         })
           .catch((error) => {
             console.error('Error al buscar datos:', error);
