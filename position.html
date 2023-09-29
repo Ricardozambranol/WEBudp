@@ -591,20 +591,7 @@
               borrarBoton.textContent = 'Mostrar Ubicación';
               borrarBoton.classList.add('borrar-button');
               borrarBoton.addEventListener('click', () => {
-                // Limpia el mapa de todos los marcadores excepto el punto seleccionado
-                markersGroup.clearLayers();
-                const marker = L.marker([registro.latitud, registro.longitud], {
-                  icon: L.divIcon({
-                    className: 'custom-icon',
-                    iconSize: [60, 60],
-                    iconAnchor: [30, 60],
-                    html: `<i class="fas fa-map-marker-alt" style="color: red;"></i>`,
-                  }),
-                });
-                markersGroup.addLayer(marker);
-                const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-                marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
-                map.setView([registro.latitud, registro.longitud], 13);
+                mostrarUbicacionEnMapa(datos.indexOf(registro)); // Llama a la función con el índice del dato
               });
 
               accionesCell.appendChild(borrarBoton);
