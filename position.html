@@ -92,6 +92,23 @@
     text-align: left; /* Centrar el texto */
     margin-left: 5%; /* Agregar margen izquierdo de 20px */
   }
+  #info-box {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    width: 15%; /* Ancho deseado */
+    height: 200px;
+    float: left; /* Coloca la caja a la izquierda */
+    padding: 0px; /* Agrega espacio interno */
+    margin-right: 1%; /* Espaciado derecho para separar del mapa */
+    margin-top: 8%; 
+    margin-left: 2%; 
+    background-color: white; /* Fondo blanco */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    display: flex; /* Utiliza flexbox */
+    flex-direction: column; /* Apila elementos verticalmente */
+    text-align: center; /* Centrar el texto */
+    justify-content: center; /* Centra verticalmente */
+  }
 
   /* Estilo para el mapa Leaflet */
   .leaflet-map-container {
@@ -101,7 +118,7 @@
     padding: 10px;
     box-sizing: border-box;
     margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
-    z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
+    z-index: 0;
     margin: 0 auto;
   }
 
@@ -162,33 +179,33 @@
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     width: 15%;
-    position: fixed; /* Fijar el contenedor en una posición */
-    top: 60px; /* Espacio desde la parte superior, teniendo en cuenta la barra de navegación */
-    right: 2%; /* Margen derecho */
-    background-color: white; /* Fondo blanco */
-    padding: 20px; /* Espaciado interno */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
-    cursor: pointer; /* Cambia el cursor a un puntero */
-    z-index: 999; /* Asegura que esté por encima de otros elementos */
-    transition: background-color 0.3s ease; /* Agregar transición suave para el cambio de fondo */
-    overflow: hidden; /* Oculta el desbordamiento */
-    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto si no cabe */
-  }
-  #instructions-container:hover {
-    background-color: rgba(236, 236, 236, 0.9); /* Oscurecer el fondo al pasar el mouse */
-  }
-  
-  #instructions-container.collapsed {
-    width: 15%; /* Ancho mínimo cuando está contraído */
-    overflow: hidden; /* Ocultar el contenido cuando está contraído */
-    transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
-    text-overflow: ellipsis;
+    position: fixed;
+    top: 60px;
+    right: 2%;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;  
+    z-index: 999;
+    transition: background-color 0.3s ease, max-height 0.3s ease; /* Agregamos max-height aquí */
+    max-height: 300px; /* Altura máxima predeterminada */
+    overflow-y: auto; /* Habilitar el desplazamiento vertical si el contenido se desborda */
   }
 
-  /* Estilo para el contenedor de instrucciones expandido */
+  #instructions-container:hover {
+    background-color: rgba(236, 236, 236, 0.9);
+  }
+
+  #instructions-container.collapsed {
+    width: 15%;
+    max-height: 60px; /* Altura máxima cuando está colapsado */
+    overflow: hidden;
+  }
+
   #instructions-container.expanded {
-    width: 15%; /* Ancho deseado cuando está expandido */
-    transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
+    width: 15%;
+    max-height: 300px; /* Altura máxima cuando está expandido */
+    overflow-y: auto; /* Habilitar el desplazamiento vertical si es necesario */
   }
 
   #footer-link {
@@ -312,13 +329,24 @@
     <li>Una vez que haya ingresado todas las fechas, horas y coordenadas, haga clic en el botón <strong>Buscar Datos</strong>.</li>
   </ol>
   <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer clic en "Buscar Datos".</p>
-</div>
-
-<div id="info-box">
-  <!-- Aquí se mostrará la información del punto señalado -->
+  
+  <h2><strong>Navegar por los Datos:</strong></h2>
+  <p>Puede navegar por los datos utilizando los botones "<<" y ">>".</p>
+  <ul>
+    <li>Para ver el <strong>siguiente dato</strong>, haga clic en el botón "<strong>>></strong>".</li>
+    <li>Para ver el <strong>dato anterior</strong>, haga clic en el botón "<strong><<</strong>".</li>
+  </ul>
+  <p>Los datos se mostrarán en la tabla y en el mapa según el orden de navegación.</p>
+  
+  <h2><strong>Mostrar/Ocultar Tabla de Resultados:</strong></h2>
+  <p>Puede mostrar u ocultar la tabla de resultados haciendo clic en el botón "<strong>Mostrar/Ocultar Tabla</strong>".</p>
+  <p>La tabla contiene información detallada sobre los datos encontrados, y tambien permite navegar por los datos de una forma mas explicita con la opcion <strong>Mostrar Ubicacion</strong>.</p>
 </div>
 
 <h2>Mapa de Datos:</h2>
+<div id="info-box">
+  <p>Seleccione un dato en el mapa para ver sus detalles</p>
+</div>
 <div class="leaflet-map-container">
   <div id="map-container" class="leaflet-map"></div>
 </div>
@@ -363,7 +391,7 @@
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
-      
+      const infoBox = document.getElementById('info-box');    
       const toggleTableBtn = document.getElementById('toggleTable');
       const tablaResultados = document.getElementById('tablaResultados');
       const Tabla = document.querySelector('table'); // Selecciona toda la tabla
@@ -379,13 +407,13 @@
       const instructionsContainer = document.getElementById('instructions-container');
 
       // Agregar un manejador de eventos de clic al contenedor de instrucciones
-      instructionsContainer.addEventListener('click', () => {
-        if (instructionsContainer.style.height === 'auto' || instructionsContainer.style.height === '') {
-          instructionsContainer.style.height = '38px'; // Cambia la altura deseada al hacer clic
-          instructionsContainer.style.overflow = 'hidden'; // Oculta el desbordamiento
+      instructionsContainer.addEventListener('click', function () {
+        if (instructionsContainer.classList.contains('collapsed')) {
+            instructionsContainer.classList.remove('collapsed');
+            instructionsContainer.classList.add('expanded');
         } else {
-          instructionsContainer.style.height = 'auto'; // Expande la altura al hacer clic nuevamente
-          instructionsContainer.style.overflow = 'visible'; // Muestra el desbordamiento
+            instructionsContainer.classList.remove('expanded');
+            instructionsContainer.classList.add('collapsed');
         }
       });
 
@@ -531,15 +559,25 @@
               const marker = L.marker([registro.latitud, registro.longitud], {
                 icon: L.divIcon({
                   className: 'custom-icon',
-                  iconSize: [30, 30],
-                  iconAnchor: [15, 30],
+                  iconSize: [60, 60],
+                  iconAnchor: [30, 60],
                   html: `<i class="fas fa-map-marker-alt" style="color: blue;"></i>`,
                 }),
               });
 
               markersGroup.addLayer(marker);
               const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-              marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+              marker.on('click', () => {
+                const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
+                const posicion = datos.findIndex((dato) => dato === registro);
+                infoBox.innerHTML = `
+                  <strong>Dato:</strong> ${posicion + 1} de ${datos.length}<br>
+                  <strong>Fecha:</strong> ${fechaFormateada}<br>
+                  <strong>Hora:</strong>${registro.hora}<br>
+                  <strong>Latitud:</strong> ${registro.latitud}<br>
+                  <strong>Longitud:</strong> ${registro.longitud}
+                `;
+              });
 
               if (index === data.length - 1) {
                 map.setView([registro.latitud, registro.longitud], 13);
@@ -565,20 +603,7 @@
               borrarBoton.textContent = 'Mostrar Ubicación';
               borrarBoton.classList.add('borrar-button');
               borrarBoton.addEventListener('click', () => {
-                // Limpia el mapa de todos los marcadores excepto el punto seleccionado
-                markersGroup.clearLayers();
-                const marker = L.marker([registro.latitud, registro.longitud], {
-                  icon: L.divIcon({
-                    className: 'custom-icon',
-                    iconSize: [60, 60],
-                    iconAnchor: [30, 60],
-                    html: `<i class="fas fa-map-marker-alt" style="color: red;"></i>`,
-                  }),
-                });
-                markersGroup.addLayer(marker);
-                const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-                marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
-                map.setView([registro.latitud, registro.longitud], 13);
+                mostrarUbicacionEnMapa(datos.indexOf(registro)); // Llama a la función con el índice del dato
               });
 
               accionesCell.appendChild(borrarBoton);
@@ -617,7 +642,15 @@
             });
             markersGroup.addLayer(marker);
             const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-            marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+            // Muestra el número del dato en el info-box
+            infoBox.innerHTML = `
+              <strong>Dato:</strong> ${posicion + 1} de ${datos.length}<br>
+              <strong>Fecha:</strong> ${fechaFormateada}<br>
+              <strong>Hora:</strong>${registro.hora}<br>
+              <strong>Latitud:</strong> ${registro.latitud}<br>
+              <strong>Longitud:</strong> ${registro.longitud}
+            `;
+
             map.setView([registro.latitud, registro.longitud], 13);
           }
         })
