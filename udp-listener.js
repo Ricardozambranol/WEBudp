@@ -1,7 +1,3 @@
-import dgram from 'dgram';
-import mysql from 'mysql2';
-import fetch from 'node-fetch';
-
 const dgram = require('dgram');
 const mysql = require('mysql2');
 const fetch = require('node-fetch'); // Importar el módulo node-fetch
