@@ -212,6 +212,7 @@
     <label for="horaInicio">Hora de Inicio:</label>
     <input type="time" id="horaInicio" value="00:00">
   </div>
+  <div id="latitudSlider"></div>
   <div>
     <label for="fechaFin">Fecha de Fin:</label>
     <input type="date" id="fechaFin" value="2023-09-30">
@@ -284,7 +285,40 @@
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
-      
+/////////////////////////////////////////////////////////////////////////////
+      const latitudMinSlider = document.getElementById('latitudSlider');
+      const latitudMinInput = document.getElementById('latitudMin');
+      const latitudMaxInput = document.getElementById('latitudMax');
+
+      noUiSlider.create(latitudMinSlider, {
+        start: [/* Valor inicial mínimo aquí */],
+        range: {
+          'min': [/* Valor mínimo permitido aquí */],
+          'max': [/* Valor máximo permitido aquí */]
+        }
+      });
+    
+      // Escucha el evento 'update' del slider para actualizar el valor en el campo de entrada
+      latitudMinSlider.noUiSlider.on('update', (values, handle) => {
+        latitudMinInput.value = values[handle];
+      });
+    
+      // Inicializa el slider para la latitud máxima (si lo deseas)
+      const latitudMaxSlider = document.getElementById('latitudSlider');
+      noUiSlider.create(latitudMaxSlider, {
+        start: [/* Valor inicial máximo aquí */],
+        range: {
+          'min': [/* Valor mínimo permitido aquí */],
+          'max': [/* Valor máximo permitido aquí */]
+        }
+      });
+    
+      // Escucha el evento 'update' del slider para actualizar el valor en el campo de entrada
+      latitudMaxSlider.noUiSlider.on('update', (values, handle) => {
+        latitudMaxInput.value = values[handle];
+      });
+
+      ////////////////////////////////////////////////////////////////////////////////
       const instructionsContainer = document.getElementById('instructions-container');
 
       // Agregar un manejador de eventos de clic al contenedor de instrucciones
