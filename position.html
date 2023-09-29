@@ -165,7 +165,12 @@
       background-color: white; /* Fondo blanco */
       padding: 20px; /* Espaciado interno */
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+      cursor: pointer; /* Cambia el cursor a un puntero */
       z-index: 999; /* Asegura que esté por encima de otros elementos */
+      transition: background-color 0.3s ease; /* Agregar transición suave para el cambio de fondo */
+    }
+    #instructions-container:hover {
+      background-color: rgba(236, 236, 236, 0.9); /* Oscurecer el fondo al pasar el mouse */
     }
     #instructions-container.collapsed {
       width: 15px; /* Ancho mínimo cuando está contraído */
@@ -190,6 +195,24 @@
     #footer-link a {
       text-decoration: underline; /* Subraya el enlace */
       color: #333; /* Color de texto gris oscuro */
+    }
+    #toggleTable {
+      width: 30%; /* Ancho deseado */
+      height: 40px; /* Alto deseado */
+      font-size: 18px; /* Tamaño de fuente deseado */
+      background-color: #a3a3a3; /* Color de fondo */
+      color: white; /* Color de texto */
+      border: none; /* Elimina el borde */
+      border-radius: 5px; /* Borde redondeado */
+      cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+      margin-top: 20px; /* Espaciado superior */
+      margin-left: 35%; /* Agregar margen izquierdo de 20px */
+      margin-right: 35%; /* Agregar margen izquierdo de 20px */
+    }
+
+    /* Cambiar el estilo al pasar el mouse sobre el botón */
+    #toggleTable:hover {
+      background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
     }
   </style>
 </head>
@@ -241,10 +264,11 @@
   <ol>
     <li>Ingrese la <strong>Fecha de Inicio</strong> y la <strong>Hora de Inicio</strong>.</li>
     <li>Ingrese la <strong>Fecha de Fin</strong> y la <strong>Hora de Fin</strong>.</li>
-    <li>Seleccione un área en el mapa: dibuje un <strong>rectángulo</strong> al hacer click en el botón correspondiente en el mapa y luego arrastre para seleccionar un área.</li>
-    <li>Una vez seleccionada el área, haga click en el botón <strong>Buscar Datos</strong>.</li>
+    <li>Seleccione un área en el mapa: dibuje un <strong>rectángulo</strong> al hacer clic en el botón correspondiente en el mapa y luego arrastre para seleccionar un área.</li>
+    <li>Las coordenadas de <strong>Latitud Mínima</strong>, <strong>Latitud Máxima</strong>, <strong>Longitud Mínima</strong>, y <strong>Longitud Máxima</strong> se llenarán automáticamente.</li>
+    <li>Una vez que haya ingresado todas las fechas, horas y coordenadas, haga clic en el botón <strong>Buscar Datos</strong>.</li>
   </ol>
-  <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer click en "Buscar Datos".</p>
+  <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer clic en "Buscar Datos".</p>
 </div>
 
 
@@ -252,6 +276,9 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
+
+  <button id="toggleTable">Mostrar/Ocultar Tabla</button>
+
   <!-- Tabla para mostrar los resultados -->
   <table>
     <thead>
@@ -284,7 +311,19 @@
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
+      
+      const toggleTableBtn = document.getElementById('toggleTable');
+      const tablaResultados = document.getElementById('tablaResultados');
+      const Tabla = document.querySelector('table'); // Selecciona toda la tabla
 
+      // Agrega un manejador de eventos al botón para alternar la visibilidad de la tabla
+      toggleTableBtn.addEventListener('click', () => {
+        if (Tabla.style.display === 'none' || Tabla.style.display === '') {
+          Tabla.style.display = 'table'; // Muestra la tabla si está oculta
+        } else {
+          Tabla.style.display = 'none'; // Oculta la tabla si está visible
+        }
+      });
       const instructionsContainer = document.getElementById('instructions-container');
 
       // Agregar un manejador de eventos de clic al contenedor de instrucciones
@@ -299,7 +338,6 @@
       });
 
       const buscarDatosBtn = document.getElementById('buscarDatos');
-      const tablaResultados = document.getElementById('tablaResultados');
       const drawnItems = new L.FeatureGroup();
       map.addLayer(drawnItems);
 
