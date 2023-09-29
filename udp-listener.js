@@ -101,26 +101,18 @@ udpServer.on('message', (message, remote) => {
   insertarMensaje(remitente, mensaje);
 });
 
-udpServer.bind(PORT, IP);
+udpServer.bind(PUERTO, IP);
 
-createTable(); // Ensure that the table exists
+crearTabla(); // Asegurarse de que la tabla exista
 
-// Fetch the public IP address using an async function
-async function getPublicIPAddress() {
-  try {
-    const response = await fetch('https://api.ipify.org?format=json');
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    console.error('Error getting the public IP address:', error);
-    return null;
-  }
-}
+let ipAddress;
 
-// Use the async function to get the IP address
-getPublicIPAddress()
-  .then((ipAddress) => {
-    if (ipAddress) {
-      console.log(`UDP server is running. Waiting for messages at ${ipAddress}:${PORT}`);
-    }
-  });
+fetch('https://api.ipify.org?format=json')
+  .then(response => response.json())
+  .then(data => {
+    const ipAddress = data.ip;
+    console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
+  })
+  .catch(error => {
+    console.error('Error al obtener la dirección IP pública:', error);
+});
