@@ -1,6 +1,5 @@
 const dgram = require('dgram');
 const mysql = require('mysql2');
-const fetch = require('node-fetch'); // Importar el módulo node-fetch
 
 // Configuración del socket UDP
 const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
@@ -86,6 +85,7 @@ function insertarMensaje(remitente, mensaje) {
   }
 }
 
+// Crear el servidor UDP
 const udpServer = dgram.createSocket('udp4');
 
 udpServer.on('error', (err) => {
@@ -106,12 +106,17 @@ crearTabla(); // Asegurarse de que la tabla exista
 
 let ipAddress;
 
-fetch('https://api.ipify.org?format=json')
-  .then(response => response.json())
-  .then(data => {
-    const ipAddress = data.ip;
-    console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
-  })
-  .catch(error => {
-    console.error('Error al obtener la dirección IP pública:', error);
-  });
+// Importación dinámica de node-fetch
+import('node-fetch').then(fetch => {
+  fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => {
+      const ipAddress = data.ip;
+      console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
+    })
+    .catch(error => {
+      console.error('Error al obtener la dirección IP pública:', error);
+    });
+}).catch(error => {
+  console.error('Error al importar node-fetch:', error);
+});
