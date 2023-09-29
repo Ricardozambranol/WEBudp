@@ -1,5 +1,6 @@
 const dgram = require('dgram');
 const mysql = require('mysql2');
+const https = require('https');
 
 // Configuración del socket UDP
 const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
@@ -104,19 +105,26 @@ udpServer.bind(PUERTO, IP);
 
 crearTabla(); // Asegurarse de que la tabla exista
 
-let ipAddress;
+// Obtener la dirección IP pública
+function obtenerDireccionIPPUBLICA() {
+  https.get('https://api.ipify.org?format=json', (response) => {
+    let data = '';
 
-// Importación dinámica de node-fetch
-import('node-fetch').then(fetch => {
-  fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => {
-      const ipAddress = data.ip;
-      console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
-    })
-    .catch(error => {
-      console.error('Error al obtener la dirección IP pública:', error);
+    response.on('data', (chunk) => {
+      data += chunk;
     });
-}).catch(error => {
-  console.error('Error al importar node-fetch:', error);
-});
+
+    response.on('end', () => {
+      try {
+        const ipAddress = JSON.parse(data).ip;
+        console.log(`Servidor UDP en ejecución. Esperando mensajes en ${ipAddress}:${PUERTO}`);
+      } catch (error) {
+        console.error('Error al obtener la dirección IP pública:', error);
+      }
+    });
+  }).on('error', (error) => {
+    console.error('Error al obtener la dirección IP pública:', error);
+  });
+}
+
+obtenerDireccionIPPUBLICA();
