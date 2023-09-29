@@ -93,8 +93,10 @@
     margin-left: 5%; /* Agregar margen izquierdo de 20px */
   }
   #info-box {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
     width: 15%; /* Ancho deseado */
-    height: 140px;
+    height: 200px;
     float: left; /* Coloca la caja a la izquierda */
     padding: 0px; /* Agrega espacio interno */
     margin-right: 1%; /* Espaciado derecho para separar del mapa */
@@ -102,7 +104,10 @@
     margin-left: 2%; 
     background-color: white; /* Fondo blanco */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    display: flex; /* Utiliza flexbox */
+    flex-direction: column; /* Apila elementos verticalmente */
     text-align: center; /* Centrar el texto */
+    justify-content: center; /* Centra verticalmente */
   }
 
   /* Estilo para el mapa Leaflet */
