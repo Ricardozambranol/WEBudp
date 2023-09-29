@@ -314,42 +314,45 @@
   <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer clic en "Buscar Datos".</p>
 </div>
 
+<div id="info-box">
+  <!-- Aquí se mostrará la información del punto señalado -->
+</div>
 
-  <h2>Mapa de Datos:</h2>
-  <div class="leaflet-map-container">
-    <div id="map-container" class="leaflet-map"></div>
-  </div>
-  <div class="button-container">
-    <button id="mostrarAnterior"><<</button>
-    <button id="mostrarSiguiente">>></button>
-  </div>
-  <button id="toggleTable">Mostrar/Ocultar Tabla</button>
+<h2>Mapa de Datos:</h2>
+<div class="leaflet-map-container">
+  <div id="map-container" class="leaflet-map"></div>
+</div>
+<div class="button-container">
+  <button id="mostrarAnterior"><<</button>
+  <button id="mostrarSiguiente">>></button>
+</div>
+<button id="toggleTable">Mostrar/Ocultar Tabla</button>
 
-  <!-- Tabla para mostrar los resultados -->
-  <table>
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Hora</th>
-        <th>Latitud</th>
-        <th>Longitud</th>
-        <th>Ver Ubicacion</th> <!-- Nueva columna para el botón de acción -->
-      </tr>
-    </thead>
-    <tbody id="tablaResultados">
-      <!-- Aquí se mostrarán los resultados de la búsqueda -->
-    </tbody>
-  </table>
+<!-- Tabla para mostrar los resultados -->
+<table>
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Hora</th>
+      <th>Latitud</th>
+      <th>Longitud</th>
+      <th>Ver Ubicacion</th> <!-- Nueva columna para el botón de acción -->
+    </tr>
+  </thead>
+  <tbody id="tablaResultados">
+    <!-- Aquí se mostrarán los resultados de la búsqueda -->
+  </tbody>
+</table>
 
-  <div id="footer-link">
-    <a href="/data.html">On my Way</a>
-  </div>
+<div id="footer-link">
+  <a href="/data.html">On my Way</a>
+</div>
 
-  <!-- JavaScript para la funcionalidad -->
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
-  <script>
+<!-- JavaScript para la funcionalidad -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
+<script>
     var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
     var drawnLayer; // Variable global para almacenar la capa dibujada
     let datos = [];
