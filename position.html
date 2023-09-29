@@ -155,6 +155,18 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
       z-index: 999; /* Asegura que esté por encima de otros elementos */
     }
+    #instructions-container.collapsed {
+      width: 15px; /* Ancho mínimo cuando está contraído */
+      overflow: hidden; /* Ocultar el contenido cuando está contraído */
+      transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
+    }
+
+    /* Estilo para el contenedor de instrucciones expandido */
+    #instructions-container.expanded {
+      width: 15%; /* Ancho deseado cuando está expandido */
+      transition: width 0.3s ease; /* Agregar transición suave al cambiar el ancho */
+    }
+
     #footer-link {
     background-color: #f2f2f2; /* Fondo gris claro */
     text-align: center; /* Alinea el texto al centro */
@@ -265,6 +277,16 @@
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
+
+      const instructionsContainer = document.getElementById('instructions-container');
+
+      // Agregar un manejador de eventos de clic al contenedor de instrucciones
+      instructionsContainer.addEventListener('click', () => {
+        // Alternar entre las clases colapsadas y expandidas
+        instructionsContainer.classList.toggle('collapsed');
+        instructionsContainer.classList.toggle('expanded');
+      });
+      
       const buscarDatosBtn = document.getElementById('buscarDatos');
       const tablaResultados = document.getElementById('tablaResultados');
       const drawnItems = new L.FeatureGroup();
