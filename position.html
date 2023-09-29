@@ -92,6 +92,16 @@
     text-align: left; /* Centrar el texto */
     margin-left: 5%; /* Agregar margen izquierdo de 20px */
   }
+  #info-box {
+    width: auto; /* Ancho deseado */
+    float: left; /* Coloca la caja a la izquierda */
+    padding: 140px; /* Agrega espacio interno */
+    margin-right: 1%; /* Espaciado derecho para separar del mapa */
+    margin-top: 8%; 
+    margin-left: 2%; 
+    background-color: white; /* Fondo blanco */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+  }
 
   /* Estilo para el mapa Leaflet */
   .leaflet-map-container {
@@ -101,7 +111,7 @@
     padding: 10px;
     box-sizing: border-box;
     margin-top: 60px; /* Agregar un margen superior para compensar la altura de la barra de navegación */
-    z-index: 0; /* Coloca el mapa en la parte inferior del apilamiento */
+    z-index: 0;
     margin: 0 auto;
   }
 
@@ -314,11 +324,10 @@
   <p>Nota: Asegúrese de haber seleccionado un área en el mapa o ingresado coordenadas válidas antes de hacer clic en "Buscar Datos".</p>
 </div>
 
+<h2>Mapa de Datos:</h2>
 <div id="info-box">
   <!-- Aquí se mostrará la información del punto señalado -->
 </div>
-
-<h2>Mapa de Datos:</h2>
 <div class="leaflet-map-container">
   <div id="map-container" class="leaflet-map"></div>
 </div>
@@ -363,7 +372,7 @@
     }).addTo(map);
 
     document.addEventListener('DOMContentLoaded', () => {
-      
+      const infoBox = document.getElementById('info-box');    
       const toggleTableBtn = document.getElementById('toggleTable');
       const tablaResultados = document.getElementById('tablaResultados');
       const Tabla = document.querySelector('table'); // Selecciona toda la tabla
@@ -539,7 +548,15 @@
 
               markersGroup.addLayer(marker);
               const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
-              marker.bindPopup(`<b>${registro.hora}</b><br>${fechaFormateada}`);
+              marker.on('click', () => {
+                const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
+                infoBox.innerHTML = `
+                  <strong>${registro.hora}</strong><br>
+                  Fecha: ${fechaFormateada}<br>
+                  Latitud: ${registro.latitud}<br>
+                  Longitud: ${registro.longitud}
+                `;
+              });
 
               if (index === data.length - 1) {
                 map.setView([registro.latitud, registro.longitud], 13);
