@@ -631,17 +631,25 @@
 
           function mostrarUbicacionEnMapa(posicion) {
             const registro = datos[posicion];
-            // Limpia el mapa de todos los marcadores excepto el punto seleccionado
-            markersGroup.clearLayers();
-            const marker = L.marker([registro.latitud, registro.longitud], {
-              icon: L.divIcon({
-                    className: 'custom-icon',
-                    iconSize: [60, 60],
-                    iconAnchor: [30, 60],
-                    html: `<i class="fas fa-map-marker-alt" style="color: red;"></i>`,
-                  }),
+            const markersGroup = L.layerGroup(); // Crea un nuevo grupo de capas de marcadores
+
+            // Agrega marcadores para todas las ubicaciones en el grupo de capas
+            datos.forEach((dato, index) => {
+              const iconColor = index === posicion ? 'red' : 'blue'; // Cambia el color del marcador actual a rojo
+              const marker = L.marker([dato.latitud, dato.longitud], {
+                icon: L.divIcon({
+                  className: 'custom-icon',
+                  iconSize: [60, 60],
+                  iconAnchor: [30, 60],
+                  html: `<i class="fas fa-map-marker-alt" style="color: ${iconColor};"></i>`,
+                }),
+              });
+              markersGroup.addLayer(marker);
             });
-            markersGroup.addLayer(marker);
+
+            map.clearLayers(); // Borra todas las capas del mapa
+            map.addLayer(markersGroup); // Agrega el nuevo grupo de capas de marcadores al mapa
+
             const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
             // Muestra el número del dato en el info-box
             infoBox.innerHTML = `
