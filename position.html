@@ -554,6 +554,7 @@
               });
 
               markersGroup.addLayer(marker);
+              const registro = datos[posicion];
               const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
               marker.on('click', () => {
                 const fechaFormateada = new Date(registro.fecha).toISOString().split('T')[0];
