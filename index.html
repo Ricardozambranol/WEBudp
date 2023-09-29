@@ -304,7 +304,7 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
-  <h2>Datos recientes:</h2>
+  <button id="toggleTable">Mostrar/Ocultar Tabla con Datos Recientes</button>
   <!-- Agregar una tabla para mostrar los datos -->
   <table>
     <thead>
@@ -321,6 +321,8 @@
     </tbody>
   </table>
   <div id="instructions-container">
+    <li>Click aquí para reducir y ampliar tamaño</li>
+
     <p>En esta página, puedes realizar un seguimiento en tiempo real de las ubicaciones GPS. Aquí está lo que encontrarás:</p>
     <ul>
       <li><strong>Mapa Interactivo:</strong> En el centro de la página, se muestra un mapa interactivo que te permite visualizar las ubicaciones GPS en tiempo real. Puedes hacer zoom, arrastrar y explorar el mapa.</li>
@@ -333,6 +335,30 @@
   </div>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script>
+    const toggleTableBtn = document.getElementById('toggleTable');
+    const tablaResultados = document.getElementById('tablaResultados');
+    const Tabla = document.querySelector('table'); // Selecciona toda la tabla
+
+    // Agrega un manejador de eventos al botón para alternar la visibilidad de la tabla
+    toggleTableBtn.addEventListener('click', () => {
+      if (Tabla.style.display === 'none' || Tabla.style.display === '') {
+        Tabla.style.display = 'table'; // Muestra la tabla si está oculta
+      } else {
+        Tabla.style.display = 'none'; // Oculta la tabla si está visible
+      }
+    });
+    const instructionsContainer = document.getElementById('instructions-container');
+
+    // Agregar un manejador de eventos de clic al contenedor de instrucciones
+    instructionsContainer.addEventListener('click', function () {
+      if (instructionsContainer.classList.contains('collapsed')) {
+          instructionsContainer.classList.remove('collapsed');
+          instructionsContainer.classList.add('expanded');
+      } else {
+          instructionsContainer.classList.remove('expanded');
+          instructionsContainer.classList.add('collapsed');
+      }
+    });
     var map = L.map('map-container').setView([10.9829, -74.7889], 13); // Barranquilla, Colombia
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
