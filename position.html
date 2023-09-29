@@ -231,6 +231,32 @@
     font-size: 14px; /* Tamaño de fuente */
     margin-right: 5px; /* Espaciado a la derecha */
   }
+  .button-container {
+    text-align: center; /* Centrar contenido horizontalmente */
+    margin-top: 20px; /* Espacio superior (ajusta según sea necesario) */
+  }
+  /* Estilo para los botones "Anterior" y "Siguiente" */
+  #mostrarAnterior,
+  #mostrarSiguiente {
+    width: 10%; /* Ancho deseado */
+    height: 10%; /* Alto deseado */
+    background-color: #343363; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+    padding: 5px 10px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    display: inline-block; /* Coloca los botones en línea uno al lado del otro */
+    margin-right: 5px; /* Agregar un margen derecho para separar los botones */
+  }
+
+  /* Estilo para los botones "Anterior" y "Siguiente" al pasar el mouse sobre ellos */
+  #mostrarAnterior:hover,
+  #mostrarSiguiente:hover {
+    background-color: #555; /* Color de fondo al pasar el mouse */
+  }
+
 </style>
 </head>
 <body>
@@ -293,8 +319,10 @@
   <div class="leaflet-map-container">
     <div id="map-container" class="leaflet-map"></div>
   </div>
-  <button id="mostrarAnterior"><<</button>
-  <button id="mostrarSiguiente">>></button>
+  <div class="button-container">
+    <button id="mostrarAnterior"><<</button>
+    <button id="mostrarSiguiente">>></button>
+  </div>
   <button id="toggleTable">Mostrar/Ocultar Tabla</button>
 
   <!-- Tabla para mostrar los resultados -->
