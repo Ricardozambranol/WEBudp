@@ -6,11 +6,8 @@
   <title>ON MY WAY</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap">
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-/>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@300&display=swap">
   <style>
     /* Estilo para el cuerpo del documento */
     body {
@@ -49,7 +46,7 @@
     .navbar a {
       float: right; /* Mover los enlaces a la derecha */
       display: block;
-      color: white;
+      color: white; 
       text-align: center;
       padding: 14px 16px;
       text-decoration: none;
@@ -95,55 +92,167 @@
     }
 
     /* Estilo para el encabezado principal */
-    h1, h2 {
+    h1, h2, h3, h4 {
       color: #333; /* Color del texto */
       text-align: left; /* Centrar el texto */
-      margin-left: 5%; /* Agregar margen izquierdo de 20px */
+      margin-left: 1%; /* Agregar margen izquierdo de 20px */
+    }
+    body > p{
+      text-align: justify; /* Justificar el texto */
+      margin-left: 1%; /* Agregar margen izquierdo de 20px */
+      margin-right: 10%;
+      line-height: 1; /* Ajusta el interlineado para reducirlo al mínimo */
     }
 
-   
-    /* Ajustar la altura del mapa al espacio restante */
-    .leaflet-map {
-      height: 600px; /* Restar la altura de la barra de navegación y un margen superior */
-    }
-
-    /* Estilo para la tabla de datos */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #a3a3a3;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #d3d3d3;
-    }  
-   
-    /* Estilo para el contenedor del contenido que quieres mover */
-    #info-container {
+    #equipo ul {
       display: flex;
-      flex-direction: column;
-      align-items: left;
-      margin-left: 8%; /* Agregar margen izquierdo de 20px */
-    }
-    #footer-link {
-    background-color: #f2f2f2; /* Fondo gris claro */
-    text-align: center; /* Alinea el texto al centro */
-    padding: 10px; /* Agrega un espacio alrededor del texto */
-    font-size: 12px; /* Tamaño de fuente de 12px */
+      flex-wrap: wrap; /* Envuelve los elementos si no caben en una fila */
+      list-style: none;
+      padding: 0;
     }
 
+    #equipo li {
+      flex: 1; /* Ocupa un espacio igual en la fila */
+      margin: 10px; /* Espacio entre los miembros del equipo */
+      padding: 15px;
+      background-color: #fff; /* Color de fondo inicial */
+      transition: transform 0.3s, box-shadow 0.3s; /* Transición suave */
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra inicial */
+    }
+
+    #equipo li:hover {
+      transform: scale(1.1); /* Hace que el box se agrande al pasar el cursor */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra cuando se pasa el cursor */
+    }
+        /* Estilo para las imágenes de los miembros del equipo */
+    .team-member-img {
+      width: 100px; /* Ancho de la imagen */
+      height: 100px; /* Altura de la imagen */
+      border-radius: 50%; /* Hace que la imagen sea circular */
+      margin-bottom: 10px; /* Espacio inferior entre la imagen y el texto */
+    }
+
+    /* Estilo para los iconos de los miembros del equipo */
+    .team-member-icon {
+      font-size: 24px; /* Tamaño del icono */
+      margin-top: 10px; /* Espacio superior entre el icono y el texto */
+    }
+    /* Estilo para el footer */
+    
+    #footer-link {
+      background-color: #f2f2f2; /* Fondo gris claro */
+      text-align: center; /* Alinea el texto al centro */
+      padding: 10px; /* Agrega un espacio alrededor del texto */
+      font-size: 12px; /* Tamaño de fuente de 12px */
+      line-height: 0; /* Ajusta el interlineado para reducirlo al mínimo */
+    }
     /* Estilo para el texto subrayado */
     #footer-link a {
       text-decoration: underline; /* Subraya el enlace */
       color: #333; /* Color de texto gris oscuro */
     }
 
+    #page-header {
+      text-align: center; /* Alinea el contenido a la derecha */
+      padding: 20px 0; /* Espaciado interno */
+      width: 40%;
+      margin-left: 30%;
+      margin-top: 5%; /* Espacio inferior entre la cita y el resto del contenido */
+      margin-bottom: 5%; /* Espacio inferior entre la cita y el resto del contenido */
+    }
+
+    /* Estilo para la cita y el autor */
+    #quote-container {
+      display: flex; /* Utiliza flexbox para alinear elementos horizontalmente */
+      flex-direction: column; /* Coloca el autor debajo de la cita */
+      align-items: flex-end; /* Alinea todo a la derecha */
+    }
+
+    #quote {
+      font-family: 'Martian Mono', sans-serif; /* Aplicar la fuente personalizada */
+      font-size: 32px; /* Tamaño grande de fuente */
+      margin-bottom: 5px; /* Espacio inferior */
+
+    }
+
+    #author {
+      font-size: 14px; /* Tamaño de fuente más pequeño para el autor */
+      text-align: right; /* Alinea el contenido a la derecha */
+    }
+
+    #objetivos {
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0; /* Espacio en la parte superior e inferior */
+    }
+
+    /* Estilo para la sección de Metodología */
+    #metodologia {
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0; /* Espacio en la parte superior e inferior */
+    }
+
+    /* Estilo para la sección "Acerca de Nosotros" */
+    #acerca-de-nosotros {
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0; /* Espacio en la parte superior e inferior */
+    }
+    /* Estilo para la sección de Objetivos y Metodología */
+    .two-column {
+      display: flex; /* Utiliza flexbox para crear dos columnas */
+      justify-content: space-between; /* Espacio entre las columnas */
+      align-items: flex-start; /* Alinea el contenido hacia la parte superior */
+      background-color: #f9f9f9; /* Fondo gris claro para resaltar la sección */
+    }
+
+    /* Estilo para cada columna */
+    .column {
+      width: 48%; /* Ancho de cada columna */
+      margin-right: 10%;
+    }
+
+    /* Estilo específico para la columna de Objetivos */
+    .column h2 {
+      margin-top: 0; /* Elimina el margen superior del encabezado */
+    }
+
+    /* Estilo específico para la columna de Metodología */
+    .column h3 {
+      margin-top: 0; /* Elimina el margen superior del encabezado */
+    }
+    ol {
+    list-style: none; /* Elimina la numeración predeterminada */
+    padding: 0; /* Elimina el espacio interior */
+    }
+
+    ol li::before {
+      content: counter(list-item) ". "; /* Agrega la numeración con un punto */
+      font-weight: bold; /* Hace que la numeración sea negrita */
+      margin-right: 5px; /* Agrega espacio entre la numeración y el texto */
+    }
+    /* Estilo para el footer */
+    .footer {
+      text-align: center; /* Centrar el texto en el footer */
+      font-size: 14px; /* Tamaño de fuente más pequeño */
+      background-color: #f2f2f2; /* Fondo gris claro */
+      line-height: 0; /* Ajusta el interlineado a 1 para reducirlo al mínimo */
+    }
+
+  #contacto {
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0; /* Espacio en la parte superior e inferior */
+    background-color: #f9f9f9; /* Fondo gris claro para resaltar la sección */
+  }
+  .project-paragraph {
+    text-align: justify;
+    margin-left: 1%;
+    margin-right: 10%;
+    line-height: 1;
+  }
   </style>
 </head>
 
@@ -153,87 +262,94 @@
       <li class="navbar-item"><a href="/">INICIO</a></li>
       <li class="navbar-item"><a href="/time.html">HISTORICO TIEMPO</a></li>
       <li class="navbar-item"><a href="/position.html">HISTORICO POSICION</a></li>
+      <li class="navbar-item"><a href="/about.html">SOBRE NOSOTROS</a></li>
     </ul>
     <h1>ON MY WAY</h1>
   </nav>
-    <!--
-  <h1>Desarrollado por:</h1>
-  
-  <div id="info-container">
-      <ul>
-          <li>Ricardo Zambrano</li>
-          <li>Carlos Gándara</li>
-          <li>David Vallejo</li>
-          <li>Jhan Hormechea</li>
-      </ul>
-  </div>
--->
-
     <header>
+      <div id="page-header">
+        <div id="quote">
+          "La motivación es el catalizador de cualquier innovación exitosa"
+        </div>
+        <div id="author">
+          - Clayton Christensen
+        </div>
+      </div>
         <h1>Acerca de Nosotros</h1>
     </header>
-    <section id="equipo">
-        <h2>Nuestro Equipo</h2>
-        <ul>
-            <li>
-               
-                <h3>Ricardo Zambrano</h3>
-                <p>Encargado del desarrollo backend/frontend del proyecto. Desarrollador de hardware y software, se mueve en el área de las Telecomunicaciones. Adicionalmente, presenta aptitudes de liderazgo y trabajo en equipo. </p>
-            </li>
-            <!-- Repite esta estructura para otros miembros del equipo -->
-            <li>
-               
-                <h3>Carlos Gándara</h3>
-                <p>Encargado del desarrollo frontend del proyecto. Desarrollador de hardware y software con enfoque en lenguajes de alto nivel, se mueve en el área de las telecomunicaciones y electrónica digital. Adicionalmente, presenta aptitudes de liderazgo y trabajo en equipo. </p>
-            </li>
-            <li>
-               
-                <h3>David Vallejo</h3>
-                <p>Encargado del desarrollo general del proyecto y monitor de errores. Desarrollador de hardware y software, se mueve en el área de las telecomunicaciones y electrónica digital. Adicionalmente, presenta aptitudes de liderazgo, trabajo en equipo y evaluación de proyectos. </p>
-            </li>
-            <li>
-               
-                <h3>Jhan Hormechea</h3>
-                <p>Encargado del desarrollo general del proyecto y evaluador de errores. Programador, se mueve en el área de la electrónica digital. Adicionalmente, presenta aptitudes de liderazgo, trabajo en equipo, gestion de proyectos y venta. </p>
-            </li>
-        </ul>
-    </section>
     <section id="proyecto">
-        <h2>Nuestro Proyecto</h2>
-        <p>Este proyecto se presenta como una solución ante compañias que requieren de localizaciones en constante movimiento, tal como una compañía de taxis. Para la cual es necesaria conocer las rutas y tiempos de actividad de su flota de taxis.</p>
-        <h3>Objetivos</h3>
-        <ul>
+      <h2>Nuestro Proyecto</h2>
+      <p class="project-paragraph">En el mundo empresarial actual, la movilidad es esencial. Nuestro proyecto surge como una solución integral para empresas que operan en constante movimiento, como compañías de taxis y servicios de entrega. Estamos enfocados en resolver uno de los desafíos clave de estas empresas: la gestión eficiente de sus flotas de vehículos.</p>
+      <p class="project-paragraph">Para lograrlo, proporcionamos una plataforma tecnológica avanzada que permite a estas empresas conocer en tiempo real la ubicación de sus vehículos, las rutas que siguen y los tiempos de actividad de cada unidad.</p>
+      <p class="project-paragraph">Esta información es esencial para optimizar la operación, mejorar la eficiencia de las entregas, reducir costos operativos y brindar un servicio de alta calidad a los clientes. Nuestra solución se adapta a las necesidades específicas de cada empresa y les brinda la ventaja competitiva que necesitan en un mundo impulsado por la movilidad y la tecnología.</p>
+    </section>
+        <section id="objetivos" class="two-column">
+        <div class="column">
+          <h2>Objetivos</h2>
+          <ul>
             <li>Garantizar el funcionamiento adecuado de la aplicación.</li>
             <li>Garantizar una plataforma segura y sólida.</li>
             <li>Brindar una experiencia de usuario agradable.</li>
             <li>Presentar una alternativa aplicable para cualquier necesidad similar.</li>
-
             <!-- Agrega más objetivos según sea necesario -->
-        </ul>
-        <h3>Metodología</h3>
-        <p>Para el desarrollo del proyecto se optó por una metodología en cascada y de prueba y error. A manera de Macroproyecto con diferentes etapas.</p>
+          </ul>
+        </div>
+        <div class="column">
+          <h3>Metodología</h3>
+          <p>Para el desarrollo del proyecto se optó por una metodología en cascada. A manera de Macroproyecto con diferentes etapas.</p>
+          <ol>
+            <li>Planificación</li>
+            <li>Diseño y Arquitectura</li>
+            <li>Desarrollo</li>
+            <li>Implementación</li>
+            <li>Evaluación y Mejora</li>
+            <li>Cierre del Proyecto</li>
+          </ol>
+        </div>
+      </section>
+  </section>
+    <section id="equipo">
+      <h2>Nuestro Equipo</h2>
+      <ul>
+        <li>
+          <h3>Ricardo Zambrano</h3>
+          <p>Encargado del desarrollo backend/frontend del proyecto. Desarrollador de hardware y software, se mueve en el área de las Telecomunicaciones. Adicionalmente, presenta aptitudes de liderazgo y trabajo en equipo. </p>
+          <h3>Contacto</h3>
+          <p>jrzambrano@uninorte.edu.co</p>
+          <i class="fas fa-cogs team-member-icon"></i> <!-- Icono de ajustes relacionado con el trabajo -->
+        </li>
+        <!-- Repite esta estructura para otros miembros del equipo -->
+        <li>
+          <h3>Carlos Gándara</h3>
+          <p>Encargado del desarrollo frontend del proyecto. Desarrollador de hardware y software con enfoque en lenguajes de alto nivel, se mueve en el área de las telecomunicaciones y electrónica digital. Adicionalmente, presenta aptitudes de liderazgo y trabajo en equipo. </p>
+          <h3>Contacto</h3>
+          <p>cgandara@uninorte.edu.co</p>
+          <i class="fas fa-code team-member-icon"></i> <!-- Icono de código relacionado con el trabajo -->
+        </li>
+        <li>
+          <h3>David Vallejo</h3>
+          <p>Encargado del desarrollo general del proyecto y monitor de errores. Desarrollador de hardware y software, se mueve en el área de las telecomunicaciones y electrónica digital. Adicionalmente, presenta aptitudes de liderazgo, trabajo en equipo y evaluación de proyectos. </p>
+          <h3>Contacto</h3>
+          <p>cdavallejo@uninorte.edu.co</p>
+          <i class="fas fa-bug team-member-icon"></i> <!-- Icono de error relacionado con el trabajo -->
+        </li>
+        <li>
+          <h3>Jhan Hormechea</h3>
+          <p>Encargado del desarrollo general del proyecto y evaluador de errores. Programador, se mueve en el área de la electrónica digital. Adicionalmente, presenta aptitudes de liderazgo, trabajo en equipo, gestión de proyectos y venta. </p>
+          <h3>Contacto</h3>
+          <p>bjhan@uninorte.edu.co</p>
+          <i class="fas fa-chart-bar team-member-icon"></i> <!-- Icono de gráfico relacionado con el trabajo -->
+        </li>
+      </ul>
     </section>
     <section id="contacto">
-        <h2>Contacto</h2>
         <p>¿Tienes preguntas o comentarios? ¡No dudes en ponerte en contacto con nosotros!</p>
-        <!-- Agrega un formulario de contacto o información de contacto adicional si es necesario -->
-        <ul>
-            <li>Ricardo: jrzambrano@uninorte.edu.co </li>
-            <li>Carlos: cgandara@uninorte.edu.co </li>
-            <li>David: davallejo@uninorte.edu.co </li>
-            <li>Jhan: bjhan@uninorte.edu.co </li>
-
-            <!-- Agrega más objetivos según sea necesario -->
-        </ul>
-
     </section>
-    <footer>
-        <p>&copy; 2023 Universidad del Norte</p>
-        <p>Barranquilla, Atlántico</p>
-        <p>Colombia</p>
+    <footer class="footer">
+      <p>&copy; 2023 Universidad del Norte</p>
+      <p>Barranquilla, Atlántico</p>
+      <p>Colombia</p>
     </footer>
-  
-  
   <div id="footer-link">
     <a href="/data.html">On my Way</a>
   </div>
