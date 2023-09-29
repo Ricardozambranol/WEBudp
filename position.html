@@ -138,10 +138,22 @@
       display: none;
     }
 
+    /* Estilo para el botón "Buscar Datos" */
     #buscarDatos {
-      width: 120px; /* Ancho deseado */
-      height: 20px; /* Alto deseado */
-      font-size: 14px; /* Tamaño de fuente deseado */
+      width: 180px; /* Ancho deseado */
+      height: 40px; /* Alto deseado */
+      font-size: 18px; /* Tamaño de fuente deseado */
+      background-color: #a3a3a3; /* Color de fondo */
+      color: white; /* Color de texto */
+      border: none; /* Elimina el borde */
+      border-radius: 5px; /* Borde redondeado */
+      cursor: pointer; /* Cambia el cursor al pasar el mouse sobre el botón */
+      margin-top: 20px; /* Espaciado superior */
+    }
+
+    /* Cambiar el estilo al pasar el mouse sobre el botón */
+    #buscarDatos:hover {
+      background-color: #7a7a7a; /* Color de fondo al pasar el mouse */
     }
     #instructions-container {
       font-family: 'Montserrat', sans-serif;
@@ -196,15 +208,15 @@
 <div id="info-container">
   <div>
     <label for="fechaInicio">Fecha de Inicio:</label>
-    <input type="date" id="fechaInicio">
+    <input type="date" id="fechaInicio" value="2023-09-01">
     <label for="horaInicio">Hora de Inicio:</label>
-    <input type="time" id="horaInicio">
+    <input type="time" id="horaInicio" value="00:00">
   </div>
   <div>
     <label for="fechaFin">Fecha de Fin:</label>
-    <input type="date" id="fechaFin">
+    <input type="date" id="fechaFin" value="2023-09-30">
     <label for="horaFin">Hora de Fin:</label>
-    <input type="time" id="horaFin">
+    <input type="time" id="horaFin" value="00:00">
   </div>
   <div id="info-position">
     <div>
@@ -224,7 +236,7 @@
 </div>
 
 <div id="instructions-container">
-  <h3>Instrucciones:</h3>
+  <h2><strong>Instrucciones:</strong></h2>
   <ol>
     <li>Ingrese la <strong>Fecha de Inicio</strong> y la <strong>Hora de Inicio</strong>.</li>
     <li>Ingrese la <strong>Fecha de Fin</strong> y la <strong>Hora de Fin</strong>.</li>
@@ -282,11 +294,15 @@
 
       // Agregar un manejador de eventos de clic al contenedor de instrucciones
       instructionsContainer.addEventListener('click', () => {
-        // Alternar entre las clases colapsadas y expandidas
-        instructionsContainer.classList.toggle('collapsed');
-        instructionsContainer.classList.toggle('expanded');
+        if (instructionsContainer.style.height === 'auto' || instructionsContainer.style.height === '') {
+          instructionsContainer.style.height = '38px'; // Cambia la altura deseada al hacer clic
+          instructionsContainer.style.overflow = 'hidden'; // Oculta el desbordamiento
+        } else {
+          instructionsContainer.style.height = 'auto'; // Expande la altura al hacer clic nuevamente
+          instructionsContainer.style.overflow = 'visible'; // Muestra el desbordamiento
+        }
       });
-      
+
       const buscarDatosBtn = document.getElementById('buscarDatos');
       const tablaResultados = document.getElementById('tablaResultados');
       const drawnItems = new L.FeatureGroup();
@@ -344,6 +360,30 @@
           drawnLayer = layer;
         }
       });
+
+      map.addControl(drawControl);
+
+      // Agregar manejador de eventos para el evento draw:edited
+      map.on('draw:edited', (e) => {
+        // Obtener todas las capas editadas
+        const editedLayers = e.layers;
+
+        // Verificar si hay capas editadas
+        if (editedLayers.getLayers().length > 0) {
+          // Recorrer todas las capas editadas
+          editedLayers.eachLayer((layer) => {
+            if (layer instanceof L.Rectangle) {
+              // Si la capa editada es un rectángulo, actualiza las coordenadas automáticamente
+              const bounds = layer.getBounds();
+              document.getElementById('latitudMin').value = bounds.getSouth();
+              document.getElementById('latitudMax').value = bounds.getNorth();
+              document.getElementById('longitudMin').value = bounds.getWest();
+              document.getElementById('longitudMax').value = bounds.getEast();
+            }
+          });
+        }
+      });
+
 
       buscarDatosBtn.addEventListener('click', () => {
         // Obtener los valores de fecha de inicio, hora de inicio, fecha de fin y hora de fin
