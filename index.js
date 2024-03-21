@@ -11,7 +11,6 @@ const wss = new WebSocket.Server({ server });
 
 // Configuración de la conexión a la base de datos RDS MySQL
 dotenv.config(); // Cargar variables de entorno desde .env
-const mysql = require('mysql');
 
 const conexionDB = mysql.createConnection({
   host: process.env.DB_HOST,
