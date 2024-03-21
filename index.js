@@ -1,21 +1,27 @@
 const express = require('express');
 const http = require('http');
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const path = require('path');
 const WebSocket = require('ws');
 const { spawn } = require('child_process'); // Importa el módulo child_process
-
+const dotenv = require('dotenv');
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // Configuración de la conexión a la base de datos RDS MySQL
+dotenv.config(); // Cargar variables de entorno desde .env
+const mysql = require('mysql');
+
 const conexionDB = mysql.createConnection({
-  host: 'disenobd.ceknllvmq2wx.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: '12345678',
-  database: 'disenobd',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
+
+// Ahora puedes usar conexionDB para interactuar con tu base de datos
+
 
 conexionDB.connect((error) => {
   if (error) {
