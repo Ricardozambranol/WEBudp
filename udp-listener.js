@@ -129,4 +129,13 @@ function obtenerDireccionIPPUBLICA() {
   });
 }
 
+udpServer.on('message', (message, remote) => {
+  const remitente = remote.address;
+  const mensaje = message.toString('utf8');
+  console.log('Mensaje recibido:', mensaje); // Esta línea imprime el mensaje recibido en la consola
+  // Almacenar el mensaje en la base de datos MySQL
+  insertarMensaje(remitente, mensaje);
+});
+
+
 obtenerDireccionIPPUBLICA();
