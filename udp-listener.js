@@ -1,17 +1,19 @@
 const dgram = require('dgram');
 const mysql = require('mysql2');
 const https = require('https');
-
+const dotenv = require('dotenv');
 // Configuración del socket UDP
-const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
-const PUERTO = 25565;
 
+dotenv.config(); // Cargar variables de entorno desde .env
+
+const IP = '0.0.0.0'; // Escucha en todas las interfaces de red
+const PUERTO = process.env.UDP_PORT;
 // Configuración de la base de datos MySQL
 const conexionDB = mysql.createConnection({
-  host: 'disenobd.ceknllvmq2wx.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: '12345678',
-  database: 'disenobd',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 // Crear la tabla si no existe
