@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const path = require('path');
 const WebSocket = require('ws');
 const { spawn } = require('child_process'); // Importa el módulo child_process
